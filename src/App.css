@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+.App {
+    font-family: 'Roboto', sans-serif;
+}
+.App img {
+  -webkit-user-drag: none; /* Для WebKit браузеров (Chrome, Safari) */
+  user-drag: none; /* Для остальных браузеров */
+}
+
+.timesNewRoman {
+  }
+  
+  /* Define your default font style, if it's different from the browser default */
+  .defaultFont {
+    font-family: 'Roboto', sans-serif;
+  }
+

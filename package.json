@@ -1,0 +1,100 @@
+{
+  "name": "afm-academy",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@fullcalendar/core": "^6.1.10",
+    "@fullcalendar/daygrid": "^6.1.10",
+    "@fullcalendar/interaction": "^6.1.15",
+    "@fullcalendar/react": "^6.1.8",
+    "@mui/icons-material": "^6.0.2",
+    "@mui/joy": "^5.0.0-beta.48",
+    "@mui/lab": "^6.0.0-beta.30",
+    "@mui/material": "^6.0.2",
+    "@mui/x-charts": "^7.18.0",
+    "@mui/x-date-pickers": "^7.16.0",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^14.0.0",
+    "@types/file-saver": "^2.0.7",
+    "@vitejs/plugin-react": "^4.3.4",
+    "axios": "^1.4.0",
+    "axios-mock-adapter": "^2.1.0",
+    "dangerously-set-html-content": "^1.1.0",
+    "date-fns": "^2.30.0",
+    "dayjs": "^1.11.13",
+    "eslint-config-react-app": "^7.0.1",
+    "file-saver": "^2.0.5",
+    "framer-motion": "^10.18.0",
+    "html-webpack-plugin": "^5.6.3",
+    "i18next": "^23.7.16",
+    "i18next-browser-languagedetector": "^7.2.0",
+    "js-cookie": "^3.0.5",
+    "lz-string": "^1.5.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-content-loader": "^7.0.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-helmet": "^6.1.0",
+    "react-i18next": "^14.0.0",
+    "react-icons": "^4.11.0",
+    "react-material-ui-carousel": "^3.4.2",
+    "react-pageflip": "^2.0.3",
+    "react-pdf": "^9.1.1",
+    "react-rating-stars-component": "^2.2.0",
+    "react-redux": "^8.0.5",
+    "react-router": "^6.18.0",
+    "react-router-dom": "^6.30.0",
+    "react-select": "^5.9.0",
+    "react-slick": "^0.29.0",
+    "react-transition-group": "^4.4.5",
+    "redux": "^4.2.1",
+    "sass": "^1.83.0",
+    "slick-carousel": "^1.8.1",
+    "styled-components": "^6.1.8",
+    "vite": "^6.2.3",
+    "web-vitals": "^3.4.0",
+    "webpack-merge": "^6.0.1",
+    "xlsx": "^0.18.5"
+  },
+  "scripts": {
+    "start": "vite",
+    "dev:verbose": "vite --debug",
+    "build": "set GENERATE_SOURCEMAP=false && vite build",
+    "preview": "vite preview"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@types/axios": "^0.9.36",
+    "@types/react-router-dom": "^5.3.3",
+    "sass-loader": "^16.0.4",
+    "typescript": "^4.9.5"
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "webpack.common.js",
+  "author": "",
+  "license": "ISC"
+}

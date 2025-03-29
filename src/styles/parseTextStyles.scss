@@ -1,0 +1,51 @@
+.highlight {
+    position: relative;
+    background-color: rgb(48, 171, 199);
+    color: #fff;
+    border-radius: 10px;
+    padding: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.highlight:hover .tooltip-text {
+    display: block;
+}
+  
+.highlight:hover::after {
+    content: attr(randomText);
+    // position: ;
+    // margin-left: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 5px 0px;
+    font-size: 15px;
+    border-radius: 5px;
+    top: 100%;
+    width: 500px;
+    height: max-content;
+    left: 0;
+    white-space: normal;
+    z-index: 1000000;
+}
+
+.bold {
+    font-weight: 600;
+}
+
+.red {
+    color: red;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.strikethrough {
+    list-style: disc;
+    list-style-position: insideq;
+}

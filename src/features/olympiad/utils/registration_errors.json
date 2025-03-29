@@ -1,0 +1,318 @@
+[
+  {
+    "student": "Сламов Алдияр",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Қайржанқызы Асел",
+    "error": "Registration failed"
+  },
+  {
+    "student": "Абраева  Адема ",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Елемес  Ақмарал ",
+    "error": "Registration failed"
+  },
+  {
+    "student": "Ганикель  Артур",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Тотьмянин Вадим",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Бахтияров Фозилхон",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Каймульдинова Зарина",
+    "error": "Registration failed"
+  },
+  {
+    "student": "Жұмабек Аружан",
+    "error": "Registration failed"
+  },
+  {
+    "student": "Қарсыбаев Нұржан",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Қарсыбаев Нұржан",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Нұрлықанов Нұржан",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Цырульникова Мария",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Токтарбекова  Лунара",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Әметбек Нұрмұхамед",
+    "error": "Registration failed"
+  },
+  {
+    "student": "Аманжолова Фарида",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Әбілда Ерасыл",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Қаирғазина Жансая",
+    "error": "Registration failed"
+  },
+  {
+    "student": "Жумагазин  Мейрамбек ",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Сатбеков Елнар",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Мурат Аян",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Закария  Жасмина",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Анапин Жасұлан",
+    "error": "Registration failed"
+  },
+  {
+    "student": "Өтеп Мирас",
+    "error": "Unknown category: \"\""
+  },
+  {
+    "student": "Жумабек  Рүстем",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Мұхамедғали Рамиз",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Өтебай Бекзат",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Елубай Меруерт",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Шарафинова Карина",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Сағадиев  Диас ",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Берікұлы  Алем",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Асанов Алибек",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Мұхамбет Мадияр",
+    "error": "Registration failed"
+  },
+  {
+    "student": "Даниярбек Нұрасыл",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Чериязданов Асхат",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Құсымбаев Ардақ",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Азаматова Дильназ",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Серікбай Тұрсынхан",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Каппаров Бекжан ",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Болат Диас",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Садвакасова  Жулдыз",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Елемес Гүлжанат",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Кабази Тогжан",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Сражадин Баглан",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Матаева Аягөз",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Нұрлан Нұрай",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Аралбаев Утеген",
+    "error": "Registration failed"
+  },
+  {
+    "student": "Арипбаева Арайлым",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Қоркытбай Аружан",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Бияхметова  Айдана",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Талмагамбетова Ардана",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Құсымбаев Ардақ",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Ізбасар Ажарай",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Боранбай Диляра",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Орманбеков Нұрасыл",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Ермекова Амина",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Турсынбаева  Дильназ",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Нариманова Индера",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Сатыбалды Нурлан",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Усен Еркемай",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Қожабеков Салауат",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Бексеитов Дильмухаммед",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Мурат Адиль",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Балабай Альжан",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Тунгышбай Сархан",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Зорбай Куандык",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Токтасын Эльмира",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Аманбаев Куанышбек",
+    "error": "Registration failed"
+  },
+  {
+    "student": "Кадырханова Аяулым",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Бралиева  Дария ",
+    "error": "Unknown category: \"\""
+  },
+  {
+    "student": "Шпыхов Егор",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Серикбек  Амантай ",
+    "error": "Unknown category: \"\""
+  },
+  {
+    "student": "Сахабадин Ілияс",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Темирбек Аружан",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Серик Динмухаммед",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Алуадин  Рамазан ",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Ежов Даниил",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Асылбеков Мансур",
+    "error": "Student with this IIN already exists"
+  },
+  {
+    "student": "Исламова Назерке",
+    "error": "Student with this IIN already exists"
+  }
+]
