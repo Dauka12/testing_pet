@@ -1,7 +1,20 @@
 import axios from 'axios';
 import base_url from '../../../settings/base_url.js';
+import { DEMO_MODE, simulateDelay } from '../demoMode';
 import { LoginRequest, LoginResponse } from '../types/auth';
 import { RegisterStudentRequest, RegisterStudentResponse } from '../types/student';
+
+// Demo user data
+const DEMO_USER: LoginResponse = {
+    token: "demo_token_123456789",
+    firstname: "Таңырыс",
+    lastname: "",
+    middlename: "Айбынқызы",
+    iin: "000000000000",
+    phone: "+7 777 367 2796",
+    university: "Astana International University",
+    email: "asan.tusupov@example.com"
+};
 
 // Create axios instance with base URL and default headers
 const olympiadApi = axios.create({
@@ -39,8 +52,32 @@ olympiadApi.interceptors.request.use(
 );
 
 export const registerStudent = async (studentData: RegisterStudentRequest): Promise<RegisterStudentResponse> => {
+    if (DEMO_MODE) {
+        await simulateDelay();
+
+        // Check if IIN is already used (in demo we'll just check against our demo user)
+        if (studentData.iin === DEMO_USER.iin) {
+            throw new Error("Пользователь с таким ИИН уже зарегистрирован");
+        }
+
+        return {
+            success: true,
+            message: "Регистрация успешно завершена",
+            student: {
+                id: Math.floor(Math.random() * 1000) + 1,
+                firstname: studentData.firstname,
+                lastname: studentData.lastname,
+                middlename: studentData.middlename,
+                iin: studentData.iin,
+                phone: studentData.phone,
+                university: studentData.university,
+                email: studentData.email,
+                password: ""
+            }
+        };
+    }
+
     try {
-        // This is a placeholder - replace with actual API endpoint when available
         const response = await olympiadApi.post<RegisterStudentResponse>('/auth/register', studentData);
         return response.data;
     } catch (error) {
@@ -52,6 +89,21 @@ export const registerStudent = async (studentData: RegisterStudentRequest): Prom
 };
 
 export const loginUser = async (credentials: LoginRequest): Promise<LoginResponse> => {
+    if (DEMO_MODE) {
+        await simulateDelay();
+
+        // For demo, we'll accept any credentials with IIN starting with '99' or our demo user
+        // You can modify this logic as needed
+        if (credentials.iin === DEMO_USER.iin || credentials.iin.startsWith('99')) {
+            // Store token and user in localStorage for persistence
+            localStorage.setItem('olympiad_token', DEMO_USER.token);
+            localStorage.setItem('olympiad_user', JSON.stringify(DEMO_USER));
+            return DEMO_USER;
+        } else {
+            throw new Error("Неверный ИИН или пароль");
+        }
+    }
+
     try {
         const response = await olympiadApi.post<LoginResponse>('/auth/login', credentials);
         return response.data;

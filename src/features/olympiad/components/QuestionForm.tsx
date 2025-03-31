@@ -1,4 +1,3 @@
-
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -18,7 +17,9 @@ import {
     Radio,
     TextField,
     Tooltip,
-    Typography
+    Typography,
+    useMediaQuery,
+    useTheme
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,11 +31,14 @@ interface QuestionFormProps {
     testId: number;
     question?: ExamQuestionResponse;
     onSuccess: () => void;
+    isMobile?: boolean;
 }
 
-const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess }) => {
+const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess, isMobile }) => {
     const dispatch = useDispatch();
     const { currentExam, loading } = useSelector((state: RootState) => state.exam);
+    const theme = useTheme();
+    const isMobileView = isMobile !== undefined ? isMobile : useMediaQuery(theme.breakpoints.down('sm'));
     const [viewingQuestion, setViewingQuestion] = useState<ExamQuestionResponse | null>(null);
     const [editingQuestion, setEditingQuestion] = useState<ExamQuestionResponse | null>(null);
 
@@ -200,8 +204,12 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
         <Box>
             {/* Question List Section */}
             {currentExam && currentExam.questions && currentExam.questions.length > 0 && (
-                <Paper elevation={3} sx={{ p: 3, borderRadius: 2, mb: 4 }}>
-                    <Typography variant="h6" gutterBottom>
+                <Paper elevation={3} sx={{ 
+                    p: isMobileView ? 2 : 3, 
+                    borderRadius: 2, 
+                    mb: isMobileView ? 2 : 4 
+                }}>
+                    <Typography variant={isMobileView ? "subtitle1" : "h6"} gutterBottom>
                         Вопросы экзамена ({currentExam.questions.length})
                     </Typography>
                     <List>
@@ -212,30 +220,82 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
                                     border: '1px solid #e0e0e0',
                                     borderRadius: 1,
                                     mb: 1,
-                                    bgcolor: editingQuestion?.id === q.id ? 'rgba(0, 0, 0, 0.04)' : 'transparent'
+                                    bgcolor: editingQuestion?.id === q.id ? 'rgba(0, 0, 0, 0.04)' : 'transparent',
+                                    flexDirection: isMobileView ? 'column' : 'row',
+                                    alignItems: isMobileView ? 'flex-start' : 'center',
+                                    py: isMobileView ? 1.5 : 2,
+                                    px: 2
                                 }}
                             >
                                 <ListItemText
                                     primary={q.questionRus}
                                     secondary={`${q.options.length} вариантов ответа`}
+                                    sx={{ 
+                                        mb: isMobileView ? 1 : 0,
+                                        width: '100%'
+                                    }}
+                                    primaryTypographyProps={{
+                                        fontSize: isMobileView ? '0.9rem' : 'inherit'
+                                    }}
                                 />
-                                <ListItemSecondaryAction>
-                                    <Tooltip title="Просмотреть">
-                                        <IconButton edge="end" onClick={() => handleViewQuestion(q)}>
-                                            <VisibilityIcon color="primary" />
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Tooltip title="Редактировать">
-                                        <IconButton edge="end" onClick={() => handleEditQuestion(q)}>
-                                            <EditIcon color="secondary" />
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Tooltip title="Удалить">
-                                        <IconButton edge="end" onClick={() => handleDeleteQuestion(q.id)}>
-                                            <DeleteIcon color="error" />
-                                        </IconButton>
-                                    </Tooltip>
-                                </ListItemSecondaryAction>
+                                
+                                {isMobileView ? (
+                                    <Box sx={{ 
+                                        display: 'flex', 
+                                        width: '100%', 
+                                        justifyContent: 'flex-end',
+                                        mt: 0.5
+                                    }}>
+                                        <Button
+                                            size="small"
+                                            variant="outlined"
+                                            startIcon={<VisibilityIcon />}
+                                            onClick={() => handleViewQuestion(q)}
+                                            sx={{ mr: 1 }}
+                                        >
+                                            Просмотр
+                                        </Button>
+                                        
+                                        <Button
+                                            size="small"
+                                            variant="outlined"
+                                            color="secondary" 
+                                            startIcon={<EditIcon />}
+                                            onClick={() => handleEditQuestion(q)}
+                                            sx={{ mr: 1 }}
+                                        >
+                                            Ред.
+                                        </Button>
+                                        
+                                        <Button
+                                            size="small"
+                                            variant="outlined"
+                                            color="error"
+                                            startIcon={<DeleteIcon />}
+                                            onClick={() => handleDeleteQuestion(q.id)}
+                                        >
+                                            Удалить
+                                        </Button>
+                                    </Box>
+                                ) : (
+                                    <ListItemSecondaryAction>
+                                        <Tooltip title="Просмотреть">
+                                            <IconButton edge="end" onClick={() => handleViewQuestion(q)}>
+                                                <VisibilityIcon color="primary" />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title="Редактировать">
+                                            <IconButton edge="end" onClick={() => handleEditQuestion(q)}>
+                                                <EditIcon color="secondary" />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title="Удалить">
+                                            <IconButton edge="end" onClick={() => handleDeleteQuestion(q.id)}>
+                                                <DeleteIcon color="error" />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </ListItemSecondaryAction>
+                                )}
                             </ListItem>
                         ))}
                     </List>
@@ -244,7 +304,11 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
 
             {/* Question Viewer */}
             {viewingQuestion && (
-                <Paper elevation={3} sx={{ p: 3, borderRadius: 2, mb: 4 }}>
+                <Paper elevation={3} sx={{ 
+                    p: isMobileView ? 2 : 3, 
+                    borderRadius: 2, 
+                    mb: isMobileView ? 2 : 4 
+                }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                         <Typography variant="h6">
                             Просмотр вопроса
@@ -323,8 +387,12 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
             )}
 
             {/* Question Form */}
-            <Paper elevation={3} sx={{ p: 3, borderRadius: 2, mb: 4 }}>
-                <Typography variant="h6" gutterBottom>
+            <Paper elevation={3} sx={{ 
+                p: isMobileView ? 2 : 3, 
+                borderRadius: 2, 
+                mb: isMobileView ? 2 : 4 
+            }}>
+                <Typography variant={isMobileView ? "subtitle1" : "h6"} gutterBottom>
                     {editingQuestion ? 'Редактировать вопрос' : 'Добавить новый вопрос'}
                 </Typography>
 
@@ -335,7 +403,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
                 )}
 
                 <Box component="form" onSubmit={handleSubmit} noValidate>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={isMobileView ? 2 : 3}>
                         <Grid item xs={12}>
                             <TextField
                                 fullWidth

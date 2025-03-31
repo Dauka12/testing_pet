@@ -173,7 +173,7 @@ const LandingPage: React.FC = () => {
             </Typography>
 
             <Typography variant="body1" paragraph fontWeight="medium" color="primary.dark" sx={{ textAlign: 'justify', lineHeight: 1.7 }}>
-              {t('olympiad.description.registration')} <b style={{ fontWeight: '600', cursor: 'pointer', color: 'blue' }} onClick={() => navigate('/olympiad/registration')}>{t('olympiad.register')}</b>.
+              {t('olympiad.description.registration')} <b style={{ fontWeight: '600', cursor: 'pointer', color: 'blue' }} onClick={() => navigate('/registration')}>{t('olympiad.register')}</b>.
             </Typography>
 
             <Typography variant="body1" paragraph sx={{ textAlign: 'justify', lineHeight: 1.7 }}>

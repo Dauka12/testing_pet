@@ -7,7 +7,7 @@ const MotionBox = motion(Box);
 
 const LanguageToggle: React.FC = () => {
     const { i18n } = useTranslation();
-    const [currentLanguage, setCurrentLanguage] = useState(i18n.language || 'ru');
+    const [currentLanguage, setCurrentLanguage] = useState(i18n.language || 'kz');
 
     useEffect(() => {
         setCurrentLanguage(i18n.language);

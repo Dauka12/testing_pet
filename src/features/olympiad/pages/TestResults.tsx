@@ -88,14 +88,14 @@ const TestResults: React.FC = () => {
     // Load the exam session
     useEffect(() => {
         if (!sessionId) {
-            navigate('/olympiad/dashboard');
+            navigate('/dashboard');
             return;
         }
         getExamSession(parseInt(sessionId));
     }, [sessionId, getExamSession, navigate]);
 
     const goBackToDashboard = () => {
-        navigate('/olympiad/dashboard');
+        navigate('/dashboard');
     };
 
     if (loading || !currentSession) {

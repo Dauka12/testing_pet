@@ -112,7 +112,7 @@ const TestsList: React.FC = () => {
                     transition={{ duration: 0.6 }}
                 >
                     <PageHeading variant="h4">
-                        Олимпиада - Тесты
+                        Тесты
                     </PageHeading>
                 </motion.div>
 

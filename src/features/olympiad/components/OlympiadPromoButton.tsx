@@ -99,7 +99,7 @@ const OlympiadPromoButton: React.FC<OlympiadPromoButtonProps> = () => {
                         <EmojiEventsIcon sx={{ fontSize: 40, color: '#f5b207' }} />
                     </Box>
                     <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
-                        Олимпиада AFM Academy
+                        Тестирование
                     </Typography>
                 </DialogTitle>
 

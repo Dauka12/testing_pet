@@ -4,15 +4,11 @@ import {
     Box,
     Button,
     CircularProgress,
-    FormControl,
     FormHelperText,
     Grid,
     IconButton,
     InputAdornment,
-    InputLabel,
-    MenuItem,
     Paper,
-    Select,
     TextField,
     Typography,
     useMediaQuery,
@@ -79,7 +75,7 @@ const RegistrationForm: React.FC = () => {
         if (success) {
             // Simulate API response delay for better UX
             const timer = setTimeout(() => {
-                navigate('/olympiad/login');
+                navigate('/login');
             }, 2000);
             return () => clearTimeout(timer);
         }
@@ -230,16 +226,6 @@ const RegistrationForm: React.FC = () => {
                 >
                     {t('registration.title')}
                 </Typography>
-                <Typography
-                    variant={isMobile ? "body2" : "subtitle1"}
-                    sx={{
-                        color: 'text.secondary',
-                        textAlign: 'center',
-                        maxWidth: '95%'
-                    }}
-                >
-                    {t('registration.subtitle')}
-                </Typography>
             </Box>
 
             <form onSubmit={handleSubmit}>
@@ -286,20 +272,6 @@ const RegistrationForm: React.FC = () => {
                     <Grid item xs={12} sm={6}>
                         <TextField
                             fullWidth
-                            label={t('registration.fields.iin')}
-                            name="iin"
-                            variant="outlined"
-                            value={formData.iin}
-                            onChange={handleChange}
-                            error={!!errors.iin}
-                            helperText={errors.iin}
-                            disabled={isLoading}
-                            inputProps={{ maxLength: 12 }}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <TextField
-                            fullWidth
                             label={t('registration.fields.phone')}
                             name="phone"
                             variant="outlined"
@@ -310,28 +282,6 @@ const RegistrationForm: React.FC = () => {
                             disabled={isLoading}
                             placeholder="+7 (XXX) XXX-XX-XX"
                         />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <FormControl fullWidth error={!!errors.studyYear} disabled={isLoading}>
-                            <InputLabel id="studyYear-label">{t('registration.fields.studyYear')}</InputLabel>
-                            <Select
-                                labelId="studyYear-label"
-                                id="studyYear"
-                                name="studyYear"
-                                value={formData.studyYear}
-                                onChange={handleSelectChange}
-                                label={t('registration.fields.studyYear')}
-                            >
-                                {[1, 2, 3, 4].map((year) => (
-                                    <MenuItem key={year} value={year}>
-                                        {year}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                            {errors.studyYear && (
-                                <FormHelperText>{errors.studyYear}</FormHelperText>
-                            )}
-                        </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -346,7 +296,7 @@ const RegistrationForm: React.FC = () => {
                             disabled={isLoading}
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             fullWidth
                             label={t('registration.fields.email')}
@@ -412,32 +362,6 @@ const RegistrationForm: React.FC = () => {
                             }}
                         />
                     </Grid>
-                    <Grid item xs={12}>
-                        <FormControl fullWidth error={!!errors.categoryId} disabled={isLoading || loadingCategories}>
-                            <InputLabel id="category-label">{t('registration.fields.category')}</InputLabel>
-                            <Select
-                                labelId="category-label"
-                                id="category"
-                                name="categoryId"
-                                value={formData.categoryId}
-                                onChange={handleSelectChange}
-                                label={t('registration.fields.category')}
-                            >
-                                {loadingCategories ? (
-                                    <MenuItem value={0} disabled>{t('registration.loading')}</MenuItem>
-                                ) : (
-                                    categories.map((category) => (
-                                        <MenuItem key={category.id} value={category.id}>
-                                            {i18n.language === 'kz' ? category.nameRus : category.nameKaz}
-                                        </MenuItem>
-                                    ))
-                                )}
-                            </Select>
-                            {errors.categoryId && (
-                                <FormHelperText>{errors.categoryId}</FormHelperText>
-                            )}
-                        </FormControl>
-                    </Grid>
                 </Grid>
 
                 {error && (
@@ -455,7 +379,7 @@ const RegistrationForm: React.FC = () => {
                 >
                     <Button
                         variant="outlined"
-                        onClick={() => navigate('/olympiad/login')}
+                        onClick={() => navigate('/login')}
                         disabled={isLoading}
                         sx={{
                             borderColor: '#1A2751',
