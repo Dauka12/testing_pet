@@ -40,7 +40,7 @@ olympiadApi.interceptors.request.use(
 
 export const registerStudent = async (studentData: RegisterStudentRequest): Promise<RegisterStudentResponse> => {
     try {
-        // This is a placeholder - replace with actual API endpoint when available
+        // No need to create a separate requestBody - send only what's expected
         const response = await olympiadApi.post<RegisterStudentResponse>('/auth/register', studentData);
         return response.data;
     } catch (error) {

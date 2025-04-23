@@ -74,7 +74,7 @@ const TestCard: React.FC<TestCardProps> = ({ exam }) => {
 
             // Navigate to the test session page
             if (result.payload && 'id' in result.payload) {
-                navigate(`/olympiad/test/${result.payload.id}`);
+                navigate(`/test/${result.payload.id}`);
             }
         } catch (error) {
             console.error('Failed to start exam:', error);

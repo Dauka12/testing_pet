@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next'; // Add this import
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { AppDispatch, RootState } from '../store';
@@ -23,13 +23,13 @@ import { clearAuthError, loginUser } from '../store/slices/authSlice.ts';
 const MotionPaper = motion(Paper);
 
 const LoginForm: React.FC = () => {
-  const { t, i18n } = useTranslation(); // Add translation hook
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [iin, setIin] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [iinError, setIinError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
   const dispatch = useDispatch<AppDispatch>();
@@ -40,26 +40,26 @@ const LoginForm: React.FC = () => {
   // Redirect on successful login
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/olympiad/dashboard');
+      navigate('/dashboard');
     }
   }, [isAuthenticated, navigate]);
 
   // Clear errors when inputs change
   useEffect(() => {
-    if (iin) setIinError('');
+    if (phone) setPhoneError('');
     if (password) setPasswordError('');
     if (error) dispatch(clearAuthError());
-  }, [iin, password, dispatch, error]);
+  }, [phone, password, dispatch, error]);
 
   const validateForm = (): boolean => {
     let isValid = true;
 
-    // Validate IIN
-    if (!iin.trim()) {
-      setIinError(t('login.errors.iinRequired'));
+    // Validate phone
+    if (!phone.trim()) {
+      setPhoneError(t('login.errors.phoneRequired'));
       isValid = false;
-    } else if (!/^\d{12}$/.test(iin)) {
-      setIinError(t('login.errors.iinFormat'));
+    } else if (!/^\+?[0-9]{10,15}$/.test(phone.replace(/\s/g, ''))) {
+      setPhoneError(t('login.errors.phoneFormat'));
       isValid = false;
     }
 
@@ -76,12 +76,12 @@ const LoginForm: React.FC = () => {
     e.preventDefault();
 
     if (validateForm()) {
-      dispatch(loginUser({ iin, password }));
+      dispatch(loginUser({ phone, password }));
     }
   };
 
   const handleGoToRegistration = () => {
-    navigate('/olympiad/registration');
+    navigate('/registration');
   };
 
   return (
@@ -137,14 +137,14 @@ const LoginForm: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <Box mb={2.5}>
           <TextField
-            label={t('login.fields.iin')}
+            label={t('login.fields.phone')}
             variant="outlined"
             fullWidth
-            value={iin}
-            onChange={(e) => setIin(e.target.value)}
-            error={!!iinError}
-            helperText={iinError}
-            inputProps={{ maxLength: 12 }}
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            error={!!phoneError}
+            helperText={phoneError}
+            placeholder="+7 (XXX) XXX-XX-XX"
             disabled={loading}
             autoFocus
           />

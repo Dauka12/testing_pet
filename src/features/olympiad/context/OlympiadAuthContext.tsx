@@ -43,7 +43,7 @@ export const ProtectedRoute: React.FC<{ children: ReactNode }> = ({ children }) 
   const location = useLocation();
 
   if (!isAuthenticated) {
-    return <Navigate to="/olympiad/login" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return <>{children}</>;
@@ -54,7 +54,7 @@ export const PublicRoute: React.FC<{ children: ReactNode }> = ({ children }) => 
   const { isAuthenticated } = useAuth();
   const location = useLocation();
   
-  const from = location.state?.from?.pathname || '/olympiad/dashboard';
+  const from = location.state?.from?.pathname || '/dashboard';
 
   if (isAuthenticated) {
     return <Navigate to={from} replace />;

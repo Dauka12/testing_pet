@@ -17,7 +17,7 @@ export interface AuthState {
 }
 
 export interface LoginRequest {
-    iin: string;
+    phone: string;  // Changed from iin to phone
     password: string;
 }
 

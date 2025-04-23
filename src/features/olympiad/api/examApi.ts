@@ -102,3 +102,13 @@ export const getAllCategories = async (): Promise<TestCategory[]> => {
         throw new Error(error.response?.data?.message || 'Ошибка при получении категорий');
     }
 };
+
+// AI Test Generation
+export const generateAiTest = async (prompt: { subject: string, numQuestions: number, difficulty: string }): Promise<number> => {
+    try {
+        const response = await api.post<{ examId: number }>('/exam/chat', prompt);
+        return response.data.examId;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || 'Ошибка при генерации теста с помощью AI');
+    }
+};

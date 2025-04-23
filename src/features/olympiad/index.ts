@@ -25,12 +25,12 @@ export type { StudentExamSessionRequest, StudentExamSessionResponse } from './ty
 
 // Export constants
 export const OLYMPIAD_ROUTES = {
-  ROOT: '/olympiad',
-  LOGIN: '/olympiad/login',
-  REGISTRATION: '/olympiad/registration',
-  DASHBOARD: '/olympiad/dashboard',
-  MANAGER: '/olympiad/manager',
-  TESTS: '/olympiad/tests',
-  TEST: '/olympiad/test',
-  TEST_RESULTS: '/olympiad/test-results',
+  ROOT: '',
+  LOGIN: '/login',
+  REGISTRATION: '/registration',
+  DASHBOARD: '/dashboard',
+  MANAGER: '/manager',
+  TESTS: '/tests',
+  TEST: '/test',
+  TEST_RESULTS: '/test-results',
 };

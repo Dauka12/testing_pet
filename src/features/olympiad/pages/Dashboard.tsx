@@ -198,8 +198,6 @@ const Dashboard: React.FC = () => {
     const [tabValue, setTabValue] = useState(0);
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-
-
     // Get exams and sessions data
     const { exams, loading: examsLoading, error: examsError, fetchAllExams } = useExamManager();
     const {
@@ -223,7 +221,7 @@ const Dashboard: React.FC = () => {
 
     const handleLogout = () => {
         dispatch(logoutUser());
-        navigate('/olympiad/login');
+        navigate('/login');
     };
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -262,7 +260,7 @@ const Dashboard: React.FC = () => {
         );
     }
 
-    const fullName = `${user.lastname} ${user.firstname} ${user.middlename}`;
+    const fullName = `${user.lastname} ${user.firstname}`;
 
     // Filter exams for test list
     const isLoading = examsLoading || sessionsLoading;
@@ -636,25 +634,6 @@ const Dashboard: React.FC = () => {
                                     {fullName}
                                 </Typography>
                             </motion.div>
-
-                            <motion.div
-                                initial={{ y: 20, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                transition={{ delay: 0.6, duration: 0.5 }}
-                            >
-                                <Typography
-                                    variant="body1"
-                                    sx={{
-                                        mt: 1.5,
-                                        textAlign: 'center',
-                                        color: theme.palette.text.secondary,
-                                        fontWeight: 500,
-                                        fontSize: '1rem'
-                                    }}
-                                >
-                                    {user.university}
-                                </Typography>
-                            </motion.div>
                         </ProfileCard>
 
                         {/* Navigation menu */}
@@ -712,6 +691,7 @@ const Dashboard: React.FC = () => {
                             </List>
                         </Paper>
 
+                        {/* Simplified InfoCard with only phone number */}
                         <InfoCard
                             initial={{ x: -50, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
@@ -730,52 +710,8 @@ const Dashboard: React.FC = () => {
                                     fontSize: '1.2rem'
                                 }}
                             >
-                                Личная информация
+                                Контактная информация
                             </Typography>
-
-                            <InfoItem>
-                                <Typography
-                                    variant="subtitle2"
-                                    sx={{
-                                        width: 90,
-                                        color: theme.palette.text.secondary,
-                                        fontSize: '0.9rem'
-                                    }}
-                                >
-                                    ИИН
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    sx={{
-                                        fontWeight: 500,
-                                        fontSize: '0.95rem'
-                                    }}
-                                >
-                                    {user.iin}
-                                </Typography>
-                            </InfoItem>
-
-                            <InfoItem>
-                                <Typography
-                                    variant="subtitle2"
-                                    sx={{
-                                        width: 90,
-                                        color: theme.palette.text.secondary,
-                                        fontSize: '0.9rem'
-                                    }}
-                                >
-                                    Email
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    sx={{
-                                        fontWeight: 500,
-                                        fontSize: '0.95rem'
-                                    }}
-                                >
-                                    {user.email}
-                                </Typography>
-                            </InfoItem>
 
                             <InfoItem>
                                 <Typography

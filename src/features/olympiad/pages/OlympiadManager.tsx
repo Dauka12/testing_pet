@@ -13,6 +13,7 @@ import {
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import AiTestGenerator from '../components/AiTestGenerator.tsx';
 import ExamForm from '../components/ExamForm.tsx';
 import ExamList from '../components/ExamList.tsx';
 import ExamViewer from '../components/ExamViewer.tsx';
@@ -53,13 +54,13 @@ const OlympiadManager: React.FC = () => {
 
     const handleEditExam = (exam: ExamResponse) => {
         dispatch(fetchExamById(exam.id));
-        setActiveTab(2);
+        setActiveTab(3);
         setViewMode('edit');
     };
 
     const handleViewExam = (exam: ExamResponse) => {
         dispatch(fetchExamById(exam.id));
-        setActiveTab(2);
+        setActiveTab(3);
         setViewMode('view');
     };
 
@@ -70,10 +71,20 @@ const OlympiadManager: React.FC = () => {
         }
     };
 
+    // Handle AI test generation success
+    const handleAiTestSuccess = (examId: number) => {
+        // Fetch the exam after successful generation
+        dispatch(fetchExamById(examId));
+        // Optionally switch to the exam view tab
+        setActiveTab(3);
+        setViewMode('view');
+    };
+
     const getTabs = () => {
         const tabs = [
             <Tab label="Список экзаменов" key="tab-list" />,
-            <Tab label="Создать экзамен" key="tab-create" />
+            <Tab label="Создать экзамен" key="tab-create" />,
+            <Tab label="Создание с помощью AI" key="tab-ai" /> // New AI tab
         ];
 
         if (currentExam) {
@@ -180,8 +191,13 @@ const OlympiadManager: React.FC = () => {
                                 <ExamForm />
                             )}
 
+                            {/* AI Test Generator Tab */}
+                            {activeTab === 2 && (
+                                <AiTestGenerator onSuccess={handleAiTestSuccess} />
+                            )}
+
                             {/* Questions Tab - Only visible when an exam is selected */}
-                            {activeTab === 2 && currentExam && (
+                            {activeTab === 3 && currentExam && (
                                 viewMode === 'view' ? (
                                     <ExamViewer exam={currentExam} />
                                 ) : (

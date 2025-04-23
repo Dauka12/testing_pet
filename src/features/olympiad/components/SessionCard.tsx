@@ -75,8 +75,8 @@ const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
 
     const handleViewSession = () => {
         const path = isActive()
-            ? `/olympiad/test/${session.id}`
-            : `/olympiad/test-results/${session.id}`;
+            ? `/test/${session.id}`
+            : `/test-results/${session.id}`;
 
         navigate(path);
     };

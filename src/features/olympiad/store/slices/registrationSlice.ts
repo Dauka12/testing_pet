@@ -20,13 +20,12 @@ export const registerStudentThunk = createAsyncThunk<
     { rejectValue: string }
 >('olympiadRegistration/register', async (studentData, { rejectWithValue }) => {
     try {
-        const response = await registerStudent(studentData);
-        return response;
+        return await registerStudent(studentData);
     } catch (error) {
         if (error instanceof Error) {
             return rejectWithValue(error.message);
         }
-        return rejectWithValue('Unknown error occurred');
+        return rejectWithValue('Unknown error');
     }
 });
 

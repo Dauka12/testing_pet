@@ -13,14 +13,8 @@ export interface Student {
 export interface RegisterStudentRequest {
     firstname: string;
     lastname: string;
-    middlename: string;
-    iin: string;
     phone: string;
-    studyYear: number;
-    university: string;
-    email: string;
     password: string;
-    categoryId: number; // Added this field
 }
 
 export interface RegisterStudentResponse {

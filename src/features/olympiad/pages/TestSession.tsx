@@ -69,7 +69,7 @@ const TestSession: React.FC = () => {
     // Load the exam session
     useEffect(() => {
         if (!sessionId) {
-            navigate('/olympiad/dashboard');
+            navigate('/dashboard');
             return;
         }
         getExamSession(parseInt(sessionId));
@@ -95,7 +95,7 @@ const TestSession: React.FC = () => {
     // Return to dashboard if the exam is completed or doesn't exist
     useEffect(() => {
         if (!loading && currentSession && !isExamActive()) {
-            navigate('/olympiad/test-results/' + sessionId);
+            navigate('/test-results/' + sessionId);
         }
     }, [currentSession, loading, isExamActive, navigate, sessionId]);
 
@@ -122,7 +122,7 @@ const TestSession: React.FC = () => {
         try {
             setIsSubmitting(true);
             await endExamSession(parseInt(sessionId));
-            navigate('/olympiad/test-results/' + sessionId);
+            navigate('/test-results/' + sessionId);
         } catch (error) {
             console.error('Failed to end exam:', error);
         } finally {
@@ -183,7 +183,7 @@ const TestSession: React.FC = () => {
                             <Alert severity="error" sx={{ mb: 3 }}>
                                 {error}
                             </Alert>
-                            <Button sx={{ mt: 2 }} onClick={() => navigate('/olympiad/dashboard')}>
+                            <Button sx={{ mt: 2 }} onClick={() => navigate('/dashboard')}>
                                 Вернуться на главную
                             </Button>
                         </Paper>
