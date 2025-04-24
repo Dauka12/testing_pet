@@ -1,6 +1,17 @@
 import { QuizOutlined } from '@mui/icons-material';
-import { Alert, Box, CircularProgress, Divider, Grid, Paper, Tab, Tabs, Typography, useTheme } from '@mui/material';
-import { motion } from 'framer-motion';
+import {
+    Alert,
+    Box,
+    CircularProgress,
+    Divider,
+    Grid,
+    Paper,
+    Tab,
+    Tabs,
+    Typography,
+    useTheme
+} from '@mui/material';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { ExamResponse } from '../../types/exam';
 import { StudentExamSessionResponses } from '../../types/testSession';
@@ -25,7 +36,7 @@ const TestsContent: React.FC<TestsContentProps> = ({ isMobile, exams, sessions, 
             opacity: 1,
             transition: {
                 staggerChildren: 0.12,
-                delayChildren: 0.25
+                delayChildren: 0.15
             }
         }
     };
@@ -69,23 +80,39 @@ const TestsContent: React.FC<TestsContentProps> = ({ isMobile, exams, sessions, 
                 <Paper
                     elevation={0}
                     sx={{
-                        p: isMobile ? 3 : 5,
-                        borderRadius: isMobile ? 4 : 6,
-                        background: 'rgba(255, 255, 255, 0.97)',
-                        backdropFilter: 'blur(15px)',
-                        boxShadow: '0 15px 40px rgba(0, 0, 0, 0.15)',
-                        mb: 4
+                        p: isMobile ? 3 : 4,
+                        borderRadius: isMobile ? 3 : 4,
+                        background: '#ffffff',
+                        boxShadow: '0 8px 30px rgba(0, 0, 0, 0.06)',
+                        mb: 4,
+                        border: '1px solid',
+                        borderColor: 'divider',
                     }}
                 >
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                        <QuizOutlined sx={{ fontSize: 36, mr: 2, color: theme.palette.primary.main }} />
+                    <Box sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        mb: 3, 
+                        flexDirection: isMobile ? 'column' : 'row',
+                        textAlign: isMobile ? 'center' : 'left',
+                        gap: 2
+                    }}>
+                        <Box sx={{
+                            width: 60,
+                            height: 60,
+                            borderRadius: '50%',
+                            backgroundColor: theme.palette.primary.light + '15',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <QuizOutlined sx={{ fontSize: 30, color: theme.palette.primary.main }} />
+                        </Box>
                         <Typography
-                            variant="h4"
+                            variant={isMobile ? "h5" : "h4"}
                             sx={{
                                 fontWeight: 700,
-                                background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, #1A2751 100%)`,
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent'
+                                color: theme.palette.primary.main
                             }}
                         >
                             Тесты олимпиады
@@ -97,12 +124,22 @@ const TestsContent: React.FC<TestsContentProps> = ({ isMobile, exams, sessions, 
                     {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
                     {loading ? (
-                        <Box display="flex" justifyContent="center" p={3}>
-                            <CircularProgress />
+                        <Box display="flex" justifyContent="center" alignItems="center" py={5}>
+                            <CircularProgress size={40} thickness={4} />
+                            <Typography variant="body1" sx={{ ml: 2 }}>
+                                Загрузка тестов...
+                            </Typography>
                         </Box>
                     ) : (
                         <Box sx={{ width: '100%' }}>
-                            <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+                            <Box sx={{ 
+                                borderBottom: 1, 
+                                borderColor: 'divider', 
+                                mb: 4,
+                                bgcolor: theme.palette.grey[50],
+                                borderRadius: 3,
+                                p: 0.5,
+                            }}>
                                 <Tabs
                                     value={tabValue}
                                     onChange={handleTabChange}
@@ -112,7 +149,16 @@ const TestsContent: React.FC<TestsContentProps> = ({ isMobile, exams, sessions, 
                                             fontWeight: 600,
                                             fontSize: '1rem',
                                             textTransform: 'none',
-                                            py: 2
+                                            py: 1.5,
+                                            borderRadius: 2,
+                                            minHeight: 'auto',
+                                            '&.Mui-selected': {
+                                                bgcolor: '#ffffff',
+                                                boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+                                            }
+                                        },
+                                        '& .MuiTabs-indicator': {
+                                            display: 'none',
                                         }
                                     }}
                                 >
@@ -121,51 +167,79 @@ const TestsContent: React.FC<TestsContentProps> = ({ isMobile, exams, sessions, 
                                 </Tabs>
                             </Box>
 
-                            {tabValue === 0 && (
-                                <>
-                                    {availableExams.length > 0 ? (
-                                        <Grid container spacing={3}>
-                                            {availableExams.map((exam) => (
-                                                <Grid item xs={12} md={6} lg={4} key={exam.id}>
-                                                    <TestCard exam={exam} />
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={tabValue}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    {tabValue === 0 && (
+                                        <>
+                                            {availableExams.length > 0 ? (
+                                                <Grid container spacing={3}>
+                                                    {availableExams.map((exam) => (
+                                                        <Grid item xs={12} sm={6} lg={4} key={exam.id}>
+                                                            <TestCard exam={exam} />
+                                                        </Grid>
+                                                    ))}
                                                 </Grid>
-                                            ))}
-                                        </Grid>
-                                    ) : (
-                                        <Box textAlign="center" py={5}>
-                                            <Typography variant="h6" color="text.secondary">
-                                                Нет доступных тестов
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" mt={1}>
-                                                На данный момент нет тестов, доступных для прохождения
-                                            </Typography>
-                                        </Box>
+                                            ) : (
+                                                <Box 
+                                                    textAlign="center" 
+                                                    py={5}
+                                                    sx={{
+                                                        bgcolor: theme.palette.grey[50],
+                                                        borderRadius: 4,
+                                                        border: '1px dashed',
+                                                        borderColor: theme.palette.divider,
+                                                    }}
+                                                >
+                                                    <Typography variant="h6" color="text.secondary" gutterBottom>
+                                                        Нет доступных тестов
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary" mt={1}>
+                                                        На данный момент нет тестов, доступных для прохождения
+                                                    </Typography>
+                                                </Box>
+                                            )}
+                                        </>
                                     )}
-                                </>
-                            )}
 
-                            {tabValue === 1 && (
-                                <>
-                                    {sessions.length > 0 ? (
-                                        <Grid container spacing={3}>
-                                            {sessions.map((session) => (
-                                                <Grid item xs={12} md={6} lg={4} key={session.id}>
-                                                    <SessionCard session={session} />
+                                    {tabValue === 1 && (
+                                        <>
+                                            {sessions.length > 0 ? (
+                                                <Grid container spacing={3}>
+                                                    {sessions.map((session) => (
+                                                        <Grid item xs={12} sm={6} lg={4} key={session.id}>
+                                                            <SessionCard session={session} />
+                                                        </Grid>
+                                                    ))}
                                                 </Grid>
-                                            ))}
-                                        </Grid>
-                                    ) : (
-                                        <Box textAlign="center" py={5}>
-                                            <Typography variant="h6" color="text.secondary">
-                                                У вас нет пройденных тестов
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary" mt={1}>
-                                                Вы еще не приступали к прохождению тестов
-                                            </Typography>
-                                        </Box>
+                                            ) : (
+                                                <Box 
+                                                    textAlign="center" 
+                                                    py={5}
+                                                    sx={{
+                                                        bgcolor: theme.palette.grey[50],
+                                                        borderRadius: 4,
+                                                        border: '1px dashed',
+                                                        borderColor: theme.palette.divider,
+                                                    }}
+                                                >
+                                                    <Typography variant="h6" color="text.secondary" gutterBottom>
+                                                        У вас нет пройденных тестов
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary" mt={1}>
+                                                        Вы еще не приступали к прохождению тестов
+                                                    </Typography>
+                                                </Box>
+                                            )}
+                                        </>
                                     )}
-                                </>
-                            )}
+                                </motion.div>
+                            </AnimatePresence>
                         </Box>
                     )}
                 </Paper>

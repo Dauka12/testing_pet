@@ -1,33 +1,34 @@
-import { AccountCircleOutlined } from '@mui/icons-material';
-import { styled, Typography, useTheme } from '@mui/material';
+import { Avatar, styled, Typography, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
 import React from 'react';
 
 const StyledProfileCard = styled(motion.div)(({ theme }) => ({
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     borderRadius: 24,
-    padding: theme.spacing(5),
+    padding: theme.spacing(4, 3),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    boxShadow: '0 12px 36px rgba(0, 0, 0, 0.08)',
+    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
     marginBottom: theme.spacing(4),
+    border: '1px solid',
+    borderColor: theme.palette.divider,
 }));
 
 const StyledAvatar = styled(motion.div)(({ theme }) => ({
-    width: 140,
-    height: 140,
+    width: 100,
+    height: 100,
     borderRadius: '50%',
-    backgroundColor: theme.palette.grey[200],
+    backgroundColor: theme.palette.primary.light + '15',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: theme.spacing(3),
-    boxShadow: '0 15px 35px rgba(0, 0, 0, 0.15)',
-    border: '5px solid white',
+    marginBottom: theme.spacing(2),
+    boxShadow: '0 8px 25px rgba(0, 0, 0, 0.08)',
+    border: '4px solid white',
     [theme.breakpoints.down('sm')]: {
-        width: 100,
-        height: 100
+        width: 80,
+        height: 80
     }
 }));
 
@@ -37,11 +38,17 @@ interface ProfileCardProps {
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ fullName }) => {
     const theme = useTheme();
+    const initials = fullName
+        .split(' ')
+        .map(name => name[0])
+        .join('')
+        .substring(0, 2)
+        .toUpperCase();
     
     return (
         <StyledProfileCard
-            initial={{ x: -50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
             transition={{
                 type: 'spring',
                 stiffness: 70,
@@ -57,26 +64,44 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ fullName }) => {
                     delay: 0.4
                 }}
             >
-                <AccountCircleOutlined sx={{ fontSize: 100, color: theme.palette.primary.main }} />
+                <Avatar 
+                    sx={{ 
+                        width: '100%', 
+                        height: '100%',
+                        bgcolor: theme.palette.primary.main,
+                        fontSize: '2rem',
+                        fontWeight: 'bold'
+                    }}
+                >
+                    {initials}
+                </Avatar>
             </StyledAvatar>
 
             <motion.div
-                initial={{ y: 20, opacity: 0 }}
+                initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.5 }}
             >
                 <Typography
-                    variant="h5"
+                    variant="h6"
                     sx={{
                         textAlign: 'center',
                         fontWeight: 600,
-                        background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, #1A2751 100%)`,
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        mb: 1
+                        color: theme.palette.primary.main,
+                        mb: 0.5
                     }}
                 >
                     {fullName}
+                </Typography>
+                
+                <Typography
+                    variant="body2"
+                    sx={{
+                        textAlign: 'center',
+                        color: theme.palette.text.secondary,
+                    }}
+                >
+                    Студент
                 </Typography>
             </motion.div>
         </StyledProfileCard>

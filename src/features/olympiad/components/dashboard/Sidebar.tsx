@@ -14,6 +14,7 @@ import {
     ListItemText,
     Paper,
     styled,
+    SwipeableDrawer,
     useTheme
 } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -30,48 +31,60 @@ const StyledDrawer = styled(Drawer, {
     width: open ? drawerWidth : 0,
     flexShrink: 0,
     transition: theme.transitions.create(['width', 'transform'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
+        easing: theme.transitions.easing.easeInOut,
+        duration: theme.transitions.duration.standard,
     }),
     '& .MuiDrawer-paper': {
         width: drawerWidth,
         boxSizing: 'border-box',
-        background: 'rgba(255, 255, 255, 0.97)',
+        background: '#ffffff',
         borderRight: 'none',
         borderTopRightRadius: 24,
         borderBottomRightRadius: 24,
-        boxShadow: '0 12px 32px rgba(0, 0, 0, 0.12)',
+        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
         overflowX: 'hidden',
         transform: open ? 'translateX(0)' : 'translateX(-100%)',
         transition: theme.transitions.create(['width', 'transform'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
+            easing: theme.transitions.easing.easeInOut,
+            duration: theme.transitions.duration.standard,
         })
+    },
+}));
+
+const StyledSwipeableDrawer = styled(SwipeableDrawer)(({ theme }) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    '& .MuiDrawer-paper': {
+        width: drawerWidth,
+        boxSizing: 'border-box',
+        background: '#ffffff',
+        borderRight: 'none',
+        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
     },
 }));
 
 const ToggleButton = styled(motion.button)(({ theme }) => ({
     position: 'fixed',
-    top: 20,
-    left: 20,
+    top: 16,
+    left: 16,
     zIndex: 1300,
-    backgroundColor: theme.palette.primary.main,
-    color: 'white',
-    boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)',
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.primary.main,
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
     border: 'none',
     borderRadius: '50%',
-    width: 56,
-    height: 56,
+    width: 48,
+    height: 48,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     cursor: 'pointer',
     '&:hover': {
-        backgroundColor: theme.palette.primary.dark,
+        backgroundColor: theme.palette.grey[100],
     },
     [theme.breakpoints.down('sm')]: {
-        top: 10,
-        left: 10,
+        top: 12,
+        left: 12,
     }
 }));
 
@@ -80,10 +93,13 @@ const MenuItemButton = styled(ListItemButton)(({ theme }) => ({
     marginBottom: theme.spacing(1),
     padding: theme.spacing(1.5, 2),
     '&.Mui-selected': {
-        backgroundColor: theme.palette.primary.light + '20',
+        backgroundColor: theme.palette.primary.light + '15',
         '&:hover': {
-            backgroundColor: theme.palette.primary.light + '30',
+            backgroundColor: theme.palette.primary.light + '25',
         }
+    },
+    '&:hover': {
+        backgroundColor: theme.palette.grey[100],
     }
 }));
 
@@ -92,19 +108,19 @@ const LogoutButton = styled(motion.button)(({ theme }) => ({
     padding: theme.spacing(1.6, 2.5),
     fontSize: '0.98rem',
     fontWeight: 600,
-    backgroundColor: theme.palette.error.main,
-    color: 'white',
-    border: 'none',
+    backgroundColor: '#ffffff',
+    color: theme.palette.error.main,
+    border: `1px solid ${theme.palette.error.main}`,
     borderRadius: 14,
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     textTransform: 'none',
-    boxShadow: '0 6px 16px rgba(211, 47, 47, 0.25)',
+    transition: 'all 0.2s ease',
     '&:hover': {
-        boxShadow: '0 8px 20px rgba(211, 47, 47, 0.35)',
-        backgroundColor: theme.palette.error.dark,
+        backgroundColor: theme.palette.error.main + '10',
+        boxShadow: '0 4px 14px rgba(211, 47, 47, 0.15)',
     }
 }));
 
@@ -129,16 +145,97 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
     const theme = useTheme();
     const fullName = `${user.lastname} ${user.firstname}`;
+    const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
     const handleViewChange = (view: string) => {
         onViewChange(view);
     };
     
+    const drawerContent = (
+        <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', p: open ? 3 : 0 }}>
+            <ProfileCard fullName={fullName} />
+
+            {/* Navigation menu */}
+            <Paper
+                component={motion.div}
+                initial={{ x: -30, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{
+                    type: 'spring',
+                    stiffness: 70,
+                    delay: 0.25
+                }}
+                elevation={0}
+                sx={{
+                    p: 2,
+                    borderRadius: 4,
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    background: '#ffffff',
+                    mb: 4
+                }}
+            >
+                <List component="nav" sx={{ p: 1 }}>
+                    <MenuItemButton
+                        selected={currentView === 'dashboard'}
+                        onClick={() => handleViewChange('dashboard')}
+                    >
+                        <ListItemIcon>
+                            <DashboardOutlined sx={{ 
+                                color: currentView === 'dashboard' ? theme.palette.primary.main : theme.palette.text.secondary 
+                            }} />
+                        </ListItemIcon>
+                        <ListItemText
+                            primary="Главная"
+                            primaryTypographyProps={{
+                                fontWeight: currentView === 'dashboard' ? 600 : 400,
+                                color: currentView === 'dashboard' ? theme.palette.primary.main : 'inherit'
+                            }}
+                        />
+                    </MenuItemButton>
+
+                    <MenuItemButton
+                        selected={currentView === 'tests'}
+                        onClick={() => handleViewChange('tests')}
+                    >
+                        <ListItemIcon>
+                            <AssignmentOutlined sx={{ 
+                                color: currentView === 'tests' ? theme.palette.primary.main : theme.palette.text.secondary 
+                            }} />
+                        </ListItemIcon>
+                        <ListItemText
+                            primary="Тесты"
+                            primaryTypographyProps={{
+                                fontWeight: currentView === 'tests' ? 600 : 400,
+                                color: currentView === 'tests' ? theme.palette.primary.main : 'inherit'
+                            }}
+                        />
+                    </MenuItemButton>
+                </List>
+            </Paper>
+
+            <InfoCard user={user} />
+
+            <Box sx={{ flexGrow: 1 }} />
+
+            <Box sx={{ p: 2, textAlign: 'center' }}>
+                <LogoutButton
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={onLogout}
+                >
+                    <LogoutOutlined style={{ marginRight: 8 }} />
+                    Выйти из системы
+                </LogoutButton>
+            </Box>
+        </Box>
+    );
+
     return (
         <>
             {/* Toggle Drawer Button */}
             <ToggleButton
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onDrawerToggle}
             >
@@ -147,85 +244,28 @@ const Sidebar: React.FC<SidebarProps> = ({
 
             {/* Drawer */}
             <AnimatePresence>
-                <StyledDrawer
-                    variant={isMobile ? "temporary" : "permanent"}
-                    open={open}
-                    onClose={isMobile ? onDrawerToggle : undefined}
-                >
-                    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', p: open ? 1 : 0 }}>
-                        <ProfileCard fullName={fullName} />
-
-                        {/* Navigation menu */}
-                        <Paper
-                            component={motion.div}
-                            initial={{ x: -50, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{
-                                type: 'spring',
-                                stiffness: 70,
-                                delay: 0.25
-                            }}
-                            elevation={0}
-                            sx={{
-                                p: 3,
-                                borderRadius: 4,
-                                background: 'rgba(255, 255, 255, 0.97)',
-                                backdropFilter: 'blur(15px)',
-                                boxShadow: '0 15px 40px rgba(0, 0, 0, 0.15)',
-                                mb: 4
-                            }}
-                        >
-                            <List component="nav" sx={{ p: 1 }}>
-                                <MenuItemButton
-                                    selected={currentView === 'dashboard'}
-                                    onClick={() => handleViewChange('dashboard')}
-                                >
-                                    <ListItemIcon>
-                                        <DashboardOutlined sx={{ color: currentView === 'dashboard' ? theme.palette.primary.main : 'inherit' }} />
-                                    </ListItemIcon>
-                                    <ListItemText
-                                        primary="Главная"
-                                        primaryTypographyProps={{
-                                            fontWeight: currentView === 'dashboard' ? 600 : 400,
-                                            color: currentView === 'dashboard' ? theme.palette.primary.main : 'inherit'
-                                        }}
-                                    />
-                                </MenuItemButton>
-
-                                <MenuItemButton
-                                    selected={currentView === 'tests'}
-                                    onClick={() => handleViewChange('tests')}
-                                >
-                                    <ListItemIcon>
-                                        <AssignmentOutlined sx={{ color: currentView === 'tests' ? theme.palette.primary.main : 'inherit' }} />
-                                    </ListItemIcon>
-                                    <ListItemText
-                                        primary="Тесты"
-                                        primaryTypographyProps={{
-                                            fontWeight: currentView === 'tests' ? 600 : 400,
-                                            color: currentView === 'tests' ? theme.palette.primary.main : 'inherit'
-                                        }}
-                                    />
-                                </MenuItemButton>
-                            </List>
-                        </Paper>
-
-                        <InfoCard user={user} />
-
-                        <Box sx={{ flexGrow: 1 }} />
-
-                        <Box sx={{ p: 4 }}>
-                            <LogoutButton
-                                whileHover={{ scale: 1.04 }}
-                                whileTap={{ scale: 0.96 }}
-                                onClick={onLogout}
-                            >
-                                <LogoutOutlined style={{ marginRight: 8 }} />
-                                Выйти из системы
-                            </LogoutButton>
-                        </Box>
-                    </Box>
-                </StyledDrawer>
+                {isMobile ? (
+                    <StyledSwipeableDrawer
+                        variant="temporary"
+                        open={open}
+                        onClose={onDrawerToggle}
+                        onOpen={onDrawerToggle}
+                        disableBackdropTransition={!iOS}
+                        disableDiscovery={iOS}
+                        ModalProps={{
+                            keepMounted: true, // Better mobile performance
+                        }}
+                    >
+                        {drawerContent}
+                    </StyledSwipeableDrawer>
+                ) : (
+                    <StyledDrawer
+                        variant="permanent"
+                        open={open}
+                    >
+                        {drawerContent}
+                    </StyledDrawer>
+                )}
             </AnimatePresence>
         </>
     );

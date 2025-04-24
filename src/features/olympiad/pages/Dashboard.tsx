@@ -1,5 +1,5 @@
-import { Box, styled, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { motion } from 'framer-motion';
+import { Box, CircularProgress, styled, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +24,7 @@ const ContentContainer = styled(Box, {
     flexDirection: 'column',
     gap: theme.spacing(4),
     transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.sharp,
+        easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: 0,
@@ -65,6 +65,9 @@ const Dashboard: React.FC = () => {
 
     const handleViewChange = (view: DashboardView) => {
         setCurrentView(view);
+        if (isMobile) {
+            setOpen(false);
+        }
     };
 
     useEffect(() => {
@@ -87,10 +90,21 @@ const Dashboard: React.FC = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 height: '100vh',
-                backgroundImage: 'linear-gradient(135deg, #1A2751 0%, #13203f 100%)',
-                color: 'white'
+                backgroundColor: '#f8faff',
+                color: theme.palette.primary.main
             }}>
-                <Typography variant="h5">Загрузка...</Typography>
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+                        <CircularProgress size={60} />
+                        <Typography variant="h5" sx={{ mt: 3, fontWeight: 500 }}>
+                            Загрузка данных...
+                        </Typography>
+                    </Box>
+                </motion.div>
             </Box>
         );
     }
@@ -102,22 +116,44 @@ const Dashboard: React.FC = () => {
         <Box sx={{
             display: 'flex',
             minHeight: '100vh',
-            backgroundImage: 'linear-gradient(135deg, #1A2751 0%, #13203f 100%)'
+            backgroundColor: '#f8faff',
+            position: 'relative',
+            overflow: 'hidden'
         }}>
-            {/* Background effect */}
+            {/* Decorative elements */}
             <Box
                 component={motion.div}
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.6 }}
+                animate={{ opacity: 0.3 }}
                 transition={{ duration: 1 }}
                 sx={{
                     position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    background: 'radial-gradient(circle, transparent 20%, #1A2751 80%)',
+                    top: -100,
+                    right: -100,
+                    width: 400,
+                    height: 400,
+                    borderRadius: '50%',
+                    background: `radial-gradient(circle, ${theme.palette.primary.light} 0%, rgba(255,255,255,0) 70%)`,
                     pointerEvents: 'none',
+                    zIndex: 0
+                }}
+            />
+            
+            <Box
+                component={motion.div}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.2 }}
+                transition={{ duration: 1, delay: 0.3 }}
+                sx={{
+                    position: 'absolute',
+                    bottom: -100,
+                    left: -100,
+                    width: 300,
+                    height: 300,
+                    borderRadius: '50%',
+                    background: `radial-gradient(circle, ${theme.palette.secondary.light} 0%, rgba(255,255,255,0) 70%)`,
+                    pointerEvents: 'none',
+                    zIndex: 0
                 }}
             />
 
@@ -133,20 +169,31 @@ const Dashboard: React.FC = () => {
             />
 
             <ContentContainer open={open}>
-                {currentView === 'dashboard' ? (
-                    <DashboardContent 
-                        isMobile={isMobile} 
-                        onNavigateToTests={() => handleViewChange('tests')} 
-                    />
-                ) : (
-                    <TestsContent 
-                        isMobile={isMobile}
-                        exams={exams}
-                        sessions={sessions}
-                        loading={isLoading}
-                        error={error}
-                    />
-                )}
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={currentView}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3 }}
+                        style={{ zIndex: 1, position: 'relative' }}
+                    >
+                        {currentView === 'dashboard' ? (
+                            <DashboardContent 
+                                isMobile={isMobile} 
+                                onNavigateToTests={() => handleViewChange('tests')} 
+                            />
+                        ) : (
+                            <TestsContent 
+                                isMobile={isMobile}
+                                exams={exams}
+                                sessions={sessions}
+                                loading={isLoading}
+                                error={error}
+                            />
+                        )}
+                    </motion.div>
+                </AnimatePresence>
             </ContentContainer>
         </Box>
     );

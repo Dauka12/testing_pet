@@ -1,5 +1,5 @@
-import { DashboardOutlined, QuizOutlined } from '@mui/icons-material';
-import { Box, Button, Divider, Paper, Typography, useTheme } from '@mui/material';
+import { DashboardOutlined, QuizOutlined, TipsAndUpdatesOutlined } from '@mui/icons-material';
+import { Box, Button, Card, CardContent, Divider, Grid, Paper, Typography, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
 import React from 'react';
 
@@ -45,23 +45,39 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ isMobile, onNavigat
                 <Paper
                     elevation={0}
                     sx={{
-                        p: isMobile ? 3 : 5,
-                        borderRadius: isMobile ? 4 : 6,
-                        background: 'rgba(255, 255, 255, 0.97)',
-                        backdropFilter: 'blur(15px)',
-                        boxShadow: '0 15px 40px rgba(0, 0, 0, 0.15)',
-                        mb: 4
+                        p: isMobile ? 3 : 4,
+                        borderRadius: isMobile ? 3 : 4,
+                        background: '#ffffff',
+                        boxShadow: '0 8px 30px rgba(0, 0, 0, 0.06)',
+                        mb: 4,
+                        border: '1px solid',
+                        borderColor: 'divider',
                     }}
                 >
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-                        <DashboardOutlined sx={{ fontSize: 42, mr: 2.5, color: theme.palette.primary.main }} />
+                    <Box sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        mb: 3, 
+                        flexDirection: isMobile ? 'column' : 'row',
+                        textAlign: isMobile ? 'center' : 'left',
+                        gap: 2
+                    }}>
+                        <Box sx={{
+                            width: 70,
+                            height: 70,
+                            borderRadius: '50%',
+                            backgroundColor: theme.palette.primary.light + '15',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <DashboardOutlined sx={{ fontSize: 35, color: theme.palette.primary.main }} />
+                        </Box>
                         <Typography
-                            variant="h3"
+                            variant={isMobile ? "h5" : "h4"}
                             sx={{
                                 fontWeight: 700,
-                                background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, #1A2751 100%)`,
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent'
+                                color: theme.palette.primary.main
                             }}
                         >
                             Панель управления
@@ -70,96 +86,195 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ isMobile, onNavigat
 
                     <Divider sx={{ mb: 4 }} />
 
-                    <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 2 }}>
-                        Добро пожаловать в систему олимпиады!
-                    </Typography>
+                    <Grid container spacing={4}>
+                        <Grid item xs={12} md={7}>
+                            <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 2 }}>
+                                Добро пожаловать в систему олимпиады!
+                            </Typography>
+                            <Typography
+                                variant="body1"
+                                color="text.secondary"
+                                sx={{ mb: 3, fontSize: '1.05rem', lineHeight: 1.6 }}
+                            >
+                                Здесь вы сможете отслеживать свой прогресс, управлять профилем и проходить тесты олимпиады.
+                                Перейдите в раздел "Тесты", чтобы просмотреть доступные для вас задания.
+                            </Typography>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                size="large"
+                                onClick={onNavigateToTests}
+                                sx={{ 
+                                    borderRadius: 2, 
+                                    textTransform: 'none', 
+                                    fontWeight: 600,
+                                    px: 4,
+                                    py: 1.2,
+                                    boxShadow: '0 4px 14px rgba(0, 0, 0, 0.12)'
+                                }}
+                            >
+                                Перейти к тестам
+                            </Button>
+                        </Grid>
+                        <Grid item xs={12} md={5}>
+                            <Box
+                                component="img"
+                                src="/assets/dashboard-illustration.svg" 
+                                alt="Dashboard illustration"
+                                sx={{
+                                    maxWidth: '100%',
+                                    height: 'auto',
+                                    display: { xs: 'none', md: 'block' }
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
+                </Paper>
+            </motion.div>
 
-                    <Typography
-                        variant="body1"
-                        color="text.secondary"
-                        sx={{ mb: 3, fontSize: '1.1rem' }}
-                    >
-                        Здесь вы сможете отслеживать свой прогресс, управлять профилем и проходить тесты олимпиады.
-                    </Typography>
-
-                    <motion.div
-                        variants={itemVariants}
-                        initial="hidden"
-                        animate="visible"
-                        transition={{ delay: 0.2 }}
-                    >
+            <Grid container spacing={3}>
+                <Grid item xs={12} md={7}>
+                    <motion.div variants={itemVariants}>
                         <Paper
                             elevation={0}
                             sx={{
-                                p: isMobile ? 3 : 5,
-                                borderRadius: isMobile ? 4 : 6,
-                                background: 'rgba(255, 255, 255, 0.97)',
-                                backdropFilter: 'blur(15px)',
-                                boxShadow: '0 15px 40px rgba(0, 0, 0, 0.15)',
-                                mb: 4
+                                p: 3,
+                                borderRadius: 4,
+                                background: '#ffffff',
+                                boxShadow: '0 8px 30px rgba(0, 0, 0, 0.06)',
+                                height: '100%',
+                                border: '1px solid',
+                                borderColor: 'divider',
                             }}
                         >
-                            <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-                                <QuizOutlined sx={{ fontSize: 24, mr: 2, color: theme.palette.primary.main, mt: 0.5 }} />
-                                <Box>
-                                    <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-                                        Тесты олимпиады
-                                    </Typography>
-                                    <Typography
-                                        variant="body1"
-                                        sx={{ fontSize: '1.05rem' }}
-                                    >
-                                        Перейдите в раздел "Тесты" в боковом меню, чтобы просмотреть доступные тесты и начать их прохождение.
-                                    </Typography>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        sx={{ mt: 2, borderRadius: 2, textTransform: 'none', fontWeight: 600 }}
-                                        onClick={onNavigateToTests}
-                                    >
-                                        Перейти к тестам
-                                    </Button>
+                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                                <Box sx={{
+                                    width: 45,
+                                    height: 45,
+                                    borderRadius: '50%',
+                                    backgroundColor: theme.palette.secondary.light + '15',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    mr: 2
+                                }}>
+                                    <TipsAndUpdatesOutlined sx={{ fontSize: 24, color: theme.palette.secondary.main }} />
                                 </Box>
+                                <Typography variant="h6" fontWeight={600}>
+                                    Полезные советы
+                                </Typography>
+                            </Box>
+                            
+                            <Box sx={{ mb: 2 }}>
+                                <Card 
+                                    elevation={0}
+                                    sx={{ 
+                                        mb: 2, 
+                                        borderRadius: 3,
+                                        backgroundColor: theme.palette.grey[50],
+                                        border: '1px solid',
+                                        borderColor: 'divider',
+                                    }}
+                                >
+                                    <CardContent>
+                                        <Typography variant="subtitle1" fontWeight={500} gutterBottom>
+                                            Внимательно читайте вопросы
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            Перед тем как выбрать ответ, убедитесь, что вы правильно поняли вопрос.
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                                
+                                <Card 
+                                    elevation={0}
+                                    sx={{ 
+                                        mb: 2, 
+                                        borderRadius: 3,
+                                        backgroundColor: theme.palette.grey[50],
+                                        border: '1px solid',
+                                        borderColor: 'divider',
+                                    }}
+                                >
+                                    <CardContent>
+                                        <Typography variant="subtitle1" fontWeight={500} gutterBottom>
+                                            Управляйте временем
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            Следите за оставшимся временем и не тратьте слишком много времени на сложные вопросы.
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
                             </Box>
                         </Paper>
                     </motion.div>
-                </Paper>
-            </motion.div>
-
-            <motion.div variants={itemVariants}>
-                <Paper
-                    elevation={0}
-                    sx={{
-                        p: isMobile ? 3 : 5,
-                        borderRadius: isMobile ? 4 : 6,
-                        background: 'rgba(255, 255, 255, 0.97)',
-                        backdropFilter: 'blur(15px)',
-                        boxShadow: '0 15px 40px rgba(0, 0, 0, 0.15)',
-                        mb: 4
-                    }}
-                >
-                    <Typography
-                        variant="h4"
-                        sx={{
-                            mb: 4,
-                            fontWeight: 600,
-                            color: theme.palette.primary.main
-                        }}
-                    >
-                        Предстоящие события
-                    </Typography>
-
-                    <Box sx={{ p: 5, textAlign: 'center' }}>
-                        <Typography
-                            variant="body1"
-                            color="text.secondary"
-                            sx={{ fontSize: '1.1rem' }}
+                </Grid>
+                
+                <Grid item xs={12} md={5}>
+                    <motion.div variants={itemVariants}>
+                        <Paper
+                            elevation={0}
+                            sx={{
+                                p: 3,
+                                borderRadius: 4,
+                                background: '#ffffff',
+                                boxShadow: '0 8px 30px rgba(0, 0, 0, 0.06)',
+                                height: '100%',
+                                border: '1px solid',
+                                borderColor: 'divider',
+                            }}
                         >
-                            Информация о предстоящих событиях будет отображаться здесь
-                        </Typography>
-                    </Box>
-                </Paper>
-            </motion.div>
+                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                                <Box sx={{
+                                    width: 45,
+                                    height: 45,
+                                    borderRadius: '50%',
+                                    backgroundColor: theme.palette.primary.light + '15',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    mr: 2
+                                }}>
+                                    <QuizOutlined sx={{ fontSize: 24, color: theme.palette.primary.main }} />
+                                </Box>
+                                <Typography variant="h6" fontWeight={600}>
+                                    Быстрый доступ
+                                </Typography>
+                            </Box>
+                            
+                            <Box sx={{ 
+                                p: 3, 
+                                textAlign: 'center',
+                                borderRadius: 3,
+                                backgroundColor: theme.palette.primary.light + '08',
+                                border: '1px dashed',
+                                borderColor: theme.palette.primary.light,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                gap: 2
+                            }}>
+                                <Typography variant="body1" fontWeight={500} gutterBottom>
+                                    Готовы начать тестирование?
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={onNavigateToTests}
+                                    sx={{ 
+                                        borderRadius: 2, 
+                                        textTransform: 'none', 
+                                        fontWeight: 600,
+                                        px: 4
+                                    }}
+                                >
+                                    Перейти к тестам
+                                </Button>
+                            </Box>
+                        </Paper>
+                    </motion.div>
+                </Grid>
+            </Grid>
         </motion.div>
     );
 };

@@ -1,22 +1,23 @@
-import { Box, styled, Typography, useTheme } from '@mui/material';
+import { Box, Paper, styled, Typography, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
 import React from 'react';
 
 const StyledInfoCard = styled(motion.div)(({ theme }) => ({
-    backgroundColor: '#fff',
-    borderRadius: 24,
-    padding: theme.spacing(4),
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.06)',
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    padding: theme.spacing(3),
+    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+    border: '1px solid',
+    borderColor: theme.palette.divider,
     [theme.breakpoints.down('sm')]: {
-        padding: theme.spacing(3),
-        borderRadius: 16,
+        padding: theme.spacing(2),
     }
 }));
 
 const InfoItem = styled(Box)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing(2, 0),
+    padding: theme.spacing(1.5, 0),
     borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
     '&:last-child': {
         borderBottom: 'none',
@@ -41,8 +42,8 @@ const InfoCard: React.FC<InfoCardProps> = ({ user }) => {
     
     return (
         <StyledInfoCard
-            initial={{ x: -50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
             transition={{
                 type: 'spring',
                 stiffness: 70,
@@ -50,38 +51,49 @@ const InfoCard: React.FC<InfoCardProps> = ({ user }) => {
             }}
         >
             <Typography
-                variant="h6"
+                variant="subtitle1"
                 sx={{
-                    mb: 3,
+                    mb: 2,
                     fontWeight: 600,
-                    color: theme.palette.primary.main,
-                    fontSize: '1.2rem'
+                    color: theme.palette.text.primary,
+                    fontSize: '0.95rem'
                 }}
             >
                 Контактная информация
             </Typography>
 
-            <InfoItem>
-                <Typography
-                    variant="subtitle2"
-                    sx={{
-                        width: 90,
-                        color: theme.palette.text.secondary,
-                        fontSize: '0.9rem'
-                    }}
-                >
-                    Телефон
-                </Typography>
-                <Typography
-                    variant="body2"
-                    sx={{
-                        fontWeight: 500,
-                        fontSize: '0.95rem'
-                    }}
-                >
-                    {user.phone}
-                </Typography>
-            </InfoItem>
+            <Paper 
+                elevation={0}
+                sx={{ 
+                    bgcolor: theme.palette.grey[50], 
+                    p: 2, 
+                    borderRadius: 2,
+                    border: '1px solid',
+                    borderColor: theme.palette.divider
+                }}
+            >
+                <InfoItem>
+                    <Typography
+                        variant="subtitle2"
+                        sx={{
+                            minWidth: 80,
+                            color: theme.palette.text.secondary,
+                            fontSize: '0.85rem'
+                        }}
+                    >
+                        Телефон
+                    </Typography>
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            fontWeight: 500,
+                            fontSize: '0.9rem'
+                        }}
+                    >
+                        {user.phone}
+                    </Typography>
+                </InfoItem>
+            </Paper>
         </StyledInfoCard>
     );
 };
