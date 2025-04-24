@@ -17,8 +17,8 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { AppDispatch, RootState } from '../store';
-import { clearAuthError, loginUser } from '../store/slices/authSlice.ts';
+import { AppDispatch, RootState } from '../../store';
+import { clearAuthError, loginUser } from '../../store/slices/authSlice.ts';
 
 const MotionPaper = motion(Paper);
 

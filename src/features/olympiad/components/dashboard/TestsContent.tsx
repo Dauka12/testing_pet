@@ -2,14 +2,15 @@ import { QuizOutlined } from '@mui/icons-material';
 import { Alert, Box, CircularProgress, Divider, Grid, Paper, Tab, Tabs, Typography, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
-import { ExamResponse, SessionResponse } from '../../types/exam';
-import SessionCard from '../SessionCard';
-import TestCard from '../TestCard';
+import { ExamResponse } from '../../types/exam';
+import { StudentExamSessionResponses } from '../../types/testSession';
+import SessionCard from './SessionCard.tsx';
+import TestCard from './TestCard.tsx';
 
 interface TestsContentProps {
     isMobile: boolean;
     exams: ExamResponse[];
-    sessions: SessionResponse[];
+    sessions: StudentExamSessionResponses[];
     loading: boolean;
     error: string | null;
 }

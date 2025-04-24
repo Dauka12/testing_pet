@@ -18,8 +18,8 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
-import { generateAiTest, getExamById } from '../api/examApi';
-import { ExamResponse } from '../types/exam';
+import { generateAiTest, getExamById } from '../../api/examApi';
+import { ExamResponse } from '../../types/exam';
 
 interface AiTestGeneratorProps {
     onSuccess?: (examId: number) => void;

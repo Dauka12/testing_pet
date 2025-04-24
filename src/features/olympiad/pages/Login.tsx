@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import { Provider } from 'react-redux';
 import LanguageToggle from '../components/LanguageToggle.tsx'; // Add import
-import LoginForm from '../components/LoginForm.tsx';
+import LoginForm from '../components/authorization/LoginForm.tsx';
 import { olympiadStore } from '../store/index.ts';
 
 const Login: React.FC = () => {

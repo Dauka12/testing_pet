@@ -1,7 +1,7 @@
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Box, Card, CardContent, FormControlLabel, IconButton, Radio, RadioGroup, Tooltip, Typography } from '@mui/material';
 import React from 'react';
-import { SessionExamQuestionResponse } from '../types/testSession';
+import { SessionExamQuestionResponse } from '../../types/testSession';
 
 interface TestQuestionProps {
     question: SessionExamQuestionResponse;

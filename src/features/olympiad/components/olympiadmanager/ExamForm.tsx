@@ -20,16 +20,15 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { ru } from 'date-fns/locale';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllCategories } from '../api/examApi.ts';
-import { RootState } from '../store';
-import { createExamThunk } from '../store/slices/examSlice.ts';
-import { ExamCreateRequest } from '../types/exam.ts';
-import { TestCategory } from '../types/testCategory.ts';
+import { getAllCategories } from '../../api/examApi.ts';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks.ts';
+import { createExamThunk } from '../../store/slices/examSlice.ts';
+import { ExamCreateRequest } from '../../types/exam.ts';
+import { TestCategory } from '../../types/testCategory.ts';
 
 const ExamForm: React.FC = () => {
-    const dispatch = useDispatch();
-    const { loading, error } = useSelector((state: RootState) => state.exam);
+    const dispatch = useAppDispatch();
+    const { loading, error } = useAppSelector((state) => state.exam);
     const [submitted, setSubmitted] = useState(false);
     const [categories, setCategories] = useState<TestCategory[]>([]);
     const [loadingCategories, setLoadingCategories] = useState(false);
@@ -64,8 +63,8 @@ const ExamForm: React.FC = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleTypeChange = (e: any) => {
-        const { name, value } = e.target;
+    const handleTypeChange = (e: React.ChangeEvent<{ name?: string; value: unknown }>) => {
+        const { name = "", value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 

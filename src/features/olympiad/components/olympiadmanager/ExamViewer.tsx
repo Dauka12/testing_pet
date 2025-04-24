@@ -19,7 +19,7 @@ import {
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import React from 'react';
-import { ExamResponse } from '../types/exam';
+import { ExamResponse } from '../../types/exam';
 
 interface ExamViewerProps {
     exam: ExamResponse;

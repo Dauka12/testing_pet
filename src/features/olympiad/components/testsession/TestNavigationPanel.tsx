@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import React from 'react';
-import { SessionExamQuestionResponse, StudentAnswerResponse } from '../types/testSession';
+import { SessionExamQuestionResponse, StudentAnswerResponse } from '../../types/testSession';
 
 interface TestNavigationPanelProps {
     questions: SessionExamQuestionResponse[];

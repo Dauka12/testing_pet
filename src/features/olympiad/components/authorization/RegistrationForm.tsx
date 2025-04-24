@@ -18,9 +18,9 @@ import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useOlympiadDispatch, useOlympiadSelector } from '../hooks/useOlympiadStore.ts';
-import { registerStudentThunk } from '../store/slices/registrationSlice.ts';
-import { RegisterStudentRequest } from '../types/student.ts';
+import { useOlympiadDispatch, useOlympiadSelector } from '../../hooks/useOlympiadStore.ts';
+import { registerStudentThunk } from '../../store/slices/registrationSlice.ts';
+import { RegisterStudentRequest } from '../../types/student.ts';
 import { ConfirmationModal } from './ConfirmationModal.tsx';
 
 const MotionPaper = motion(Paper);

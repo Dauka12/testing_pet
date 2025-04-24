@@ -20,9 +20,9 @@ import {
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import TestNavigationPanel from '../components/TestNavigationPanel.tsx';
-import TestQuestion from '../components/TestQuestion.tsx';
-import TestTimer from '../components/TestTimer.tsx';
+import TestNavigationPanel from '../components/testsession/TestNavigationPanel.tsx';
+import TestQuestion from '../components/testsession/TestQuestion.tsx';
+import TestTimer from '../components/testsession/TestTimer.tsx';
 import useTestSessionManager from '../hooks/useTestSessionManager.ts';
 
 const PageContainer = styled(Box)(({ theme }) => ({

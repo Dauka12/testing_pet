@@ -10,11 +10,12 @@ import {
     startExamSessionThunk,
     updateAnswerThunk
 } from '../store/slices/testSessionSlice.ts';
-import { StudentExamSessionRequest, UpdateAnswerRequest } from '../types/testSession.ts';
-import { useOlympiadDispatch, useOlympiadSelector } from './useOlympiadStore.ts';
+import { UpdateAnswerRequest } from '../types/testSession.ts';
+import { useAppDispatch } from './hooks.ts';
+import { useOlympiadSelector } from './useOlympiadStore.ts';
 
 const useTestSessionManager = () => {
-    const dispatch = useOlympiadDispatch();
+    const dispatch = useAppDispatch();
     const {
         currentSession,
         sessions,
@@ -25,14 +26,13 @@ const useTestSessionManager = () => {
     } = useOlympiadSelector(state => state.testSession);
 
     // Start a new exam session
-    const startExamSession = useCallback((examTestId: number) => {
-        const request: StudentExamSessionRequest = { examTestId };
-        return dispatch(startExamSessionThunk(request));
+    const startExamSession = useCallback(async (examId: number) => {
+        return await dispatch(startExamSessionThunk({ examTestId: examId }));
     }, [dispatch]);
 
     // End the current exam session
-    const endExamSession = useCallback((sessionId: number) => {
-        return dispatch(endExamSessionThunk(sessionId));
+    const endExamSession = useCallback(async (sessionId: number) => {
+        return await dispatch(endExamSessionThunk(sessionId));
     }, [dispatch]);
 
     // Get a specific exam session
@@ -46,13 +46,12 @@ const useTestSessionManager = () => {
     }, [dispatch]);
 
     // Update an answer during an active exam
-    const updateAnswer = useCallback((sessionId: number, questionId: number, selectedOptionId: number) => {
-        const request: UpdateAnswerRequest = {
+    const updateAnswer = useCallback(async (sessionId: number, questionId: number, optionId: number) => {
+        return await dispatch(updateAnswerThunk({
             studentExamSessionId: sessionId,
             questionId,
-            selectedOptionId
-        };
-        return dispatch(updateAnswerThunk(request));
+            selectedOptionId: optionId
+        }));
     }, [dispatch]);
 
     // Delete an answer during an active exam

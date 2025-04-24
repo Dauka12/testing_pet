@@ -13,11 +13,11 @@ import {
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import AiTestGenerator from '../components/AiTestGenerator.tsx';
-import ExamForm from '../components/ExamForm.tsx';
-import ExamList from '../components/ExamList.tsx';
-import ExamViewer from '../components/ExamViewer.tsx';
-import QuestionForm from '../components/QuestionForm.tsx';
+import AiTestGenerator from '../components/olympiadmanager/AiTestGenerator.tsx';
+import ExamForm from '../components/olympiadmanager/ExamForm.tsx';
+import ExamList from '../components/olympiadmanager/ExamList.tsx';
+import ExamViewer from '../components/olympiadmanager/ExamViewer.tsx';
+import QuestionForm from '../components/olympiadmanager/QuestionForm.tsx';
 import { AppDispatch, RootState } from '../store';
 import { clearError, fetchAllExams as fetchAllExamsAction, fetchExamById } from '../store/slices/examSlice.ts';
 import theme from '../theme.ts'; // Adjust path as necessary

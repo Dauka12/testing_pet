@@ -1,5 +1,5 @@
 import { CheckCircleOutlined, ErrorOutlined } from '@mui/icons-material';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 import { motion } from 'framer-motion';
 import React from 'react';
 

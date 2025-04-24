@@ -129,6 +129,10 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
     const theme = useTheme();
     const fullName = `${user.lastname} ${user.firstname}`;
+
+    const handleViewChange = (view: string) => {
+        onViewChange(view);
+    };
     
     return (
         <>
@@ -174,7 +178,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                             <List component="nav" sx={{ p: 1 }}>
                                 <MenuItemButton
                                     selected={currentView === 'dashboard'}
-                                    onClick={() => onViewChange('dashboard')}
+                                    onClick={() => handleViewChange('dashboard')}
                                 >
                                     <ListItemIcon>
                                         <DashboardOutlined sx={{ color: currentView === 'dashboard' ? theme.palette.primary.main : 'inherit' }} />
@@ -190,7 +194,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
                                 <MenuItemButton
                                     selected={currentView === 'tests'}
-                                    onClick={() => onViewChange('tests')}
+                                    onClick={() => handleViewChange('tests')}
                                 >
                                     <ListItemIcon>
                                         <AssignmentOutlined sx={{ color: currentView === 'tests' ? theme.palette.primary.main : 'inherit' }} />

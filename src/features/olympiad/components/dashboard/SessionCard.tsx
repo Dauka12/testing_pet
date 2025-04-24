@@ -18,8 +18,8 @@ import {
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { StudentExamSessionResponses } from '../types/testSession';
-import { formatDate } from '../utils/dateUtils.ts';
+import { StudentExamSessionResponses } from '../../types/testSession';
+import { formatDate } from '../../utils/dateUtils.ts';
 
 const StyledCard = styled(motion.div)(({ theme }) => ({
     backgroundColor: '#fff',

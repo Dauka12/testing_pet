@@ -18,9 +18,10 @@ import {
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useTestSessionManager from '../hooks/useTestSessionManager.ts';
-import { ExamResponse } from '../types/exam.ts';
-import { formatDate } from '../utils/dateUtils.ts';
+import { useAppDispatch } from '../../hooks/hooks.ts';
+import { startExamSessionThunk } from '../../store/slices/testSessionSlice.ts';
+import { ExamResponse } from '../../types/exam.ts';
+import { formatDate } from '../../utils/dateUtils.ts';
 
 // Styled components to match SessionCard
 const StyledCard = styled(motion.div)(({ theme }) => ({
@@ -64,16 +65,16 @@ interface TestCardProps {
 
 const TestCard: React.FC<TestCardProps> = ({ exam }) => {
     const navigate = useNavigate();
-    const { startExamSession } = useTestSessionManager();
+    const dispatch = useAppDispatch();
     const [isStarting, setIsStarting] = useState(false);
 
     const handleStartExam = async () => {
         try {
             setIsStarting(true);
-            const result = await startExamSession(exam.id);
-
-            // Navigate to the test session page
-            if (result.payload && 'id' in result.payload) {
+            const result = await dispatch(startExamSessionThunk({ examTestId: exam.id }));
+            
+            // Check if the action was successful and navigate
+            if (startExamSessionThunk.fulfilled.match(result)) {
                 navigate(`/test/${result.payload.id}`);
             }
         } catch (error) {
