@@ -94,6 +94,19 @@ export const deleteQuestion = async (id: number): Promise<void> => {
     }
 };
 
+// Update question with AI
+export const updateQuestionWithAi = async (questionId: number, prompt: string): Promise<ExamQuestionResponse> => {
+    try {
+        const response = await api.patch<ExamQuestionResponse>('/exam-question/ai', {
+            questionId,
+            prompt
+        });
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || 'Ошибка при обновлении вопроса с помощью AI');
+    }
+};
+
 // Get all test categories
 export const getAllCategories = async (): Promise<TestCategory[]> => {
     try {

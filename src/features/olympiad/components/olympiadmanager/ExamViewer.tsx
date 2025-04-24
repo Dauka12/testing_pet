@@ -1,12 +1,19 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
     Box,
+    Button,
     Chip,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
     Divider,
     Grid,
+    IconButton,
     Paper,
     Table,
     TableBody,
@@ -14,18 +21,72 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Typography
+    TextField,
+    Tooltip,
+    Typography,
+    useTheme
 } from '@mui/material';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
-import React from 'react';
-import { ExamResponse } from '../../types/exam';
+import { AnimatePresence, motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store';
+import { updateQuestionWithAiThunk } from '../../store/slices/examSlice';
+import { ExamQuestionResponse, ExamResponse } from '../../types/exam';
 
 interface ExamViewerProps {
     exam: ExamResponse;
 }
 
 const ExamViewer: React.FC<ExamViewerProps> = ({ exam }) => {
+    const theme = useTheme();
+    const dispatch = useDispatch<AppDispatch>();
+
+    // State for AI prompt dialog
+    const [aiDialogOpen, setAiDialogOpen] = useState(false);
+    const [selectedQuestion, setSelectedQuestion] = useState<ExamQuestionResponse | null>(null);
+    const [aiPrompt, setAiPrompt] = useState('');
+    const [isProcessing, setIsProcessing] = useState(false);
+    const [originalQuestion, setOriginalQuestion] = useState<ExamQuestionResponse | null>(null);
+    const [updatedQuestion, setUpdatedQuestion] = useState<ExamQuestionResponse | null>(null);
+    const [showComparisonView, setShowComparisonView] = useState(false);
+
+    const openAiPromptDialog = (question: ExamQuestionResponse) => {
+        setSelectedQuestion(question);
+        setOriginalQuestion({ ...question });
+        setAiPrompt('');
+        setAiDialogOpen(true);
+        setShowComparisonView(false);
+    };
+
+    const closeAiPromptDialog = () => {
+        setAiDialogOpen(false);
+        setSelectedQuestion(null);
+        setAiPrompt('');
+        setShowComparisonView(false);
+    };
+
+    const handleAiPromptSubmit = async () => {
+        if (!selectedQuestion || !aiPrompt.trim()) return;
+        
+        setIsProcessing(true);
+        
+        try {
+            const result = await dispatch(updateQuestionWithAiThunk({
+                questionId: selectedQuestion.id,
+                prompt: aiPrompt
+            })).unwrap();
+            
+            setUpdatedQuestion(result);
+            setShowComparisonView(true);
+        } catch (error) {
+            console.error('Error updating question with AI:', error);
+        } finally {
+            setIsProcessing(false);
+        }
+    };
+    
     return (
         <Box>
             <Paper elevation={3} sx={{ p: 4, borderRadius: 2, mb: 4 }}>
@@ -90,6 +151,20 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam }) => {
                                             size="small"
                                             sx={{ ml: 2, bgcolor: 'rgba(25, 118, 210, 0.08)' }}
                                         />
+                                        <Box sx={{ ml: 'auto' }}>
+                                            <Tooltip title="Улучшить с помощью AI">
+                                                <IconButton 
+                                                    color="primary"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        openAiPromptDialog(question);
+                                                    }}
+                                                    sx={{ mr: 1 }}
+                                                >
+                                                    <SmartToyIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </Box>
                                     </Box>
                                 </AccordionSummary>
                                 <AccordionDetails>
@@ -156,6 +231,217 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam }) => {
                     </Box>
                 )}
             </Paper>
+
+            {/* AI Prompt Dialog */}
+            <Dialog 
+                open={aiDialogOpen} 
+                onClose={closeAiPromptDialog}
+                fullWidth
+                maxWidth="md"
+                PaperProps={{
+                    sx: {
+                        borderRadius: 2,
+                        overflow: 'hidden'
+                    }
+                }}
+            >
+                <DialogTitle sx={{ 
+                    background: 'linear-gradient(90deg, #2196f3, #0d47a1)', 
+                    color: 'white',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1
+                }}>
+                    <SmartToyIcon /> 
+                    <Typography variant="h6" component="span">
+                        Улучшить вопрос с помощью искусственного интеллекта
+                    </Typography>
+                </DialogTitle>
+                
+                <DialogContent sx={{ py: 3 }}>
+                    <AnimatePresence mode="wait">
+                        {!showComparisonView ? (
+                            <motion.div
+                                key="prompt-form"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                <Box sx={{ mb: 3 }}>
+                                    <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                                        Текущий вопрос:
+                                    </Typography>
+                                    <Paper variant="outlined" sx={{ p: 2, bgcolor: 'background.default', mb: 2 }}>
+                                        <Typography>
+                                            {selectedQuestion?.questionRus}
+                                        </Typography>
+                                    </Paper>
+                                    
+                                    <Typography gutterBottom sx={{ mt: 3, fontWeight: 'medium' }}>
+                                        Введите инструкцию для AI, как улучшить вопрос:
+                                    </Typography>
+                                    <TextField
+                                        fullWidth
+                                        multiline
+                                        rows={4}
+                                        value={aiPrompt}
+                                        onChange={(e) => setAiPrompt(e.target.value)}
+                                        placeholder="Например: Сделай вопрос более сложным, добавь больше контекста, улучши варианты ответов..."
+                                        disabled={isProcessing}
+                                        variant="outlined"
+                                        sx={{ mt: 1 }}
+                                    />
+                                    <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                                        AI поможет изменить формулировку или улучшить вопрос согласно вашим инструкциям.
+                                    </Typography>
+                                </Box>
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="comparison-view"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <Box sx={{ mb: 4 }}>
+                                    <Box sx={{ 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        mb: 2,
+                                        p: 2,
+                                        bgcolor: 'rgba(33, 150, 243, 0.1)',
+                                        borderRadius: 1,
+                                    }}>
+                                        <SmartToyIcon color="primary" sx={{ mr: 1 }} />
+                                        <Typography variant="subtitle1" fontWeight="medium">
+                                            Результат работы ИИ
+                                        </Typography>
+                                        <Chip 
+                                            label="AI улучшенный" 
+                                            size="small" 
+                                            color="primary" 
+                                            sx={{ ml: 'auto' }}
+                                        />
+                                    </Box>
+                                    
+                                    <Grid container spacing={3}>
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle2" gutterBottom color="text.secondary">
+                                                Было:
+                                            </Typography>
+                                            <Paper 
+                                                variant="outlined" 
+                                                sx={{ p: 2, bgcolor: '#f5f5f5', height: '100%', minHeight: 100 }}
+                                            >
+                                                <Typography>{originalQuestion?.questionRus}</Typography>
+                                            </Paper>
+                                        </Grid>
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle2" gutterBottom color="text.secondary">
+                                                Стало:
+                                            </Typography>
+                                            <Paper 
+                                                variant="outlined" 
+                                                sx={{ p: 2, bgcolor: 'rgba(76, 175, 80, 0.08)', height: '100%', minHeight: 100 }}
+                                            >
+                                                <motion.div
+                                                    initial={{ opacity: 0, scale: 0.95 }}
+                                                    animate={{ opacity: 1, scale: 1 }}
+                                                    transition={{ delay: 0.2, duration: 0.5 }}
+                                                >
+                                                    <Typography>{updatedQuestion?.questionRus}</Typography>
+                                                </motion.div>
+                                            </Paper>
+                                        </Grid>
+                                    </Grid>
+                                    
+                                    <Typography variant="subtitle1" fontWeight="medium" sx={{ mt: 4, mb: 2 }}>
+                                        Варианты ответов:
+                                    </Typography>
+                                    
+                                    <TableContainer component={Paper} variant="outlined">
+                                        <Table size="small">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>#</TableCell>
+                                                    <TableCell>Текст (Рус)</TableCell>
+                                                    <TableCell align="center">Верный</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {updatedQuestion?.options.map((option, optIndex) => (
+                                                    <TableRow 
+                                                        key={option.id}
+                                                        sx={{
+                                                            bgcolor: option.id === updatedQuestion.correctOptionId ? 
+                                                                'rgba(76, 175, 80, 0.08)' : 'inherit'
+                                                        }}
+                                                    >
+                                                        <TableCell>{optIndex + 1}</TableCell>
+                                                        <TableCell>
+                                                            <motion.div
+                                                                initial={{ opacity: 0 }}
+                                                                animate={{ opacity: 1 }}
+                                                                transition={{ delay: 0.1 * (optIndex + 1) }}
+                                                            >
+                                                                {option.nameRus}
+                                                            </motion.div>
+                                                        </TableCell>
+                                                        <TableCell align="center">
+                                                            {option.id === updatedQuestion.correctOptionId && '✓'}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                </Box>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </DialogContent>
+                
+                <DialogActions sx={{ px: 3, py: 2, borderTop: '1px solid', borderColor: 'divider' }}>
+                    {!showComparisonView ? (
+                        <>
+                            <Button onClick={closeAiPromptDialog} disabled={isProcessing}>
+                                Отмена
+                            </Button>
+                            <motion.div
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.98 }}
+                            >
+                                <Button 
+                                    variant="contained" 
+                                    color="primary"
+                                    onClick={handleAiPromptSubmit}
+                                    disabled={!aiPrompt.trim() || isProcessing}
+                                    startIcon={<SmartToyIcon />}
+                                >
+                                    {isProcessing ? 'AI обрабатывает...' : 'Применить AI'}
+                                </Button>
+                            </motion.div>
+                        </>
+                    ) : (
+                        <>
+                            <Button onClick={closeAiPromptDialog}>
+                                Закрыть
+                            </Button>
+                            <Button 
+                                variant="outlined" 
+                                color="primary"
+                                onClick={() => {
+                                    setShowComparisonView(false);
+                                    setAiPrompt('');
+                                }}
+                            >
+                                Сделать еще одно улучшение
+                            </Button>
+                        </>
+                    )}
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };

@@ -6,7 +6,8 @@ import {
     deleteQuestion as deleteQuestionApi,
     getAllExams,
     getExamById,
-    updateQuestion as updateQuestionApi
+    updateQuestion as updateQuestionApi,
+    updateQuestionWithAi as updateQuestionWithAiApi
 } from '../../api/examApi.ts';
 import { ExamCreateRequest, ExamQuestionRequest, ExamQuestionResponse, ExamResponse, ExamState } from '../../types/exam.ts';
 
@@ -118,6 +119,20 @@ export const deleteQuestionThunk = createAsyncThunk(
                 return rejectWithValue(error.message);
             }
             return rejectWithValue('Failed to delete question');
+        }
+    }
+);
+
+export const updateQuestionWithAiThunk = createAsyncThunk(
+    'olympiadExam/updateQuestionWithAi',
+    async ({ questionId, prompt }: { questionId: number, prompt: string }, { rejectWithValue }) => {
+        try {
+            return await updateQuestionWithAiApi(questionId, prompt);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                return rejectWithValue(error.message);
+            }
+            return rejectWithValue('Failed to update question with AI');
         }
     }
 );
@@ -253,6 +268,27 @@ const examSlice = createSlice({
                 }
             })
             .addCase(deleteQuestionThunk.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+
+            // Update question with AI
+            .addCase(updateQuestionWithAiThunk.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateQuestionWithAiThunk.fulfilled, (state, action) => {
+                state.loading = false;
+                if (state.currentExam && state.currentExam.questions) {
+                    state.currentExam = {
+                        ...state.currentExam,
+                        questions: state.currentExam.questions.map(q =>
+                            q.id === action.payload.id ? { ...q, ...action.payload } : q
+                        )
+                    };
+                }
+            })
+            .addCase(updateQuestionWithAiThunk.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             });
