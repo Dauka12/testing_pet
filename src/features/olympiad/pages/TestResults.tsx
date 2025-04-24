@@ -17,7 +17,7 @@ import {
     styled
 } from '@mui/material';
 import { motion } from 'framer-motion';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useTestSessionManager from '../hooks/useTestSessionManager.ts';
 import { formatDate } from '../utils/dateUtils.ts';
@@ -98,6 +98,30 @@ const TestResults: React.FC = () => {
         navigate('/dashboard');
     };
 
+    // Calculate statistics based on correct/incorrect answers
+    const statistics = useMemo(() => {
+        if (!currentSession) return { totalQuestions: 0, answeredCount: 0, correctCount: 0, completionPercentage: 0, score: 0 };
+
+        const totalQuestions = currentSession.examData.questions.length;
+        const answersMap = new Map(
+            currentSession.examData.studentAnswer.map(answer => [answer.questionId, answer])
+        );
+        const answeredCount = answersMap.size;
+        
+        let correctCount = 0;
+        currentSession.examData.questions.forEach(question => {
+            const answer = answersMap.get(question.id);
+            if (answer && answer.selectedOptionId === question.correctOptionId) {
+                correctCount++;
+            }
+        });
+        
+        const completionPercentage = Math.round((answeredCount / totalQuestions) * 100);
+        const score = Math.round((correctCount / totalQuestions) * 100);
+        
+        return { totalQuestions, answeredCount, correctCount, completionPercentage, score };
+    }, [currentSession]);
+
     if (loading || !currentSession) {
         return (
             <PageContainer display="flex" justifyContent="center" alignItems="center">
@@ -146,14 +170,6 @@ const TestResults: React.FC = () => {
             </PageContainer>
         );
     }
-
-    // Get answered questions count and calculate statistics
-    const totalQuestions = currentSession.examData.questions.length;
-    const answeredQuestions = new Set(
-        currentSession.examData.studentAnswer.map(answer => answer.questionId)
-    );
-    const answeredCount = answeredQuestions.size;
-    const completionPercentage = Math.round((answeredCount / totalQuestions) * 100);
 
     // Map answers for easy lookup
     const answersMap = new Map(
@@ -237,7 +253,19 @@ const TestResults: React.FC = () => {
                                                 Отвечено вопросов
                                             </Typography>
                                             <Typography variant="body1">
-                                                {answeredCount} из {totalQuestions} ({completionPercentage}%)
+                                                {statistics.answeredCount} из {statistics.totalQuestions} ({statistics.completionPercentage}%)
+                                            </Typography>
+                                        </Box>
+                                    </StatsItem>
+                                    
+                                    <StatsItem>
+                                        <CheckCircleOutlined sx={{ mr: 1.5, color: 'success.main' }} />
+                                        <Box>
+                                            <Typography variant="body2" color="text.secondary">
+                                                Правильных ответов
+                                            </Typography>
+                                            <Typography variant="body1">
+                                                {statistics.correctCount} из {statistics.totalQuestions} ({statistics.score}%)
                                             </Typography>
                                         </Box>
                                     </StatsItem>
@@ -247,10 +275,10 @@ const TestResults: React.FC = () => {
                             <Grid item xs={12} md={4}>
                                 <SummaryBox>
                                     <Typography variant="h2" color="primary" fontWeight="bold">
-                                        {answeredCount}/{totalQuestions}
+                                        {statistics.score}%
                                     </Typography>
                                     <Typography variant="body1" color="text.secondary">
-                                        Отвеченные вопросы
+                                        Ваш результат
                                     </Typography>
                                 </SummaryBox>
                             </Grid>
@@ -271,8 +299,10 @@ const TestResults: React.FC = () => {
 
                         {currentSession.examData.questions.map((question, index) => {
                             const selectedOptionId = answersMap.get(question.id);
-                            const hasAnswer = answeredQuestions.has(question.id);
+                            const hasAnswer = selectedOptionId !== undefined;
+                            const isCorrect = hasAnswer && selectedOptionId === question.correctOptionId;
                             const selectedOption = question.options.find(opt => opt.id === selectedOptionId);
+                            const correctOption = question.options.find(opt => opt.id === question.correctOptionId);
 
                             return (
                                 <QuestionCard
@@ -292,20 +322,47 @@ const TestResults: React.FC = () => {
                                                     <Typography variant="body2" color="text.secondary" gutterBottom>
                                                         Ваш ответ:
                                                     </Typography>
-                                                    <Typography variant="body1" fontWeight="500">
+                                                    <Typography 
+                                                        variant="body1" 
+                                                        fontWeight="500"
+                                                        color={isCorrect ? "success.main" : "error.main"}
+                                                    >
                                                         {selectedOption?.nameRus || 'Не найден вариант ответа'}
                                                     </Typography>
+                                                    
+                                                    {!isCorrect && (
+                                                        <Box mt={1}>
+                                                            <Typography variant="body2" color="text.secondary" gutterBottom>
+                                                                Правильный ответ:
+                                                            </Typography>
+                                                            <Typography variant="body1" fontWeight="500" color="success.main">
+                                                                {correctOption?.nameRus || 'Не найден вариант ответа'}
+                                                            </Typography>
+                                                        </Box>
+                                                    )}
                                                 </Box>
                                             ) : (
-                                                <Typography variant="body2" color="text.secondary" mt={1.5}>
-                                                    Вы не ответили на этот вопрос
-                                                </Typography>
+                                                <>
+                                                    <Typography variant="body2" color="text.secondary" mt={1.5}>
+                                                        Вы не ответили на этот вопрос
+                                                    </Typography>
+                                                    <Box mt={1}>
+                                                        <Typography variant="body2" color="text.secondary" gutterBottom>
+                                                            Правильный ответ:
+                                                        </Typography>
+                                                        <Typography variant="body1" fontWeight="500" color="success.main">
+                                                            {correctOption?.nameRus || 'Не найден вариант ответа'}
+                                                        </Typography>
+                                                    </Box>
+                                                </>
                                             )}
                                         </Box>
 
                                         <Box ml={2}>
                                             {hasAnswer ? (
-                                                <CheckCircleOutlined color="success" fontSize="large" />
+                                                isCorrect ? 
+                                                <CheckCircleOutlined color="success" fontSize="large" /> :
+                                                <ErrorOutlined color="error" fontSize="large" />
                                             ) : (
                                                 <ErrorOutlined color="error" fontSize="large" />
                                             )}

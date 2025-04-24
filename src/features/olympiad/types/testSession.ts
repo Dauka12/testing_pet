@@ -14,6 +14,7 @@ export interface StudentAnswerResponse {
     id: number;
     questionId: number;
     selectedOptionId: number;
+    isCorrect?: boolean; // Added field to indicate if answer is correct
 }
 
 export interface SessionExamQuestionResponse {
@@ -21,6 +22,7 @@ export interface SessionExamQuestionResponse {
     questionRus: string;
     questionKaz: string;
     options: OptionResponse[];
+    correctOptionId: number; // Added field for correct answer
 }
 
 export interface SessionExamResponse {
