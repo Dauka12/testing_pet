@@ -3,8 +3,8 @@ import React from 'react';
 
 interface TabPanelProps {
     children: React.ReactNode;
-    index: number;
-    value: number;
+    index: string | number;
+    value: string | number;
     loading?: boolean;
 }
 
