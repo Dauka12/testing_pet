@@ -36,7 +36,7 @@ export const startExamSessionThunk = createAsyncThunk(
             }
             return rejectWithValue('Failed to start exam session');
         }
-    }
+    } 
 );
 
 export const endExamSessionThunk = createAsyncThunk(

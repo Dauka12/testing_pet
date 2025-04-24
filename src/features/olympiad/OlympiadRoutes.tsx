@@ -7,8 +7,6 @@ const Registration = lazy(() => import('./pages/Registration.tsx'));
 const Login = lazy(() => import('./pages/Login.tsx'));
 const Dashboard = lazy(() => import('./pages/Dashboard.tsx'));
 const OlympiadManager = lazy(() => import('./pages/OlympiadManager.tsx'));
-
-const TestsList = lazy(() => import('./pages/TestsList.tsx'));
 const TestSession = lazy(() => import('./pages/TestSession.tsx'));
 const TestResults = lazy(() => import('./pages/TestResults.tsx'));
 
@@ -60,17 +58,6 @@ const OlympiadRoutes: React.FC = () => {
             <Suspense fallback={<div>Loading...</div>}>
               <ProtectedRoute>
                 <OlympiadManager />
-              </ProtectedRoute>
-            </Suspense>
-          }
-        />
-        {/* Test-related routes */}
-        <Route
-          path="/tests"
-          element={
-            <Suspense fallback={<div>Loading...</div>}>
-              <ProtectedRoute>
-                <TestsList />
               </ProtectedRoute>
             </Suspense>
           }

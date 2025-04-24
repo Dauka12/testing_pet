@@ -77,7 +77,7 @@ const OlympiadManager: React.FC = () => {
         dispatch(fetchExamById(examId));
         // Optionally switch to the exam view tab
         setActiveTab(3);
-        setViewMode('view');
+        setViewMode('edit');
     };
 
     const getTabs = () => {

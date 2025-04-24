@@ -95,8 +95,8 @@ export const updateQuestionThunk = createAsyncThunk(
     'olympiadExam/updateQuestion',
     async ({ questionData, id }: { questionData: ExamQuestionRequest, id: number }, { rejectWithValue }) => {
         try {
-            await updateQuestionApi(questionData, id);
-            return { ...questionData, id } as ExamQuestionResponse;
+            const updatedQuestion = await updateQuestionApi(questionData, id);
+            return updatedQuestion;
         } catch (error: unknown) {
             if (error instanceof Error) {
                 return rejectWithValue(error.message);

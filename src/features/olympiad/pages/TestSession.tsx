@@ -57,6 +57,7 @@ const TestSession: React.FC = () => {
         getExamSession,
         endExamSession,
         updateAnswer,
+        deleteAnswer,
         isExamActive,
         getRemainingTime
     } = useTestSessionManager();
@@ -114,6 +115,11 @@ const TestSession: React.FC = () => {
     const handleSelectOption = (questionId: number, optionId: number) => {
         if (!currentSession) return;
         updateAnswer(currentSession.id, questionId, optionId);
+    };
+
+    const handleClearAnswer = (questionId: number) => {
+        if (!currentSession) return;
+        deleteAnswer(currentSession.id, questionId);
     };
 
     const handleEndExam = async () => {
@@ -246,6 +252,7 @@ const TestSession: React.FC = () => {
                                 question={currentQuestion}
                                 selectedOptionId={getSelectedOption(currentQuestion.id)}
                                 onSelectOption={handleSelectOption}
+                                onClearAnswer={handleClearAnswer}
                             />
 
                             <Box sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}>

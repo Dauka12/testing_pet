@@ -77,9 +77,10 @@ export const createQuestion = async (questionData: ExamQuestionRequest, testId: 
     }
 };
 
-export const updateQuestion = async (questionData: ExamQuestionRequest, id: number): Promise<void> => {
+export const updateQuestion = async (questionData: ExamQuestionRequest, id: number): Promise<ExamQuestionResponse> => {
     try {
-        await api.patch(`/exam-question/${id}`, questionData);
+        const response = await api.patch<ExamQuestionResponse>(`/exam-question/${id}`, questionData);
+        return response.data;
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Ошибка при обновлении вопроса');
     }
@@ -110,5 +111,14 @@ export const generateAiTest = async (prompt: { subject: string, numQuestions: nu
         return response.data.examId;
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Ошибка при генерации теста с помощью AI');
+    }
+};
+
+// Session endpoints
+export const endExamSession = async (examSessionId: number): Promise<void> => {
+    try {
+        await api.post(`/exam/session/end/${examSessionId}`);
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || 'Ошибка при завершении сессии экзамена');
     }
 };
