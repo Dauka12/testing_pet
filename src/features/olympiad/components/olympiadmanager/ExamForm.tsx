@@ -12,6 +12,7 @@ import {
     OutlinedInput,
     Paper,
     Select,
+    SelectChangeEvent,
     TextField,
     Typography
 } from '@mui/material';
@@ -22,7 +23,7 @@ import { ru } from 'date-fns/locale';
 import React, { useEffect, useState } from 'react';
 import { getAllCategories } from '../../api/examApi.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks.ts';
-import { createExamThunk } from '../../store/slices/examSlice.ts';
+import { createExamThunk, fetchAllExams } from '../../store/slices/examSlice.ts';
 import { ExamCreateRequest } from '../../types/exam.ts';
 import { TestCategory } from '../../types/testCategory.ts';
 
@@ -63,9 +64,9 @@ const ExamForm: React.FC = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleTypeChange = (e: React.ChangeEvent<{ name?: string; value: unknown }>) => {
-        const { name = "", value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+    const handleTypeChange = (e: SelectChangeEvent<string>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name as string]: value }));
     };
 
     const handleDateChange = (date: Date | null) => {
@@ -91,10 +92,19 @@ const ExamForm: React.FC = () => {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(createExamThunk(formData));
-        setSubmitted(true);
+        try {
+            // After successful form submission
+            await dispatch(createExamThunk(formData));
+            
+            // Refresh the exam list
+            dispatch(fetchAllExams());
+            
+            setSubmitted(true);
+        } catch (error) {
+            console.error('Failed to submit the form:', error);
+        }
     };
 
     useEffect(() => {
@@ -113,7 +123,7 @@ const ExamForm: React.FC = () => {
         fetchCategories();
     }, []);
 
-    const handleCategoriesChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const handleCategoriesChange = (event: SelectChangeEvent<number[]>) => {
         const selectedCategoryIds = event.target.value as number[];
         setFormData(prev => ({ ...prev, categories: selectedCategoryIds }));
     };

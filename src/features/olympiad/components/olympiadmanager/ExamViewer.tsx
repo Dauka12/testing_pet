@@ -1,3 +1,4 @@
+import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import {
@@ -23,26 +24,25 @@ import {
     TableRow,
     TextField,
     Tooltip,
-    Typography,
-    useTheme
+    Typography
 } from '@mui/material';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../store';
-import { updateQuestionWithAiThunk } from '../../store/slices/examSlice';
+import { useAppDispatch } from '../../hooks/hooks.ts';
+import { fetchQuestionById, updateQuestionWithAiThunk } from '../../store/slices/examSlice.ts';
 import { ExamQuestionResponse, ExamResponse } from '../../types/exam';
 
 interface ExamViewerProps {
     exam: ExamResponse;
+    onEdit?: () => void;  // Keep this optional for backward compatibility
+    onEditQuestion?: (questionId: number) => void; // New prop for editing individual questions
 }
 
-const ExamViewer: React.FC<ExamViewerProps> = ({ exam }) => {
-    const theme = useTheme();
-    const dispatch = useDispatch<AppDispatch>();
-
+const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion }) => {
+    const dispatch = useAppDispatch();
+    
     // State for AI prompt dialog
     const [aiDialogOpen, setAiDialogOpen] = useState(false);
     const [selectedQuestion, setSelectedQuestion] = useState<ExamQuestionResponse | null>(null);
@@ -73,10 +73,14 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam }) => {
         setIsProcessing(true);
         
         try {
-            const result = await dispatch(updateQuestionWithAiThunk({
+            // First, update the question with AI
+            await dispatch(updateQuestionWithAiThunk({
                 questionId: selectedQuestion.id,
                 prompt: aiPrompt
             })).unwrap();
+            
+            // Then fetch the updated question to get the latest data
+            const result = await dispatch(fetchQuestionById(selectedQuestion.id)).unwrap();
             
             setUpdatedQuestion(result);
             setShowComparisonView(true);
@@ -90,9 +94,43 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam }) => {
     return (
         <Box>
             <Paper elevation={3} sx={{ p: 4, borderRadius: 2, mb: 4 }}>
-                <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-                    {exam.nameRus}
-                </Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main', mb: 0 }}>
+                            {exam.nameRus}
+                        </Typography>
+                        {onEdit && (
+                            <Tooltip title="Редактировать название">
+                                <IconButton
+                                    color="primary"
+                                    onClick={onEdit}
+                                    size="small"
+                                    sx={{ ml: 1 }}
+                                >
+                                    <EditIcon fontSize="small" />
+                                </IconButton>
+                            </Tooltip>
+                        )}
+                    </Box>
+                    
+                    {/* Show the main edit button only if onEdit function is provided */}
+                    <Tooltip title="Редактировать экзамен">
+                        <IconButton
+                            color="primary"
+                            onClick={onEdit}
+                            size="large"
+                            sx={{ 
+                                bgcolor: 'primary.main',
+                                color: 'white',
+                                '&:hover': {
+                                    bgcolor: 'primary.dark',
+                                }
+                            }}
+                        >
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
                 <Typography variant="subtitle1" color="text.secondary" gutterBottom>
                     {exam.nameKaz}
                 </Typography>
@@ -164,6 +202,19 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam }) => {
                                                     <SmartToyIcon />
                                                 </IconButton>
                                             </Tooltip>
+                                            {onEditQuestion && (
+                                                <Tooltip title="Редактировать вопрос">
+                                                    <IconButton 
+                                                        color="secondary"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            onEditQuestion(question.id);
+                                                        }}
+                                                    >
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            )}
                                         </Box>
                                     </Box>
                                 </AccordionSummary>

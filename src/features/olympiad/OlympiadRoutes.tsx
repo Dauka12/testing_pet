@@ -54,7 +54,7 @@ const OlympiadRoutes: React.FC = () => {
           }
         />
         <Route
-          path="/manager"
+          path="/manager/*"
           element={
             <Suspense fallback={<LoadingAnimation />}>
               <ProtectedRoute>

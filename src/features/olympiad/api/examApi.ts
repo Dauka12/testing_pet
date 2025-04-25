@@ -10,7 +10,6 @@ import { TestCategory } from '../types/testCategory';
 
 const API_URL = `${base_url}/api/olympiad`;
 
-// Create axios instance with default config
 const api = axios.create({
     baseURL: API_URL,
     headers: {
@@ -18,7 +17,6 @@ const api = axios.create({
     }
 });
 
-// Add request interceptor for auth token
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('olympiad_token');
@@ -133,5 +131,15 @@ export const endExamSession = async (examSessionId: number): Promise<void> => {
         await api.post(`/exam/session/end/${examSessionId}`);
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Ошибка при завершении сессии экзамена');
+    }
+};
+
+// Get question by ID
+export const getQuestionById = async (id: number): Promise<ExamQuestionResponse> => {
+    try {
+        const response = await api.get<ExamQuestionResponse>(`/exam-question/${id}`);
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || 'Ошибка при получении вопроса');
     }
 };

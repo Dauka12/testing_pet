@@ -50,11 +50,12 @@ const OlympiadManager: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const isSmallMobile = useMediaQuery('(max-width:480px)');
-    
+
     const { exams, currentExam, loading, error } = useSelector((state: RootState) => state.exam);
-    
+
     const [activeView, setActiveView] = useState<ViewState>('dashboard');
     const [examView, setExamView] = useState<ExamView>('view');
+    const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(null);
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -107,7 +108,7 @@ const OlympiadManager: React.FC = () => {
     };
 
     const handleGoBack = () => {
-        if (activeView === 'examDetails' || activeView === 'createExam' || 
+        if (activeView === 'examDetails' || activeView === 'createExam' ||
             activeView === 'examList' || activeView === 'aiGenerator') {
             setActiveView('dashboard');
         }
@@ -143,7 +144,7 @@ const OlympiadManager: React.FC = () => {
                     Создавайте и управляйте экзаменами
                 </Typography>
             </Box>
-            
+
             {navigationItems.map((item) => (
                 <Box
                     key={item.view}
@@ -173,7 +174,7 @@ const OlympiadManager: React.FC = () => {
                     </Typography>
                 </Box>
             ))}
-            
+
             {currentExam && (
                 <Box
                     sx={{
@@ -197,7 +198,7 @@ const OlympiadManager: React.FC = () => {
                     }}
                 >
                     <AssignmentIcon />
-                    <Typography 
+                    <Typography
                         fontWeight={activeView === 'examDetails' ? 'medium' : 'normal'}
                         noWrap
                         sx={{ maxWidth: 200 }}
@@ -212,10 +213,10 @@ const OlympiadManager: React.FC = () => {
     // Helper function to render breadcrumbs
     const renderBreadcrumbs = () => {
         let items = [
-            <Link 
-                color="inherit" 
-                key="dashboard" 
-                underline="hover" 
+            <Link
+                color="inherit"
+                key="dashboard"
+                underline="hover"
                 sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
                 onClick={() => setActiveView('dashboard')}
             >
@@ -248,10 +249,10 @@ const OlympiadManager: React.FC = () => {
                 break;
             case 'examDetails':
                 items.push(
-                    <Link 
-                        color="inherit" 
-                        key="list-link" 
-                        underline="hover" 
+                    <Link
+                        color="inherit"
+                        key="list-link"
+                        underline="hover"
                         sx={{ cursor: 'pointer' }}
                         onClick={() => setActiveView('examList')}
                     >
@@ -304,8 +305,8 @@ const OlympiadManager: React.FC = () => {
             <Typography variant="h5" component="h1" gutterBottom fontWeight="bold" sx={{ mb: 4 }}>
                 Панель управления олимпиадами
             </Typography>
-            
-            <Box 
+
+            <Box
                 component={motion.div}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -320,26 +321,26 @@ const OlympiadManager: React.FC = () => {
                 }}
             >
                 {dashboardCards.map((card, index) => (
-                    <Card 
+                    <Card
                         key={card.title}
                         component={motion.div}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
                     >
-                        <CardActionArea 
+                        <CardActionArea
                             onClick={() => setActiveView(card.view)}
                             sx={{ height: '100%', p: 1 }}
                         >
-                            <CardContent sx={{ 
-                                display: 'flex', 
+                            <CardContent sx={{
+                                display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 textAlign: 'center',
                                 p: 3
                             }}>
-                                <Box 
-                                    sx={{ 
+                                <Box
+                                    sx={{
                                         mb: 2,
                                         p: 2,
                                         borderRadius: '50%',
@@ -351,13 +352,13 @@ const OlympiadManager: React.FC = () => {
                                 >
                                     {card.icon}
                                 </Box>
-                                
+
                                 <Typography variant="h6" component="h2" gutterBottom>
                                     {card.title}
                                     {card.count !== undefined && (
-                                        <Typography 
-                                            component="span" 
-                                            sx={{ 
+                                        <Typography
+                                            component="span"
+                                            sx={{
                                                 ml: 1,
                                                 px: 1.5,
                                                 py: 0.5,
@@ -371,7 +372,7 @@ const OlympiadManager: React.FC = () => {
                                         </Typography>
                                     )}
                                 </Typography>
-                                
+
                                 <Typography variant="body2" color="text.secondary">
                                     {card.description}
                                 </Typography>
@@ -386,8 +387,8 @@ const OlympiadManager: React.FC = () => {
                     <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
                         Последние экзамены
                     </Typography>
-                    
-                    <Box 
+
+                    <Box
                         sx={{
                             display: 'grid',
                             gridTemplateColumns: {
@@ -399,7 +400,7 @@ const OlympiadManager: React.FC = () => {
                         }}
                     >
                         {exams.slice(0, 6).map((exam, index) => (
-                            <Card 
+                            <Card
                                 key={exam.id}
                                 component={motion.div}
                                 initial={{ opacity: 0, y: 20 }}
@@ -422,7 +423,7 @@ const OlympiadManager: React.FC = () => {
                                         <Typography variant="body2" color="text.secondary" gutterBottom>
                                             {exam.typeRus} • {exam.durationInMinutes} мин.
                                         </Typography>
-                                        <Box 
+                                        <Box
                                             sx={{
                                                 display: 'flex',
                                                 alignItems: 'center',
@@ -456,7 +457,7 @@ const OlympiadManager: React.FC = () => {
     return (
         <Box sx={{ minHeight: '100vh', bgcolor: '#f7f9fc' }}>
             <CssBaseline />
-            
+
             {/* App Bar */}
             <AppBar position="fixed" color="default" elevation={0}>
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -469,14 +470,14 @@ const OlympiadManager: React.FC = () => {
                         >
                             <MenuIcon />
                         </IconButton>
-                        
+
                         {!isSmallMobile && (
                             <Typography variant="h6" noWrap component="div">
                                 Олимпиадный менеджер
                             </Typography>
                         )}
                     </Box>
-                    
+
                     <Box>
                         <IconButton color="inherit" onClick={handleRefresh}>
                             <RefreshIcon />
@@ -484,7 +485,7 @@ const OlympiadManager: React.FC = () => {
                     </Box>
                 </Toolbar>
             </AppBar>
-            
+
             {/* Navigation Drawer */}
             <Drawer
                 anchor="left"
@@ -500,20 +501,20 @@ const OlympiadManager: React.FC = () => {
                 </Box>
                 {drawerContent}
             </Drawer>
-            
+
             {/* Main Content */}
-            <Container 
-                maxWidth="xl" 
+            <Container
+                maxWidth="xl"
                 sx={{ pt: '80px', pb: 8, px: { xs: 2, sm: 3 } }}
             >
                 {renderBreadcrumbs()}
-                
+
                 {/* Mobile Back Button */}
                 {isMobile && activeView !== 'dashboard' && (
                     <Box sx={{ mb: 2 }}>
-                        <IconButton 
-                            onClick={handleGoBack} 
-                            sx={{ 
+                        <IconButton
+                            onClick={handleGoBack}
+                            sx={{
                                 border: '1px solid',
                                 borderColor: 'divider',
                                 borderRadius: 2,
@@ -530,7 +531,7 @@ const OlympiadManager: React.FC = () => {
                         </Typography>
                     </Box>
                 )}
-                
+
                 <AnimatePresence mode="wait">
                     <Box key={activeView} sx={{ position: 'relative', minHeight: '500px' }}>
                         <motion.div
@@ -541,7 +542,7 @@ const OlympiadManager: React.FC = () => {
                         >
                             {/* Dashboard View */}
                             {activeView === 'dashboard' && renderDashboard()}
-                            
+
                             {/* Exams List View */}
                             <TabPanel value={activeView} index="examList">
                                 <ExamList
@@ -549,36 +550,47 @@ const OlympiadManager: React.FC = () => {
                                     onViewExam={handleViewExam}
                                 />
                             </TabPanel>
-                            
+
                             {/* Create Exam View */}
                             <TabPanel value={activeView} index="createExam">
                                 <ExamForm />
                             </TabPanel>
-                            
+
                             {/* AI Generator View */}
                             <TabPanel value={activeView} index="aiGenerator">
                                 <AiTestGenerator onSuccess={handleAiTestSuccess} />
                             </TabPanel>
-                            
+
                             {/* Exam Details View */}
-                            <TabPanel 
-                                value={activeView} 
-                                index="examDetails" 
+                            <TabPanel
+                                value={activeView}
+                                index="examDetails"
                                 loading={loading}
                             >
                                 {currentExam && (
                                     examView === 'view' ? (
-                                        <ExamViewer exam={currentExam} />
+                                        <ExamViewer
+                                            exam={currentExam}
+                                            onEdit={() => setExamView('edit')}
+
+                                        />
                                     ) : (
                                         <QuestionForm
                                             testId={currentExam.id}
-                                            onSuccess={handleQuestionSuccess}
+                                            question={selectedQuestionId ?
+                                                currentExam.questions?.find(q => q.id === selectedQuestionId) :
+                                                undefined}
+                                            onSuccess={() => {
+                                                handleQuestionSuccess();
+                                                setSelectedQuestionId(null);
+                                                setExamView('view');
+                                            }}
                                         />
                                     )
                                 )}
                             </TabPanel>
                         </motion.div>
-                        
+
                         {loading && (
                             <Box
                                 sx={{
@@ -601,7 +613,7 @@ const OlympiadManager: React.FC = () => {
                     </Box>
                 </AnimatePresence>
             </Container>
-            
+
             {/* Mobile FAB for quick creating */}
             {isMobile && activeView === 'examList' && (
                 <Fab
@@ -616,7 +628,7 @@ const OlympiadManager: React.FC = () => {
                     <AddBoxIcon />
                 </Fab>
             )}
-            
+
             {/* Error Snackbar */}
             <Snackbar
                 open={showSnackbar}

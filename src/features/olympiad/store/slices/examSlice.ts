@@ -6,6 +6,7 @@ import {
     deleteQuestion as deleteQuestionApi,
     getAllExams,
     getExamById,
+    getQuestionById,
     updateQuestion as updateQuestionApi,
     updateQuestionWithAi as updateQuestionWithAiApi
 } from '../../api/examApi.ts';
@@ -45,6 +46,20 @@ export const fetchExamById = createAsyncThunk(
                 return rejectWithValue(error.message);
             }
             return rejectWithValue('Failed to fetch exam');
+        }
+    }
+);
+
+export const fetchQuestionById = createAsyncThunk(
+    'olympiadExam/fetchQuestionById',
+    async (id: number, { rejectWithValue }) => {
+        try {
+            return await getQuestionById(id);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                return rejectWithValue(error.message);
+            }
+            return rejectWithValue('Failed to fetch question');
         }
     }
 );
@@ -289,6 +304,26 @@ const examSlice = createSlice({
                 }
             })
             .addCase(updateQuestionWithAiThunk.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+
+            // Fetch question by id
+            .addCase(fetchQuestionById.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchQuestionById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.currentQuestion = action.payload;
+                // Also update the question in the currentExam if it exists
+                if (state.currentExam && state.currentExam.questions) {
+                    state.currentExam.questions = state.currentExam.questions.map(q => 
+                        q.id === action.payload.id ? action.payload : q
+                    );
+                }
+            })
+            .addCase(fetchQuestionById.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             });

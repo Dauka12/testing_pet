@@ -28,6 +28,8 @@ export const OLYMPIAD_ROUTES = {
   REGISTRATION: '/registration',
   DASHBOARD: '/dashboard',
   MANAGER: '/manager',
+  EXAM_VIEW: (id: number | string) => `/manager/${id}/view`,
+  EXAM_EDIT: (id: number | string) => `/manager/${id}/edit`,
   TEST: '/test',
   TEST_RESULTS: '/test-results',
 };
