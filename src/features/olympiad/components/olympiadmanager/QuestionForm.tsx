@@ -117,8 +117,46 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
 
         try {
             if (editingQuestion?.id) {
+                // Find the index of the correct option in the current options array
+                let correctIndex = -1;
+                
+                if (editingQuestion.options) {
+                    // Find the option in the original question that matches the selected correctOptionId
+                    const correctOption = editingQuestion.options.find(opt => opt.id === formData.correctOptionId);
+                    
+                    // Find the index of the matching option in the current options array
+                    if (correctOption) {
+                        correctIndex = formData.options.findIndex((opt, idx) => {
+                            // If we're comparing with original option that has same content
+                            return opt.nameRus === correctOption.nameRus && opt.nameKaz === correctOption.nameKaz;
+                        });
+                    }
+                    
+                    // If we couldn't find by content, try to find by position
+                    if (correctIndex === -1) {
+                        // Find the position of the option with this ID in the original options
+                        const originalIndex = editingQuestion.options.findIndex(opt => opt.id === formData.correctOptionId);
+                        // If we found a valid index and it's within bounds of new options, use it
+                        if (originalIndex !== -1 && originalIndex < formData.options.length) {
+                            correctIndex = originalIndex;
+                        }
+                    }
+                }
+                
+                // If we still couldn't determine the index, default to 0
+                if (correctIndex === -1) {
+                    correctIndex = 0;
+                    console.warn("Couldn't determine correct option index, defaulting to first option");
+                }
+                
+                // Create a new object with correctOptionIndex for the API
+                const questionDataForUpdate = {
+                    ...formData,
+                    correctOptionIndex: correctIndex,
+                };
+
                 await dispatch(updateQuestionThunk({
-                    questionData: formData,
+                    questionData: questionDataForUpdate,
                     id: editingQuestion.id
                 }));
             } else {

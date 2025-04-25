@@ -29,7 +29,8 @@ export interface ExamQuestionRequest {
     questionRus: string;
     questionKaz: string;
     options: OptionRequest[];
-    correctOptionId: number;
+    correctOptionId?: number; // Make this optional
+    correctOptionIndex?: number; // Add this for API requests
 }
 
 export interface ExamQuestionResponse {

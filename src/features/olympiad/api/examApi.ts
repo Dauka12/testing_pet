@@ -77,7 +77,17 @@ export const createQuestion = async (questionData: ExamQuestionRequest, testId: 
 
 export const updateQuestion = async (questionData: ExamQuestionRequest, id: number): Promise<ExamQuestionResponse> => {
     try {
-        const response = await api.patch<ExamQuestionResponse>(`/exam-question/${id}`, questionData);
+        // Create a new object for the API request
+        const apiRequestData = {
+            questionRus: questionData.questionRus,
+            questionKaz: questionData.questionKaz,
+            options: questionData.options,
+            // Use correctOptionIndex if provided, otherwise use correctOptionId
+            correctOptionIndex: questionData.correctOptionIndex !== undefined ? 
+                questionData.correctOptionIndex : questionData.correctOptionId
+        };
+        
+        const response = await api.patch<ExamQuestionResponse>(`/exam-question/${id}`, apiRequestData);
         return response.data;
     } catch (error: any) {
         throw new Error(error.response?.data?.message || 'Ошибка при обновлении вопроса');
