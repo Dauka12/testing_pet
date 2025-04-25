@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import LoadingAnimation from './components/LoadingAnimation';
 import { OlympiadAuthProvider, ProtectedRoute, PublicRoute } from './context/OlympiadAuthContext.tsx';
 
 // Lazy-loaded components
@@ -17,7 +18,7 @@ const OlympiadRoutes: React.FC = () => {
         <Route
           path="/"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingAnimation />}>
               <Login />
             </Suspense>
           }
@@ -25,7 +26,7 @@ const OlympiadRoutes: React.FC = () => {
         <Route
           path="/registration"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingAnimation />}>
               <PublicRoute>
                 <Registration />
               </PublicRoute>
@@ -35,7 +36,7 @@ const OlympiadRoutes: React.FC = () => {
         <Route
           path="/login"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingAnimation />}>
               <PublicRoute>
                 <Login />
               </PublicRoute>
@@ -45,7 +46,7 @@ const OlympiadRoutes: React.FC = () => {
         <Route
           path="/dashboard"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingAnimation />}>
               <ProtectedRoute>
                 <Dashboard />
               </ProtectedRoute>
@@ -55,7 +56,7 @@ const OlympiadRoutes: React.FC = () => {
         <Route
           path="/manager"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingAnimation />}>
               <ProtectedRoute>
                 <OlympiadManager />
               </ProtectedRoute>
@@ -65,7 +66,7 @@ const OlympiadRoutes: React.FC = () => {
         <Route
           path="/test/:sessionId"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingAnimation />}>
               <ProtectedRoute>
                 <TestSession />
               </ProtectedRoute>
@@ -75,7 +76,7 @@ const OlympiadRoutes: React.FC = () => {
         <Route
           path="/test-results/:sessionId"
           element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingAnimation />}>
               <ProtectedRoute>
                 <TestResults />
               </ProtectedRoute>
