@@ -11,10 +11,9 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks.ts';
 import { RootState } from '../../store';
-import { createQuestionThunk, deleteQuestionThunk, updateQuestionThunk, updateQuestionWithAiThunk } from '../../store/slices/examSlice.ts';
+import { createQuestionThunk, deleteQuestionThunk, updateQuestionThunk } from '../../store/slices/examSlice.ts';
 import { ExamQuestionRequest, ExamQuestionResponse } from '../../types/exam.ts';
 import AIComparisonView from './question-form/AIComparisonView';
-import AIEnhancement from './question-form/AIEnhancement';
 import OptionsForm from './question-form/OptionsForm';
 import QuestionList from './question-form/QuestionList';
 import QuestionViewer from './question-form/QuestionViewer';
@@ -269,7 +268,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
                 )}
 
                 {/* AI Enhancement Section */}
-                {editingQuestion && !showComparisonView && (
+                {/* {editingQuestion && !showComparisonView && (
                     <AIEnhancement
                         aiPrompt={aiPrompt}
                         isProcessingAi={isProcessingAi}
@@ -300,7 +299,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
                             }
                         }}
                     />
-                )}
+                )} */}
 
                 {/* AI Comparison View */}
                 {showComparisonView && originalQuestion && enhancedQuestion && (

@@ -55,7 +55,8 @@ interface SessionCardProps {
 const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
     const navigate = useNavigate();
     const theme = useTheme();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    
 
     // Check if the session is still active (not completed or time remaining)
     const isActive = () => {
@@ -109,10 +110,10 @@ const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
                     borderColor: theme.palette.divider
                 }}>
                     <Typography variant="h6" fontWeight={600} noWrap>
-                        {session.examData.nameRus}
+                        {i18n.language === 'ru' ? session.examData.nameRus : session.examData.nameKaz}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        {session.examData.typeRus}
+                        {i18n.language === 'ru' ? session.examData.typeRus : session.examData.typeKaz}
                     </Typography>
                 </Box>
 
