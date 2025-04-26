@@ -138,7 +138,7 @@ const OlympiadManager: React.FC = () => {
         >
             <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
                 <Typography variant="h6" color="primary" gutterBottom>
-                    Управление Олимпиадами
+                    Управление тестами
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     Создавайте и управляйте экзаменами
@@ -303,7 +303,7 @@ const OlympiadManager: React.FC = () => {
     const renderDashboard = () => (
         <Box>
             <Typography variant="h5" component="h1" gutterBottom fontWeight="bold" sx={{ mb: 4 }}>
-                Панель управления олимпиадами
+                Панель управления
             </Typography>
 
             <Box
@@ -473,7 +473,7 @@ const OlympiadManager: React.FC = () => {
 
                         {!isSmallMobile && (
                             <Typography variant="h6" noWrap component="div">
-                                Олимпиадный менеджер
+                            Менеджер
                             </Typography>
                         )}
                     </Box>

@@ -1,6 +1,7 @@
 import { Box, Paper, styled, Typography, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const StyledInfoCard = styled(motion.div)(({ theme }) => ({
     backgroundColor: '#ffffff',
@@ -39,6 +40,7 @@ interface InfoCardProps {
 
 const InfoCard: React.FC<InfoCardProps> = ({ user }) => {
     const theme = useTheme();
+    const { t } = useTranslation();
     
     return (
         <StyledInfoCard
@@ -59,7 +61,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ user }) => {
                     fontSize: '0.95rem'
                 }}
             >
-                Контактная информация
+                {t('profile.contactInfo')}
             </Typography>
 
             <Paper 
@@ -81,7 +83,7 @@ const InfoCard: React.FC<InfoCardProps> = ({ user }) => {
                             fontSize: '0.85rem'
                         }}
                     >
-                        Телефон
+                        {t('profile.phone')}
                     </Typography>
                     <Typography
                         variant="body2"

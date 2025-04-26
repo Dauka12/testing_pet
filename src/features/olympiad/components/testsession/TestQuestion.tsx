@@ -1,6 +1,7 @@
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Box, Card, CardContent, FormControlLabel, IconButton, Radio, RadioGroup, Tooltip, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SessionExamQuestionResponse } from '../../types/testSession';
 
 interface TestQuestionProps {
@@ -16,12 +17,21 @@ const TestQuestion: React.FC<TestQuestionProps> = ({
     onSelectOption,
     onClearAnswer
 }) => {
+    const { t, i18n } = useTranslation();
+    const[language, setLanguage] = useState(i18n.language); 
+
+    useEffect(() => {
+        console.log('question: ', question);
+        setLanguage(i18n.language);
+        
+    },[i18n.language])
+    
     return (
         <Card variant="outlined" sx={{ borderRadius: 3, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)' }}>
             <CardContent sx={{ p: 3 }}>
                 <Box display="flex" justifyContent="space-between" alignItems="flex-start">
                     <Typography variant="h6" gutterBottom fontWeight={500}>
-                        {question.questionRus}
+                    {language === 'ru' ? question.questionRus : question.questionKaz }
                     </Typography>
                     
                     {selectedOptionId && (
@@ -52,7 +62,7 @@ const TestQuestion: React.FC<TestQuestionProps> = ({
                             key={option.id}
                             value={option.id}
                             control={<Radio />}
-                            label={option.nameRus}
+                            label={language === 'ru' ? option.nameRus : option.nameKaz }
                             sx={{
                                 my: 1,
                                 p: 1,

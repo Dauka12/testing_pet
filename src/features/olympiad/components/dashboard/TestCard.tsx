@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/hooks.ts';
 import { startExamSessionThunk } from '../../store/slices/testSessionSlice.ts';
@@ -60,6 +61,7 @@ const TestCard: React.FC<TestCardProps> = ({ exam }) => {
     const dispatch = useAppDispatch();
     const theme = useTheme();
     const [isStarting, setIsStarting] = useState(false);
+    const { t } = useTranslation();
 
     const handleStartExam = async () => {
         try {
@@ -122,7 +124,7 @@ const TestCard: React.FC<TestCardProps> = ({ exam }) => {
                                 sx={{ mr: 1.5, color: theme.palette.primary.main, opacity: 0.8 }} 
                             />
                             <Typography variant="body2">
-                                Начало: {formatDate(exam.startTime)}
+                                {t('testCard.start')}{formatDate(exam.startTime)}
                             </Typography>
                         </InfoItem>
 
@@ -132,7 +134,7 @@ const TestCard: React.FC<TestCardProps> = ({ exam }) => {
                                 sx={{ mr: 1.5, color: theme.palette.primary.main, opacity: 0.8 }} 
                             />
                             <Typography variant="body2">
-                                Продолжительность: {exam.durationInMinutes} минут
+                                {t('testCard.duration')}{exam.durationInMinutes} {t('testCard.minutes')}
                             </Typography>
                         </InfoItem>
                     </Box>
@@ -145,16 +147,16 @@ const TestCard: React.FC<TestCardProps> = ({ exam }) => {
                             sx={{ mr: 1.5, color: theme.palette.primary.main, opacity: 0.8 }} 
                         />
                         <Typography variant="body2">
-                            Количество вопросов: {exam.questions?.length || 'Загрузка...'}
+                            {t('testCard.questionsCount')}{exam.questions?.length || t('testCard.loading')}
                         </Typography>
                     </InfoItem>
 
                     <Box mt={2.5}>
                         <Typography variant="subtitle2" sx={{ mb: 1, fontSize: '0.85rem', color: 'text.secondary' }}>
-                            Статус:
+                            {t('testCard.status')}
                         </Typography>
                         <Chip
-                            label="Доступен"
+                            label={t('testCard.available')}
                             size="small"
                             sx={{
                                 bgcolor: theme.palette.info.light,
@@ -183,10 +185,10 @@ const TestCard: React.FC<TestCardProps> = ({ exam }) => {
                                     color="inherit"
                                     sx={{ width: 20, mr: 1 }}
                                 />
-                                Загрузка...
+                                {t('testCard.loading')}
                             </>
                         ) : (
-                            'Начать тест'
+                            t('testCard.startTest')
                         )}
                     </TestButton>
                 </CardActions>

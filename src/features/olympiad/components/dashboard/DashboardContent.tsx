@@ -2,6 +2,7 @@ import { DashboardOutlined, QuizOutlined, TipsAndUpdatesOutlined } from '@mui/ic
 import { Box, Button, Card, CardContent, Divider, Grid, Paper, Typography, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface DashboardContentProps {
     isMobile: boolean;
@@ -10,6 +11,7 @@ interface DashboardContentProps {
 
 const DashboardContent: React.FC<DashboardContentProps> = ({ isMobile, onNavigateToTests }) => {
     const theme = useTheme();
+    const { t } = useTranslation();
     
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -80,7 +82,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ isMobile, onNavigat
                                 color: theme.palette.primary.main
                             }}
                         >
-                            Панель управления
+                            {t('dashboard.title')}
                         </Typography>
                     </Box>
 
@@ -89,15 +91,14 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ isMobile, onNavigat
                     <Grid container spacing={4}>
                         <Grid item xs={12} md={7}>
                             <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 2 }}>
-                                Добро пожаловать в систему олимпиады!
+                                {t('dashboard.welcome')}
                             </Typography>
                             <Typography
                                 variant="body1"
                                 color="text.secondary"
                                 sx={{ mb: 3, fontSize: '1.05rem', lineHeight: 1.6 }}
                             >
-                                Здесь вы сможете отслеживать свой прогресс, управлять профилем и проходить тесты олимпиады.
-                                Перейдите в раздел "Тесты", чтобы просмотреть доступные для вас задания.
+                                {t('dashboard.description')}
                             </Typography>
                             <Button
                                 variant="contained"
@@ -113,20 +114,10 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ isMobile, onNavigat
                                     boxShadow: '0 4px 14px rgba(0, 0, 0, 0.12)'
                                 }}
                             >
-                                Перейти к тестам
+                                {t('dashboard.goToTests')}
                             </Button>
                         </Grid>
                         <Grid item xs={12} md={5}>
-                            <Box
-                                component="img"
-                                src="/assets/dashboard-illustration.svg" 
-                                alt="Dashboard illustration"
-                                sx={{
-                                    maxWidth: '100%',
-                                    height: 'auto',
-                                    display: { xs: 'none', md: 'block' }
-                                }}
-                            />
                         </Grid>
                     </Grid>
                 </Paper>
@@ -161,7 +152,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ isMobile, onNavigat
                                     <TipsAndUpdatesOutlined sx={{ fontSize: 24, color: theme.palette.secondary.main }} />
                                 </Box>
                                 <Typography variant="h6" fontWeight={600}>
-                                    Полезные советы
+                                    {t('dashboard.tips')}
                                 </Typography>
                             </Box>
                             
@@ -178,10 +169,10 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ isMobile, onNavigat
                                 >
                                     <CardContent>
                                         <Typography variant="subtitle1" fontWeight={500} gutterBottom>
-                                            Внимательно читайте вопросы
+                                            {t('dashboard.tipTitle1')}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            Перед тем как выбрать ответ, убедитесь, что вы правильно поняли вопрос.
+                                            {t('dashboard.tipDesc1')}
                                         </Typography>
                                     </CardContent>
                                 </Card>
@@ -198,10 +189,10 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ isMobile, onNavigat
                                 >
                                     <CardContent>
                                         <Typography variant="subtitle1" fontWeight={500} gutterBottom>
-                                            Управляйте временем
+                                            {t('dashboard.tipTitle2')}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
-                                            Следите за оставшимся временем и не тратьте слишком много времени на сложные вопросы.
+                                            {t('dashboard.tipDesc2')}
                                         </Typography>
                                     </CardContent>
                                 </Card>
@@ -238,7 +229,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ isMobile, onNavigat
                                     <QuizOutlined sx={{ fontSize: 24, color: theme.palette.primary.main }} />
                                 </Box>
                                 <Typography variant="h6" fontWeight={600}>
-                                    Быстрый доступ
+                                    {t('dashboard.quickAccess')}
                                 </Typography>
                             </Box>
                             
@@ -255,7 +246,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ isMobile, onNavigat
                                 gap: 2
                             }}>
                                 <Typography variant="body1" fontWeight={500} gutterBottom>
-                                    Готовы начать тестирование?
+                                    {t('dashboard.readyToStart')}
                                 </Typography>
                                 <Button
                                     variant="contained"
@@ -268,7 +259,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ isMobile, onNavigat
                                         px: 4
                                     }}
                                 >
-                                    Перейти к тестам
+                                    {t('dashboard.goToTests')}
                                 </Button>
                             </Box>
                         </Paper>

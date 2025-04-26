@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { StudentExamSessionResponses } from '../../types/testSession';
 import { formatDate } from '../../utils/dateUtils.ts';
@@ -54,6 +55,7 @@ interface SessionCardProps {
 const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
     const navigate = useNavigate();
     const theme = useTheme();
+    const { t } = useTranslation();
 
     // Check if the session is still active (not completed or time remaining)
     const isActive = () => {
@@ -126,7 +128,7 @@ const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
                                 }} 
                             />
                             <Typography variant="body2">
-                                Начало: {formatDate(session.startTime)}
+                                {t('testCard.start')}{formatDate(session.startTime)}
                             </Typography>
                         </InfoItem>
 
@@ -140,7 +142,7 @@ const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
                                 }} 
                             />
                             <Typography variant="body2">
-                                Продолжительность: {session.examData.durationInMinutes} минут
+                                {t('testCard.duration')}{session.examData.durationInMinutes} {t('testCard.minutes')}
                             </Typography>
                         </InfoItem>
                     </Box>
@@ -149,10 +151,10 @@ const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
 
                     <Box mt={2}>
                         <Typography variant="subtitle2" sx={{ mb: 1, fontSize: '0.85rem', color: 'text.secondary' }}>
-                            Статус:
+                            {t('testCard.status')}
                         </Typography>
                         <Chip
-                            label={active ? 'В процессе' : 'Завершен'}
+                            label={active ? t('sessionCard.inProgress') : t('sessionCard.completed')}
                             size="small"
                             sx={{
                                 bgcolor: active ? theme.palette.primary.main : theme.palette.success.main,
@@ -174,7 +176,7 @@ const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
                         onClick={handleViewSession}
                         disableElevation
                     >
-                        {active ? 'Продолжить тест' : 'Просмотреть результаты'}
+                        {active ? t('sessionCard.continueTest') : t('sessionCard.viewResults')}
                     </SessionButton>
                 </Box>
             </Paper>

@@ -3,10 +3,13 @@ import {
     ChevronLeftOutlined,
     DashboardOutlined,
     LogoutOutlined,
-    MenuOutlined
+    MenuOutlined,
+    TranslateOutlined
 } from '@mui/icons-material';
 import {
     Box,
+    Button,
+    ButtonGroup,
     Drawer,
     List,
     ListItemButton,
@@ -15,10 +18,13 @@ import {
     Paper,
     styled,
     SwipeableDrawer,
+    Typography,
     useTheme
 } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 import InfoCard from './InfoCard';
 import ProfileCard from './ProfileCard';
 
@@ -124,6 +130,16 @@ const LogoutButton = styled(motion.button)(({ theme }) => ({
     }
 }));
 
+const LanguageSelector = styled(Paper)(({ theme }) => ({
+    padding: theme.spacing(1.5),
+    marginBottom: theme.spacing(3),
+    borderRadius: 12,
+    display: 'flex',
+    alignItems: 'center',
+    border: '1px solid',
+    borderColor: theme.palette.divider,
+}));
+
 interface SidebarProps {
     open: boolean;
     currentView: string;
@@ -146,6 +162,12 @@ const Sidebar: React.FC<SidebarProps> = ({
     const theme = useTheme();
     const fullName = `${user.lastname} ${user.firstname}`;
     const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const { t, i18n } = useTranslation();
+    const language = i18n.language;
+    const navigate = useNavigate();
+    const changeLanguage = (lng: string) => {
+        i18n.changeLanguage(lng);
+    }
 
     const handleViewChange = (view: string) => {
         onViewChange(view);
@@ -154,6 +176,51 @@ const Sidebar: React.FC<SidebarProps> = ({
     const drawerContent = (
         <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', p: open ? 3 : 0 }}>
             <ProfileCard fullName={fullName} />
+
+            <LanguageSelector
+                component={motion.div}
+                initial={{ x: -30, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{
+                    type: 'spring',
+                    stiffness: 70,
+                    delay: 0.2
+                }}
+                elevation={0}
+            >
+                <TranslateOutlined 
+                    sx={{ 
+                        color: theme.palette.primary.main,
+                        mr: 1.5,
+                        fontSize: 20
+                    }} 
+                />
+                <Typography variant="body2" sx={{ mr: 2, fontWeight: 500 }}>
+                    {t('language.' + language)}
+                </Typography>
+                <ButtonGroup size="small" variant="outlined">
+                    <Button 
+                        onClick={() => changeLanguage('ru')}
+                        variant={language === 'ru' ? 'contained' : 'outlined'}
+                        sx={{ 
+                            minWidth: '40px',
+                            fontWeight: language === 'ru' ? 600 : 400,
+                        }}
+                    >
+                        RU
+                    </Button>
+                    <Button 
+                        onClick={() => changeLanguage('kz')}
+                        variant={language === 'kz' ? 'contained' : 'outlined'}
+                        sx={{ 
+                            minWidth: '40px',
+                            fontWeight: language === 'kz' ? 600 : 400,
+                        }}
+                    >
+                        KZ
+                    </Button>
+                </ButtonGroup>
+            </LanguageSelector>
 
             {/* Navigation menu */}
             <Paper
@@ -186,7 +253,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                             }} />
                         </ListItemIcon>
                         <ListItemText
-                            primary="Главная"
+                            primary={t('sidebar.main')}
                             primaryTypographyProps={{
                                 fontWeight: currentView === 'dashboard' ? 600 : 400,
                                 color: currentView === 'dashboard' ? theme.palette.primary.main : 'inherit'
@@ -204,7 +271,24 @@ const Sidebar: React.FC<SidebarProps> = ({
                             }} />
                         </ListItemIcon>
                         <ListItemText
-                            primary="Тесты"
+                            primary={t('sidebar.tests')}
+                            primaryTypographyProps={{
+                                fontWeight: currentView === 'tests' ? 600 : 400,
+                                color: currentView === 'tests' ? theme.palette.primary.main : 'inherit'
+                            }}
+                        />
+                    </MenuItemButton>
+
+                    <MenuItemButton
+                        onClick={() => navigate('/manager')}
+                    >
+                        <ListItemIcon>
+                            <AssignmentOutlined sx={{ 
+                                color: currentView === 'tests' ? theme.palette.primary.main : theme.palette.text.secondary 
+                            }} />
+                        </ListItemIcon>
+                        <ListItemText
+                            primary={t('Менеджер')}
                             primaryTypographyProps={{
                                 fontWeight: currentView === 'tests' ? 600 : 400,
                                 color: currentView === 'tests' ? theme.palette.primary.main : 'inherit'
@@ -225,7 +309,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     onClick={onLogout}
                 >
                     <LogoutOutlined style={{ marginRight: 8 }} />
-                    Выйти из системы
+                    {t('sidebar.logout')}
                 </LogoutButton>
             </Box>
         </Box>

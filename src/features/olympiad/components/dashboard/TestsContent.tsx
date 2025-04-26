@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ExamResponse } from '../../types/exam';
 import { StudentExamSessionResponses } from '../../types/testSession';
 import SessionCard from './SessionCard.tsx';
@@ -29,6 +30,7 @@ interface TestsContentProps {
 const TestsContent: React.FC<TestsContentProps> = ({ isMobile, exams, sessions, loading, error }) => {
     const theme = useTheme();
     const [tabValue, setTabValue] = useState(0);
+    const { t } = useTranslation();
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -115,7 +117,7 @@ const TestsContent: React.FC<TestsContentProps> = ({ isMobile, exams, sessions, 
                                 color: theme.palette.primary.main
                             }}
                         >
-                            Тесты олимпиады
+                            {t('tests.title')}
                         </Typography>
                     </Box>
 
@@ -127,7 +129,7 @@ const TestsContent: React.FC<TestsContentProps> = ({ isMobile, exams, sessions, 
                         <Box display="flex" justifyContent="center" alignItems="center" py={5}>
                             <CircularProgress size={40} thickness={4} />
                             <Typography variant="body1" sx={{ ml: 2 }}>
-                                Загрузка тестов...
+                                {t('tests.loading')}
                             </Typography>
                         </Box>
                     ) : (
@@ -162,8 +164,8 @@ const TestsContent: React.FC<TestsContentProps> = ({ isMobile, exams, sessions, 
                                         }
                                     }}
                                 >
-                                    <Tab label="Доступные тесты" />
-                                    <Tab label="Мои тесты" />
+                                    <Tab label={t('tests.availableTests')} />
+                                    <Tab label={t('tests.myTests')} />
                                 </Tabs>
                             </Box>
 
@@ -197,10 +199,10 @@ const TestsContent: React.FC<TestsContentProps> = ({ isMobile, exams, sessions, 
                                                     }}
                                                 >
                                                     <Typography variant="h6" color="text.secondary" gutterBottom>
-                                                        Нет доступных тестов
+                                                        {t('tests.noAvailableTests')}
                                                     </Typography>
                                                     <Typography variant="body2" color="text.secondary" mt={1}>
-                                                        На данный момент нет тестов, доступных для прохождения
+                                                        {t('tests.noAvailableTestsDesc')}
                                                     </Typography>
                                                 </Box>
                                             )}
@@ -229,10 +231,10 @@ const TestsContent: React.FC<TestsContentProps> = ({ isMobile, exams, sessions, 
                                                     }}
                                                 >
                                                     <Typography variant="h6" color="text.secondary" gutterBottom>
-                                                        У вас нет пройденных тестов
+                                                        {t('tests.noCompletedTests')}
                                                     </Typography>
                                                     <Typography variant="body2" color="text.secondary" mt={1}>
-                                                        Вы еще не приступали к прохождению тестов
+                                                        {t('tests.noCompletedTestsDesc')}
                                                     </Typography>
                                                 </Box>
                                             )}

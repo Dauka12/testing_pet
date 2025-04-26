@@ -1,6 +1,7 @@
 import { Avatar, styled, Typography, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const StyledProfileCard = styled(motion.div)(({ theme }) => ({
     backgroundColor: '#ffffff',
@@ -38,6 +39,7 @@ interface ProfileCardProps {
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ fullName }) => {
     const theme = useTheme();
+    const { t } = useTranslation();
     const initials = fullName
         .split(' ')
         .map(name => name[0])
@@ -101,7 +103,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ fullName }) => {
                         color: theme.palette.text.secondary,
                     }}
                 >
-                    Студент
+                    {t('profile.student')}
                 </Typography>
             </motion.div>
         </StyledProfileCard>

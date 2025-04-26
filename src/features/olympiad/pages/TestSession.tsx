@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import TestNavigationPanel from '../components/testsession/TestNavigationPanel.tsx';
 import TestQuestion from '../components/testsession/TestQuestion.tsx';
@@ -50,6 +51,7 @@ const ActionButton = styled(Button)(({ theme }) => ({
 const TestSession: React.FC = () => {
     const { sessionId } = useParams<{ sessionId: string }>();
     const navigate = useNavigate();
+    const { i18n } = useTranslation();
     const {
         currentSession,
         loading,
@@ -215,10 +217,10 @@ const TestSession: React.FC = () => {
                         <Grid container alignItems="center" justifyContent="space-between">
                             <Grid item xs={12} sm={8}>
                                 <Typography variant="h5" component="h1" fontWeight="600">
-                                    {currentSession.examData.nameRus}
+                                    {i18n.language === 'ru' ? currentSession.examData.nameRus : currentSession.examData.nameKaz}
                                 </Typography>
                                 <Typography variant="subtitle1" color="text.secondary">
-                                    {currentSession.examData.typeRus}
+                                    {i18n.language === 'ru' ? currentSession.examData.typeRus : currentSession.examData.typeKaz}
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} sm={4} sx={{ textAlign: { xs: 'left', sm: 'right' }, mt: { xs: 2, sm: 0 } }}>

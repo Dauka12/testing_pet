@@ -1,6 +1,7 @@
 import { Box, CircularProgress, styled, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import DashboardContent from '../components/dashboard/DashboardContent.tsx';
@@ -39,6 +40,7 @@ const Dashboard: React.FC = () => {
     const { user } = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const [open, setOpen] = useState(true);
     const [mounted, setMounted] = useState(false);
@@ -101,7 +103,7 @@ const Dashboard: React.FC = () => {
                     <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                         <CircularProgress size={60} />
                         <Typography variant="h5" sx={{ mt: 3, fontWeight: 500 }}>
-                            Загрузка данных...
+                            {t('dashboard.loading')}
                         </Typography>
                     </Box>
                 </motion.div>
