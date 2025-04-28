@@ -52,5 +52,56 @@
   "language": {
     "ru": "Русский",
     "kz": "Қазақша"
+  },
+  "login": {
+    "title": "Жүйеге кіру",
+    "subtitle": "Тестілеу жүйесіне кіру үшін деректеріңізді енгізіңіз",
+    "fields": {
+      "phone": "Телефон",
+      "password": "Құпия сөз"
+    },
+    "errors": {
+      "phoneRequired": "Телефон нөмірін көрсетіңіз",
+      "phoneFormat": "Телефон форматы дұрыс емес",
+      "passwordRequired": "Құпия сөзді көрсетіңіз"
+    },
+    "buttons": {
+      "login": "Кіру",
+      "loggingIn": "Кіру...",
+      "register": "Тіркелу"
+    }
+  },
+  "registration": {
+    "title": "Тіркелу",
+    "subtitle": "Тестілеу жүйесіне қол жеткізу үшін тіркелгі жасаңыз",
+    "fields": {
+      "firstname": "Аты",
+      "lastname": "Тегі",
+      "phone": "Телефон",
+      "password": "Құпия сөз",
+      "confirmPassword": "Құпия сөзді растау"
+    },
+    "errors": {
+      "firstnameRequired": "Атыңызды көрсетіңіз",
+      "lastnameRequired": "Тегіңізді көрсетіңіз",
+      "phoneRequired": "Телефон нөмірін көрсетіңіз",
+      "phoneFormat": "Телефон форматы дұрыс емес",
+      "passwordRequired": "Құпия сөзді көрсетіңіз",
+      "passwordLength": "Құпия сөз кемінде 6 таңбадан тұруы керек",
+      "confirmPasswordRequired": "Құпия сөзді растаңыз",
+      "passwordsMatch": "Құпия сөздер сәйкес келмейді"
+    },
+    "buttons": {
+      "register": "Тіркелу",
+      "registering": "Тіркелу...",
+      "registerSuccess": "Тіркелу сәтті аяқталды!",
+      "haveAccount": "Менің тіркелгім бар"
+    },
+    "confirm": {
+      "title": "Тіркелуді растау",
+      "message": "Енгізілген деректердің дұрыстығын тексеріңіз:",
+      "submit": "Растау",
+      "cancel": "Өзгерту"
+    }
   }
 }

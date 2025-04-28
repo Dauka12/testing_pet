@@ -52,5 +52,56 @@
     "language": {
         "ru": "Русский",
         "kz": "Қазақша"
+    },
+    "login": {
+        "title": "Вход в систему",
+        "subtitle": "Введите свои данные для входа в систему тестирования",
+        "fields": {
+            "phone": "Телефон",
+            "password": "Пароль"
+        },
+        "errors": {
+            "phoneRequired": "Укажите номер телефона",
+            "phoneFormat": "Неверный формат телефона",
+            "passwordRequired": "Укажите пароль"
+        },
+        "buttons": {
+            "login": "Войти",
+            "loggingIn": "Вход...",
+            "register": "Зарегистрироваться"
+        }
+    },
+    "registration": {
+        "title": "Регистрация",
+        "subtitle": "Создайте учетную запись для доступа к системе тестирования",
+        "fields": {
+            "firstname": "Имя",
+            "lastname": "Фамилия",
+            "phone": "Телефон",
+            "password": "Пароль",
+            "confirmPassword": "Подтверждение пароля"
+        },
+        "errors": {
+            "firstnameRequired": "Укажите имя",
+            "lastnameRequired": "Укажите фамилию",
+            "phoneRequired": "Укажите номер телефона",
+            "phoneFormat": "Неверный формат телефона",
+            "passwordRequired": "Укажите пароль",
+            "passwordLength": "Пароль должен содержать не менее 6 символов",
+            "confirmPasswordRequired": "Подтвердите пароль",
+            "passwordsMatch": "Пароли не совпадают"
+        },
+        "buttons": {
+            "register": "Зарегистрироваться",
+            "registering": "Регистрация...",
+            "registerSuccess": "Регистрация успешна!",
+            "haveAccount": "У меня есть аккаунт"
+        },
+        "confirm": {
+            "title": "Подтверждение регистрации",
+            "message": "Пожалуйста, проверьте правильность введенных данных:",
+            "submit": "Подтвердить",
+            "cancel": "Изменить"
+        }
     }
 }

@@ -60,14 +60,19 @@ const TestsContent: React.FC<TestsContentProps> = ({ isMobile, exams, sessions, 
         setTabValue(newValue);
     };
 
-    // Filter exams for test list
-    const activeExams = exams.filter(exam => {
-        if (!exam.startTime) return false;
-        const examStartTime = new Date(exam.startTime);
-        return examStartTime <= new Date();
-    });
+    // Removed time filter - now showing all exams
+    const activeExams = exams;
 
-    // Filter exams that don't already have an active or completed session
+    /* Filter exams that don't have an active or completed session
+       
+       The .some() method:
+       - Checks if at least one element in the 'sessions' array meets the condition
+       - Returns true if any session's exam ID matches the current exam's ID
+       - Returns false if no matching session is found
+       
+       The '!' operator negates the result, so we only keep exams that don't have
+       any session (i.e., exams the user hasn't started or completed yet)
+    */
     const availableExams = activeExams.filter(exam =>
         !sessions.some(session => session.examData.id === exam.id)
     );
