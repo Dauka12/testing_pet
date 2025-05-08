@@ -25,9 +25,17 @@ interface TestsContentProps {
     sessions: StudentExamSessionResponses[];
     loading: boolean;
     error: string | null;
+    isTeacher?: boolean;
 }
 
-const TestsContent: React.FC<TestsContentProps> = ({ isMobile, exams, sessions, loading, error }) => {
+const TestsContent: React.FC<TestsContentProps> = ({ 
+    isMobile, 
+    exams, 
+    sessions, 
+    loading, 
+    error,
+    isTeacher = false 
+}) => {
     const theme = useTheme();
     const [tabValue, setTabValue] = useState(0);
     const { t } = useTranslation();
@@ -220,7 +228,10 @@ const TestsContent: React.FC<TestsContentProps> = ({ isMobile, exams, sessions, 
                                                 <Grid container spacing={3}>
                                                     {sessions.map((session) => (
                                                         <Grid item xs={12} sm={6} lg={4} key={session.id}>
-                                                            <SessionCard session={session} />
+                                                            <SessionCard 
+                                                                session={session} 
+                                                                isTeacher={isTeacher}
+                                                            />
                                                         </Grid>
                                                     ))}
                                                 </Grid>

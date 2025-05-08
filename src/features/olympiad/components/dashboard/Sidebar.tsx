@@ -166,8 +166,12 @@ const Sidebar: React.FC<SidebarProps> = ({
     const language = i18n.language;
     const navigate = useNavigate();
     
-    // Check if user has admin role
-    const isAdmin = user.role && ['teacher', 'TEACHER', 'Teacher'].includes(user.role);
+    // Check if user has teacher role using the new role format
+    const isAdmin = user.role && 
+        Array.isArray(user.role) && 
+        user.role.some(role => 
+            ['teacher', 'TEACHER', 'Teacher'].includes(role.name)
+        );
     
     const changeLanguage = (lng: string) => {
         i18n.changeLanguage(lng);

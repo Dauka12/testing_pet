@@ -1,7 +1,9 @@
 import {
     AssignmentOutlined,
     CalendarToday,
+    PersonOutlined,
     PlayArrowRounded,
+    ScoreboardOutlined,
     TimerOutlined
 } from '@mui/icons-material';
 import {
@@ -50,14 +52,14 @@ const InfoItem = styled(Box)(({ theme }) => ({
 
 interface SessionCardProps {
     session: StudentExamSessionResponses;
+    isTeacher?: boolean;
 }
 
-const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
+const SessionCard: React.FC<SessionCardProps> = ({ session, isTeacher = false }) => {
     const navigate = useNavigate();
     const theme = useTheme();
     const { t, i18n } = useTranslation();
     
-
     // Check if the session is still active (not completed or time remaining)
     const isActive = () => {
         if (!session.endTime) return false;
@@ -77,6 +79,7 @@ const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
     };
 
     const active = isActive();
+    const isCompleted = session.completed !== undefined ? session.completed : !active;
 
     return (
         <StyledCard
@@ -118,6 +121,25 @@ const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
                 </Box>
 
                 <CardContent sx={{ flexGrow: 1, pt: 2 }}>
+                    {/* Teacher view - show student information */}
+                    {isTeacher && session.firstName && session.lastName && (
+                        <Box sx={{ mb: 2 }}>
+                            <InfoItem>
+                                <PersonOutlined 
+                                    fontSize="small" 
+                                    sx={{ 
+                                        mr: 1.5, 
+                                        color: theme.palette.info.main,
+                                        opacity: 0.8
+                                    }} 
+                                />
+                                <Typography variant="body2" fontWeight={500}>
+                                    {session.lastName} {session.firstName}
+                                </Typography>
+                            </InfoItem>
+                        </Box>
+                    )}
+
                     <Box sx={{ mb: 2 }}>
                         <InfoItem>
                             <CalendarToday 
@@ -146,6 +168,23 @@ const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
                                 {t('testCard.duration')}{session.examData.durationInMinutes} {t('testCard.minutes')}
                             </Typography>
                         </InfoItem>
+                        
+                        {/* Score information - display for teachers or completed sessions */}
+                        {(isTeacher || isCompleted) && session.score !== undefined && (
+                            <InfoItem>
+                                <ScoreboardOutlined 
+                                    fontSize="small" 
+                                    sx={{ 
+                                        mr: 1.5, 
+                                        color: theme.palette.success.main,
+                                        opacity: 0.8
+                                    }} 
+                                />
+                                <Typography variant="body2" fontWeight={500}>
+                                    {t('Score')}: {session.score}
+                                </Typography>
+                            </InfoItem>
+                        )}
                     </Box>
 
                     <Divider sx={{ my: 2 }} />
@@ -155,10 +194,10 @@ const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
                             {t('testCard.status')}
                         </Typography>
                         <Chip
-                            label={active ? t('sessionCard.inProgress') : t('sessionCard.completed')}
+                            label={isCompleted ? t('sessionCard.completed') : t('sessionCard.inProgress')}
                             size="small"
                             sx={{
-                                bgcolor: active ? theme.palette.primary.main : theme.palette.success.main,
+                                bgcolor: isCompleted ? theme.palette.success.main : theme.palette.primary.main,
                                 color: '#fff',
                                 fontWeight: 500,
                                 fontSize: '0.75rem',
@@ -172,12 +211,12 @@ const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
                     <SessionButton
                         fullWidth
                         variant="contained"
-                        color={active ? "primary" : "success"}
-                        startIcon={active ? <PlayArrowRounded /> : <AssignmentOutlined />}
+                        color={isCompleted ? "success" : "primary"}
+                        startIcon={isCompleted ? <AssignmentOutlined /> : <PlayArrowRounded />}
                         onClick={handleViewSession}
                         disableElevation
                     >
-                        {active ? t('sessionCard.continueTest') : t('sessionCard.viewResults')}
+                        {isCompleted ? t('sessionCard.viewResults') : t('sessionCard.continueTest')}
                     </SessionButton>
                 </Box>
             </Paper>

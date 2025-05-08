@@ -1,3 +1,8 @@
+export interface RoleData {
+    id: number;
+    name: string;
+}
+
 export interface AuthUser {
     firstname: string;
     lastname: string;
@@ -6,7 +11,7 @@ export interface AuthUser {
     phone: string;
     university: string;
     email: string;
-    role: string | null;
+    role: RoleData[] | null;
 }
 
 export interface AuthState {
@@ -31,5 +36,5 @@ export interface LoginResponse {
     phone: string;
     university: string;
     email: string;
-    role: string | null;
+    role: RoleData[] | null;
 }

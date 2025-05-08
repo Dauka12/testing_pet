@@ -53,7 +53,8 @@ const Dashboard: React.FC = () => {
         sessions,
         loading: sessionsLoading,
         error: sessionsError,
-        getStudentSessions
+        getStudentSessions,
+        isTeacher
     } = useTestSessionManager();
 
     const handleDrawerToggle = () => {
@@ -82,7 +83,7 @@ const Dashboard: React.FC = () => {
 
         // Load tests data
         fetchAllExams();
-        getStudentSessions();
+        getStudentSessions(); // This now automatically uses the teacher endpoint if needed
     }, [fetchAllExams, getStudentSessions, isMobile]);
 
     if (!user) {
@@ -192,6 +193,7 @@ const Dashboard: React.FC = () => {
                                 sessions={sessions}
                                 loading={isLoading}
                                 error={error}
+                                isTeacher={isTeacher}
                             />
                         )}
                     </motion.div>

@@ -7,6 +7,7 @@ import {
     endExamSessionThunk,
     getExamSessionThunk,
     getStudentExamSessionsThunk,
+    getTeacherExamSessionsThunk, // Add new thunk import
     startExamSessionThunk,
     updateAnswerThunk
 } from '../store/slices/testSessionSlice.ts';
@@ -24,7 +25,16 @@ const useTestSessionManager = () => {
         answerUpdating,
         answerError
     } = useOlympiadSelector(state => state.testSession);
-
+    
+    const { user } = useOlympiadSelector(state => state.auth);
+    
+    // Check if user is a teacher with the new role structure
+    const isTeacher = user?.role && 
+        Array.isArray(user.role) && 
+        user.role.some(role => 
+            ['teacher', 'TEACHER', 'Teacher'].includes(role.name)
+        );
+    
     // Start a new exam session
     const startExamSession = useCallback(async (examId: number) => {
         return await dispatch(startExamSessionThunk({ examTestId: examId }));
@@ -40,10 +50,13 @@ const useTestSessionManager = () => {
         return dispatch(getExamSessionThunk(sessionId));
     }, [dispatch]);
 
-    // Get all sessions for the current student
+    // Get all sessions - automatically chooses the correct endpoint based on user role
     const getStudentSessions = useCallback(() => {
+        if (isTeacher) {
+            return dispatch(getTeacherExamSessionsThunk());
+        }
         return dispatch(getStudentExamSessionsThunk());
-    }, [dispatch]);
+    }, [dispatch, isTeacher]);
 
     // Update an answer during an active exam
     const updateAnswer = useCallback(async (sessionId: number, questionId: number, optionId: number) => {
@@ -104,6 +117,7 @@ const useTestSessionManager = () => {
         error,
         answerUpdating,
         answerError,
+        isTeacher,  // Add isTeacher flag to the returned object
 
         // Actions
         startExamSession,

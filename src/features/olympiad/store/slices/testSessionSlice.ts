@@ -4,6 +4,7 @@ import {
     endExamSession as endExamSessionApi,
     getExamSession as getExamSessionApi,
     getStudentExamSessions as getStudentExamSessionsApi,
+    getTeacherExamSessions as getTeacherExamSessionsApi, // Import the new API function
     startExamSession as startExamSessionApi,
     updateAnswer as updateAnswerApi
 } from '../../api/testSessionApi.ts';
@@ -77,6 +78,20 @@ export const getStudentExamSessionsThunk = createAsyncThunk(
                 return rejectWithValue(error.message);
             }
             return rejectWithValue('Failed to retrieve exam sessions');
+        }
+    }
+);
+
+export const getTeacherExamSessionsThunk = createAsyncThunk(
+    'olympiadTestSession/getTeacherSessions',
+    async (_, { rejectWithValue }) => {
+        try {
+            return await getTeacherExamSessionsApi();
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                return rejectWithValue(error.message);
+            }
+            return rejectWithValue('Failed to retrieve teacher exam sessions');
         }
     }
 );
@@ -207,6 +222,20 @@ const testSessionSlice = createSlice({
                 state.sessions = action.payload;
             })
             .addCase(getStudentExamSessionsThunk.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+
+            // Get teacher exam sessions
+            .addCase(getTeacherExamSessionsThunk.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getTeacherExamSessionsThunk.fulfilled, (state, action) => {
+                state.loading = false;
+                state.sessions = action.payload;
+            })
+            .addCase(getTeacherExamSessionsThunk.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             })

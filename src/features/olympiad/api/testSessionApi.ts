@@ -70,6 +70,16 @@ export const getStudentExamSessions = async (): Promise<StudentExamSessionRespon
     }
 };
 
+// Get all sessions for the authenticated teacher
+export const getTeacherExamSessions = async (): Promise<StudentExamSessionResponses[]> => {
+    try {
+        const response = await api.get<StudentExamSessionResponses[]>('/teacher');
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || 'Failed to retrieve teacher exam sessions');
+    }
+};
+
 // Update an answer during an active exam
 export const updateAnswer = async (request: UpdateAnswerRequest): Promise<string> => {
     try {

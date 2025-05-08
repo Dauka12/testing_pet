@@ -59,6 +59,10 @@ export interface StudentExamSessionResponses {
     examData: SessionExamResponses;
     startTime: string;
     endTime: string;
+    score?: number;        // Score for teacher view
+    completed?: boolean;   // Completion status for teacher view
+    firstName?: string;    // Student's first name for teacher view
+    lastName?: string;     // Student's last name for teacher view
 }
 
 export interface TestSessionState {
