@@ -119,10 +119,10 @@ const OlympiadManager: React.FC = () => {
     };
 
     const navigationItems = [
-        { name: 'Главная', icon: <HomeIcon />, view: 'dashboard' as ViewState },
-        { name: 'Список экзаменов', icon: <ListIcon />, view: 'examList' as ViewState },
-        { name: 'Создать экзамен', icon: <AddBoxIcon />, view: 'createExam' as ViewState },
-        { name: 'AI генерация', icon: <SmartToyIcon />, view: 'aiGenerator' as ViewState },
+        { name: 'Басты бет', icon: <HomeIcon />, view: 'dashboard' as ViewState },
+        { name: 'Емтихандар тізімі', icon: <ListIcon />, view: 'examList' as ViewState },
+        { name: 'Емтихан құру', icon: <AddBoxIcon />, view: 'createExam' as ViewState },
+        { name: 'ЖИ генерациясы', icon: <SmartToyIcon />, view: 'aiGenerator' as ViewState },
     ];
 
     const drawerContent = (
@@ -138,10 +138,10 @@ const OlympiadManager: React.FC = () => {
         >
             <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
                 <Typography variant="h6" color="primary" gutterBottom>
-                    Управление тестами
+                    Тесттерді басқару
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    Создавайте и управляйте экзаменами
+                    Емтихандар құру және басқару
                 </Typography>
             </Box>
 
@@ -203,7 +203,7 @@ const OlympiadManager: React.FC = () => {
                         noWrap
                         sx={{ maxWidth: 200 }}
                     >
-                        {currentExam.nameRus}
+                        {currentExam.nameKaz || currentExam.nameRus}
                     </Typography>
                 </Box>
             )}
@@ -221,7 +221,7 @@ const OlympiadManager: React.FC = () => {
                 onClick={() => setActiveView('dashboard')}
             >
                 <HomeIcon sx={{ mr: 0.5, fontSize: 18 }} />
-                Главная
+                Басты бет
             </Link>
         ];
 
@@ -229,21 +229,21 @@ const OlympiadManager: React.FC = () => {
             case 'examList':
                 items.push(
                     <Typography color="text.primary" key="list">
-                        Список экзаменов
+                        Емтихандар тізімі
                     </Typography>
                 );
                 break;
             case 'createExam':
                 items.push(
                     <Typography color="text.primary" key="create">
-                        Создать экзамен
+                        Емтихан құру
                     </Typography>
                 );
                 break;
             case 'aiGenerator':
                 items.push(
                     <Typography color="text.primary" key="ai">
-                        AI генерация
+                        ЖИ генерациясы
                     </Typography>
                 );
                 break;
@@ -256,13 +256,13 @@ const OlympiadManager: React.FC = () => {
                         sx={{ cursor: 'pointer' }}
                         onClick={() => setActiveView('examList')}
                     >
-                        Список экзаменов
+                        Емтихандар тізімі
                     </Link>
                 );
                 if (currentExam) {
                     items.push(
                         <Typography color="text.primary" key="exam-name" noWrap>
-                            {currentExam.nameRus}
+                            {currentExam.nameKaz || currentExam.nameRus}
                         </Typography>
                     );
                 }
@@ -279,21 +279,21 @@ const OlympiadManager: React.FC = () => {
     // Dashboard cards
     const dashboardCards = [
         {
-            title: 'Список экзаменов',
-            description: 'Просмотр и управление существующими экзаменами',
+            title: 'Емтихандар тізімі',
+            description: 'Қолданыстағы емтихандарды қарау және басқару',
             icon: <ListIcon fontSize="large" color="primary" />,
             view: 'examList' as ViewState,
             count: exams.length
         },
         {
-            title: 'Создать экзамен',
-            description: 'Добавление нового экзамена вручную',
+            title: 'Емтихан құру',
+            description: 'Жаңа емтиханды қолмен қосу',
             icon: <AddBoxIcon fontSize="large" color="primary" />,
             view: 'createExam' as ViewState
         },
         {
-            title: 'Генерация с помощью AI',
-            description: 'Автоматическое создание тестов с использованием искусственного интеллекта',
+            title: 'ЖИ көмегімен генерациялау',
+            description: 'Жасанды интеллект көмегімен тесттерді автоматты түрде құру',
             icon: <SmartToyIcon fontSize="large" color="primary" />,
             view: 'aiGenerator' as ViewState
         }
@@ -303,7 +303,7 @@ const OlympiadManager: React.FC = () => {
     const renderDashboard = () => (
         <Box>
             <Typography variant="h5" component="h1" gutterBottom fontWeight="bold" sx={{ mb: 4 }}>
-                Панель управления
+                Басқару панелі
             </Typography>
 
             <Box
@@ -385,7 +385,7 @@ const OlympiadManager: React.FC = () => {
             {exams.length > 0 && (
                 <Box sx={{ mt: 6 }}>
                     <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
-                        Последние экзамены
+                        Соңғы емтихандар
                     </Typography>
 
                     <Box
@@ -418,10 +418,10 @@ const OlympiadManager: React.FC = () => {
                                 >
                                     <CardContent>
                                         <Typography variant="subtitle1" fontWeight="medium" noWrap>
-                                            {exam.nameRus}
+                                            {exam.nameKaz || exam.nameRus}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary" gutterBottom>
-                                            {exam.typeRus} • {exam.durationInMinutes} мин.
+                                            {exam.typeKaz || exam.typeRus} • {exam.durationInMinutes} мин.
                                         </Typography>
                                         <Box
                                             sx={{
@@ -441,7 +441,7 @@ const OlympiadManager: React.FC = () => {
                                                     color: 'white',
                                                 }}
                                             >
-                                                {exam.questions?.length || 0} вопросов
+                                                {exam.questions?.length || 0} сұрақтар
                                             </Typography>
                                         </Box>
                                     </CardContent>
@@ -473,7 +473,7 @@ const OlympiadManager: React.FC = () => {
 
                         {!isSmallMobile && (
                             <Typography variant="h6" noWrap component="div">
-                            Менеджер
+                                Менеджер
                             </Typography>
                         )}
                     </Box>
@@ -524,10 +524,10 @@ const OlympiadManager: React.FC = () => {
                             <ArrowBackIcon />
                         </IconButton>
                         <Typography component="span" variant="subtitle1">
-                            {activeView === 'examList' && 'Список экзаменов'}
-                            {activeView === 'createExam' && 'Создать экзамен'}
-                            {activeView === 'aiGenerator' && 'AI генерация'}
-                            {activeView === 'examDetails' && (currentExam ? currentExam.nameRus : 'Детали экзамена')}
+                            {activeView === 'examList' && 'Емтихандар тізімі'}
+                            {activeView === 'createExam' && 'Емтихан құру'}
+                            {activeView === 'aiGenerator' && 'ЖИ генерациясы'}
+                            {activeView === 'examDetails' && (currentExam ? currentExam.nameKaz || currentExam.nameRus : 'Емтихан мәліметтері')}
                         </Typography>
                     </Box>
                 )}
@@ -572,7 +572,10 @@ const OlympiadManager: React.FC = () => {
                                         <ExamViewer
                                             exam={currentExam}
                                             onEdit={() => setExamView('edit')}
-
+                                            onEditQuestion={(questionId) => {
+                                                setSelectedQuestionId(questionId);
+                                                setExamView('edit');
+                                            }}
                                         />
                                     ) : (
                                         <QuestionForm

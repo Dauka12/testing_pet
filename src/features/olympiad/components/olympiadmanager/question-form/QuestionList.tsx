@@ -32,7 +32,7 @@ const QuestionList: React.FC<QuestionListProps> = ({
     return (
         <Paper elevation={3} sx={{ p: 3, borderRadius: 2, mb: 4 }}>
             <Typography variant="h6" gutterBottom>
-                Вопросы экзамена ({questions.length})
+                Емтихан сұрақтары ({questions.length})
             </Typography>
             <List>
                 {questions.map((q) => (
@@ -46,21 +46,21 @@ const QuestionList: React.FC<QuestionListProps> = ({
                         }}
                     >
                         <ListItemText
-                            primary={q.questionRus}
-                            secondary={`${q.options.length} вариантов ответа`}
+                            primary={q.questionKaz}
+                            secondary={`${q.options.length} жауап нұсқалары`}
                         />
                         <ListItemSecondaryAction>
-                            <Tooltip title="Просмотреть">
+                            <Tooltip title="Қарау">
                                 <IconButton edge="end" onClick={() => onView(q)}>
                                     <VisibilityIcon color="primary" />
                                 </IconButton>
                             </Tooltip>
-                            <Tooltip title="Редактировать">
+                            <Tooltip title="Өңдеу">
                                 <IconButton edge="end" onClick={() => onEdit(q)}>
                                     <EditIcon color="secondary" />
                                 </IconButton>
                             </Tooltip>
-                            <Tooltip title="Удалить">
+                            <Tooltip title="Жою">
                                 <IconButton edge="end" onClick={() => onDelete(q.id)}>
                                     <DeleteIcon color="error" />
                                 </IconButton>

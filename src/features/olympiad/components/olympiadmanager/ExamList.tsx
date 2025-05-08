@@ -75,10 +75,10 @@ const ExamList: React.FC<ExamListProps> = ({ onEditExam, onViewExam }) => {
                     transition={{ duration: 0.5 }}
                 >
                     <Typography variant="h6" color="text.secondary" gutterBottom>
-                        Экзамены не найдены
+                        Емтихандар табылмады
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ mt: 1, mb: 3 }}>
-                        Создайте новый экзамен, используя кнопку ниже
+                        Төмендегі батырманы қолданып жаңа емтихан жасаңыз
                     </Typography>
                     <Button 
                         variant="contained" 
@@ -88,7 +88,7 @@ const ExamList: React.FC<ExamListProps> = ({ onEditExam, onViewExam }) => {
                             // For now, we'll leave it as a placeholder
                         }}
                     >
-                        Создать экзамен
+                        Емтихан құру
                     </Button>
                 </motion.div>
             </Box>
@@ -98,7 +98,7 @@ const ExamList: React.FC<ExamListProps> = ({ onEditExam, onViewExam }) => {
     return (
         <>
             <Typography variant="h5" gutterBottom fontWeight="bold" sx={{ mb: 3 }}>
-                Список экзаменов
+                Емтихандар тізімі
             </Typography>
 
             {/* Mobile Card View */}
@@ -116,7 +116,7 @@ const ExamList: React.FC<ExamListProps> = ({ onEditExam, onViewExam }) => {
                                 <CardContent>
                                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
                                         <Typography variant="subtitle1" fontWeight="medium">
-                                            {exam.nameRus}
+                                            {exam.nameKaz || exam.nameRus}
                                         </Typography>
                                         <Typography variant="caption" color="text.secondary">
                                             ID: {exam.id}
@@ -124,13 +124,13 @@ const ExamList: React.FC<ExamListProps> = ({ onEditExam, onViewExam }) => {
                                     </Box>
                                     
                                     <Typography variant="body2" color="text.secondary" gutterBottom>
-                                        Тип: {exam.typeRus}
+                                        Түрі: {exam.typeKaz || exam.typeRus}
                                     </Typography>
                                     
                                     <Grid container spacing={2} sx={{ mt: 1 }}>
                                         <Grid item xs={6}>
                                             <Typography variant="caption" color="text.secondary">
-                                                Время начала:
+                                                Басталу уақыты:
                                             </Typography>
                                             <Typography variant="body2">
                                                 {exam.startTime && format(new Date(exam.startTime), 'dd MMM yyyy, HH:mm', { locale: ru })}
@@ -138,7 +138,7 @@ const ExamList: React.FC<ExamListProps> = ({ onEditExam, onViewExam }) => {
                                         </Grid>
                                         <Grid item xs={6}>
                                             <Typography variant="caption" color="text.secondary">
-                                                Длительность:
+                                                Ұзақтығы:
                                             </Typography>
                                             <Typography variant="body2">
                                                 {exam.durationInMinutes} мин.
@@ -165,7 +165,7 @@ const ExamList: React.FC<ExamListProps> = ({ onEditExam, onViewExam }) => {
                                                 borderRadius: 10
                                             }}
                                         >
-                                            {exam.questions?.length || 0} вопросов
+                                            {exam.questions?.length || 0} сұрақтар
                                         </Typography>
                                         
                                         <Box>
@@ -207,12 +207,12 @@ const ExamList: React.FC<ExamListProps> = ({ onEditExam, onViewExam }) => {
                         <TableHead sx={{ bgcolor: 'primary.main' }}>
                             <TableRow>
                                 <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>ID</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Название</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Тип</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Время начала</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Длительность</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Вопросы</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Действия</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Атауы</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Түрі</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Басталу уақыты</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Ұзақтығы</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Сұрақтар</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Әрекеттер</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -223,8 +223,8 @@ const ExamList: React.FC<ExamListProps> = ({ onEditExam, onViewExam }) => {
                                     sx={{ '&:hover': { bgcolor: 'action.hover' } }}
                                 >
                                     <TableCell>{exam.id}</TableCell>
-                                    <TableCell>{exam.nameRus}</TableCell>
-                                    <TableCell>{exam.typeRus}</TableCell>
+                                    <TableCell>{exam.nameKaz || exam.nameRus}</TableCell>
+                                    <TableCell>{exam.typeKaz || exam.typeRus}</TableCell>
                                     <TableCell>
                                         {exam.startTime && format(new Date(exam.startTime), 'dd MMM yyyy, HH:mm', { locale: ru })}
                                     </TableCell>
@@ -232,7 +232,7 @@ const ExamList: React.FC<ExamListProps> = ({ onEditExam, onViewExam }) => {
                                     <TableCell>{exam.questions?.length || 0}</TableCell>
                                     <TableCell>
                                         <Box sx={{ display: 'flex' }}>
-                                            <Tooltip title="Просмотреть тест">
+                                            <Tooltip title="Тестті қарау">
                                                 <IconButton
                                                     color="primary"
                                                     onClick={(e) => {
@@ -243,7 +243,7 @@ const ExamList: React.FC<ExamListProps> = ({ onEditExam, onViewExam }) => {
                                                     <VisibilityIcon />
                                                 </IconButton>
                                             </Tooltip>
-                                            <Tooltip title="Управление вопросами">
+                                            <Tooltip title="Сұрақтарды басқару">
                                                 <IconButton
                                                     color="secondary"
                                                     onClick={(e) => {
@@ -254,7 +254,7 @@ const ExamList: React.FC<ExamListProps> = ({ onEditExam, onViewExam }) => {
                                                     <EditIcon />
                                                 </IconButton>
                                             </Tooltip>
-                                            <Tooltip title="Удалить">
+                                            <Tooltip title="Жою">
                                                 <IconButton
                                                     color="error"
                                                     onClick={(e) => confirmDelete(exam.id, e)}
@@ -279,18 +279,18 @@ const ExamList: React.FC<ExamListProps> = ({ onEditExam, onViewExam }) => {
                     sx: { borderRadius: 2, p: 1 }
                 }}
             >
-                <DialogTitle>Удаление экзамена</DialogTitle>
+                <DialogTitle>Емтиханды жою</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Вы уверены, что хотите удалить этот экзамен? Это действие нельзя отменить.
+                        Бұл емтиханды жойғыңыз келетініне сенімдісіз бе? Бұл әрекетті кері қайтару мүмкін емес.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={cancelDelete} color="primary">
-                        Отмена
+                        Бас тарту
                     </Button>
                     <Button onClick={handleDelete} color="error">
-                        Удалить
+                        Жою
                     </Button>
                 </DialogActions>
             </Dialog>

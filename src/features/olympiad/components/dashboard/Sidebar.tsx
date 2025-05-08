@@ -165,6 +165,10 @@ const Sidebar: React.FC<SidebarProps> = ({
     const { t, i18n } = useTranslation();
     const language = i18n.language;
     const navigate = useNavigate();
+    
+    // Check if user has admin role
+    const isAdmin = user.role && ['teacher', 'TEACHER', 'Teacher'].includes(user.role);
+    
     const changeLanguage = (lng: string) => {
         i18n.changeLanguage(lng);
     }
@@ -279,22 +283,25 @@ const Sidebar: React.FC<SidebarProps> = ({
                         />
                     </MenuItemButton>
 
-                    <MenuItemButton
-                        onClick={() => navigate('/manager')}
-                    >
-                        <ListItemIcon>
-                            <AssignmentOutlined sx={{ 
-                                color: currentView === 'tests' ? theme.palette.primary.main : theme.palette.text.secondary 
-                            }} />
-                        </ListItemIcon>
-                        <ListItemText
-                            primary={t('Менеджер')}
-                            primaryTypographyProps={{
-                                fontWeight: currentView === 'tests' ? 600 : 400,
-                                color: currentView === 'tests' ? theme.palette.primary.main : 'inherit'
-                            }}
-                        />
-                    </MenuItemButton>
+                    {/* Conditionally render Manager button only for admin users */}
+                    {isAdmin && (
+                        <MenuItemButton
+                            onClick={() => navigate('/manager')}
+                        >
+                            <ListItemIcon>
+                                <AssignmentOutlined sx={{ 
+                                    color: currentView === 'manager' ? theme.palette.primary.main : theme.palette.text.secondary 
+                                }} />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary={t('Менеджер')}
+                                primaryTypographyProps={{
+                                    fontWeight: currentView === 'manager' ? 600 : 400,
+                                    color: currentView === 'manager' ? theme.palette.primary.main : 'inherit'
+                                }}
+                            />
+                        </MenuItemButton>
+                    )}
                 </List>
             </Paper>
 

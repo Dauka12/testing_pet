@@ -108,7 +108,7 @@ const AiTestGenerator: React.FC<AiTestGeneratorProps> = ({ onSuccess }) => {
 
     const handleGenerate = async () => {
         if (!subject.trim()) {
-            setError('Пожалуйста, укажите тему теста');
+            setError('Тақырыпты көрсетіңіз');
             return;
         }
 
@@ -140,11 +140,11 @@ const AiTestGenerator: React.FC<AiTestGeneratorProps> = ({ onSuccess }) => {
         <Box>
             <Paper elevation={3} sx={{ p: 4, borderRadius: 2, mb: 4, position: 'relative' }}>
                 <Typography variant="h5" component="h2" gutterBottom color="primary" fontWeight="bold">
-                    Создание теста с помощью искусственного интеллекта
+                    Жасанды интеллект көмегімен тест құру
                 </Typography>
                 <Typography variant="body1" paragraph color="text.secondary">
-                    Укажите тему, количество вопросов и уровень сложности, чтобы сгенерировать тест.
-                    Наш ИИ автоматически создаст для вас набор вопросов и вариантов ответов.
+                    Тест құру үшін тақырып, сұрақтар саны мен күрделілік деңгейін көрсетіңіз.
+                    Біздің ЖИ автоматты түрде сіз үшін сұрақтар мен жауап нұсқаларын құрады.
                 </Typography>
 
                 <form onSubmit={(e) => { e.preventDefault(); handleGenerate(); }}>
@@ -152,18 +152,18 @@ const AiTestGenerator: React.FC<AiTestGeneratorProps> = ({ onSuccess }) => {
                         <Grid item xs={12}>
                             <TextField
                                 fullWidth
-                                label="Тема теста"
+                                label="Тест тақырыбы"
                                 value={subject}
                                 onChange={(e) => setSubject(e.target.value)}
                                 disabled={isGenerating}
                                 required
-                                helperText="Например: Информационные технологии, Математика, Программирование"
+                                helperText="Мысалы: Ақпараттық технологиялар, Математика, Бағдарламалау"
                             />
                         </Grid>
                         
                         <Grid item xs={12} md={6}>
                             <Typography id="questions-slider" gutterBottom>
-                                Количество вопросов: {numQuestions}
+                                Сұрақтар саны: {numQuestions}
                             </Typography>
                             <Slider
                                 value={numQuestions}
@@ -179,18 +179,18 @@ const AiTestGenerator: React.FC<AiTestGeneratorProps> = ({ onSuccess }) => {
                         
                         <Grid item xs={12} md={6}>
                             <FormControl fullWidth disabled={isGenerating}>
-                                <InputLabel id="difficulty-label">Сложность</InputLabel>
+                                <InputLabel id="difficulty-label">Күрделілігі</InputLabel>
                                 <Select
                                     labelId="difficulty-label"
                                     value={difficulty}
-                                    label="Сложность"
+                                    label="Күрделілігі"
                                     onChange={(e) => setDifficulty(e.target.value)}
                                 >
-                                    <MenuItem value="easy">Легкий</MenuItem>
-                                    <MenuItem value="medium">Средний</MenuItem>
-                                    <MenuItem value="hard">Сложный</MenuItem>
+                                    <MenuItem value="easy">Жеңіл</MenuItem>
+                                    <MenuItem value="medium">Орташа</MenuItem>
+                                    <MenuItem value="hard">Күрделі</MenuItem>
                                 </Select>
-                                <FormHelperText>Выберите уровень сложности теста</FormHelperText>
+                                <FormHelperText>Тест күрделілік деңгейін таңдаңыз</FormHelperText>
                             </FormControl>
                         </Grid>
                         
@@ -210,7 +210,7 @@ const AiTestGenerator: React.FC<AiTestGeneratorProps> = ({ onSuccess }) => {
                                 type="submit"
                                 sx={{ py: 1.5 }}
                             >
-                                {isGenerating ? 'Генерация...' : 'Сгенерировать тест'}
+                                {isGenerating ? 'Жасалуда...' : 'Тест жасау'}
                             </Button>
                         </Grid>
                     </Grid>
@@ -251,16 +251,16 @@ const AiTestGenerator: React.FC<AiTestGeneratorProps> = ({ onSuccess }) => {
                                 
                                 <Typography variant="h6" gutterBottom>
                                     {loadingProgress < 40
-                                        ? 'Анализируем тему...'
+                                        ? 'Тақырыпты талдау...'
                                         : loadingProgress < 70
-                                        ? 'Генерируем вопросы...'
+                                        ? 'Сұрақтарды жасау...'
                                         : loadingProgress < 90
-                                        ? 'Создаем варианты ответов...'
-                                        : 'Финализируем тест...'}
+                                        ? 'Жауап нұсқаларын құру...'
+                                        : 'Тесті аяқтау...'}
                                 </Typography>
                                 
                                 <Typography variant="body2" color="text.secondary">
-                                    {Math.round(loadingProgress)}% завершено
+                                    {Math.round(loadingProgress)}% аяқталды
                                 </Typography>
 
                                 <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
@@ -276,7 +276,7 @@ const AiTestGenerator: React.FC<AiTestGeneratorProps> = ({ onSuccess }) => {
                                         }}
                                     >
                                         <Typography variant="body2" fontStyle="italic" color="text.secondary">
-                                            Это может занять некоторое время...
+                                            Бұл біраз уақыт алуы мүмкін...
                                         </Typography>
                                     </motion.div>
                                 </Box>
@@ -295,23 +295,23 @@ const AiTestGenerator: React.FC<AiTestGeneratorProps> = ({ onSuccess }) => {
                 >
                     <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
                         <Typography variant="h5" gutterBottom color="primary" fontWeight="bold">
-                            Сгенерированный тест: {generatedExam.nameRus}
+                            Жасалған тест: {generatedExam.nameKaz || generatedExam.nameRus}
                         </Typography>
                         
                         <Box sx={{ mb: 3 }}>
                             <Typography variant="subtitle1">
-                                <strong>Тип:</strong> {generatedExam.typeRus}
+                                <strong>Түрі:</strong> {generatedExam.typeKaz || generatedExam.typeRus}
                             </Typography>
                             <Typography variant="subtitle1">
-                                <strong>Длительность:</strong> {generatedExam.durationInMinutes} минут
+                                <strong>Ұзақтығы:</strong> {generatedExam.durationInMinutes} минут
                             </Typography>
                             <Typography variant="subtitle1">
-                                <strong>Количество вопросов:</strong> {generatedExam.questions?.length || 0}
+                                <strong>Сұрақтар саны:</strong> {generatedExam.questions?.length || 0}
                             </Typography>
                         </Box>
 
                         <Typography variant="h6" gutterBottom sx={{ mt: 4, mb: 2 }}>
-                            Вопросы теста:
+                            Тест сұрақтары:
                         </Typography>
                         
                         {generatedExam.questions?.map((question, index) => (
@@ -332,7 +332,7 @@ const AiTestGenerator: React.FC<AiTestGeneratorProps> = ({ onSuccess }) => {
                                         }}
                                     >
                                         <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-                                            Вопрос {index + 1}: {question.questionRus}
+                                            Сұрақ {index + 1}: {question.questionKaz || question.questionRus}
                                         </Typography>
                                         
                                         <Box sx={{ pl: 2 }}>
@@ -346,7 +346,7 @@ const AiTestGenerator: React.FC<AiTestGeneratorProps> = ({ onSuccess }) => {
                                                         fontWeight: option.id === question.correctOptionId ? 'bold' : 'normal'
                                                     }}
                                                 >
-                                                    {optIndex + 1}. {option.nameRus}
+                                                    {optIndex + 1}. {option.nameKaz || option.nameRus}
                                                     {option.id === question.correctOptionId && ' ✓'}
                                                 </Typography>
                                             ))}
@@ -370,7 +370,7 @@ const AiTestGenerator: React.FC<AiTestGeneratorProps> = ({ onSuccess }) => {
                             >
                                 <Box sx={{ mt: 3, textAlign: 'center' }}>
                                     <Typography variant="body1" color="success.main" gutterBottom>
-                                        Тест успешно сгенерирован и сохранен!
+                                        Тест сәтті жасалды және сақталды!
                                     </Typography>
                                     <Button 
                                         variant="contained" 
@@ -380,7 +380,7 @@ const AiTestGenerator: React.FC<AiTestGeneratorProps> = ({ onSuccess }) => {
                                         }}
                                         sx={{ mr: 2 }}
                                     >
-                                        Создать новый тест
+                                        Жаңа тест жасау
                                     </Button>
                                 </Box>
                             </motion.div>

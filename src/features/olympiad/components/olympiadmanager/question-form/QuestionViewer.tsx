@@ -24,14 +24,14 @@ const QuestionViewer: React.FC<QuestionViewerProps> = ({ question, onClose, onEd
         <Paper elevation={3} sx={{ p: 3, borderRadius: 2, mb: 4 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Typography variant="h6">
-                    Просмотр вопроса
+                    Сұрақты қарау
                 </Typography>
                 <Button
                     variant="outlined"
                     size="small"
                     onClick={onClose}
                 >
-                    Закрыть
+                    Жабу
                 </Button>
             </Box>
 
@@ -39,16 +39,16 @@ const QuestionViewer: React.FC<QuestionViewerProps> = ({ question, onClose, onEd
 
             <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle1">Вопрос (Рус):</Typography>
-                    <Typography paragraph>{question.questionRus}</Typography>
+                    <Typography variant="subtitle1">Сұрақ (Қаз):</Typography>
+                    <Typography paragraph>{question.questionKaz}</Typography>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <Typography variant="subtitle1">Вопрос (Каз):</Typography>
-                    <Typography paragraph>{question.questionKaz}</Typography>
+                    <Typography variant="subtitle1">Сұрақ (Орыс):</Typography>
+                    <Typography paragraph>{question.questionRus}</Typography>
                 </Grid>
             </Grid>
 
-            <Typography variant="subtitle1" sx={{ mt: 2, mb: 1 }}>Варианты ответов:</Typography>
+            <Typography variant="subtitle1" sx={{ mt: 2, mb: 1 }}>Жауап нұсқалары:</Typography>
             <List>
                 {question.options.map((option) => (
                     <ListItem
@@ -69,16 +69,16 @@ const QuestionViewer: React.FC<QuestionViewerProps> = ({ question, onClose, onEd
                             primary={(
                                 <Box>
                                     <Typography component="span" fontWeight={option.id === question.correctOptionId ? 'bold' : 'normal'}>
-                                        {option.nameRus}
+                                        {option.nameKaz}
                                     </Typography>
                                     {option.id === question.correctOptionId && (
                                         <Typography component="span" color="success.main" sx={{ ml: 1 }}>
-                                            (правильный ответ)
+                                            (дұрыс жауап)
                                         </Typography>
                                     )}
                                 </Box>
                             )}
-                            secondary={option.nameKaz}
+                            secondary={option.nameRus}
                         />
                     </ListItem>
                 ))}
@@ -90,7 +90,7 @@ const QuestionViewer: React.FC<QuestionViewerProps> = ({ question, onClose, onEd
                     color="secondary"
                     onClick={() => onEdit(question)}
                 >
-                    Редактировать этот вопрос
+                    Бұл сұрақты өңдеу
                 </Button>
             </Box>
         </Paper>

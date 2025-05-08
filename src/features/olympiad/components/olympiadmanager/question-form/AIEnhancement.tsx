@@ -27,14 +27,14 @@ const AIEnhancement: React.FC<AIEnhancementProps> = ({
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <SmartToyIcon color="primary" sx={{ mr: 1 }} />
                 <Typography variant="subtitle1" fontWeight="medium">
-                    Улучшить вопрос с помощью ИИ
+                    ЖИ көмегімен сұрақты жақсарту
                 </Typography>
             </Box>
             
             <TextField
                 fullWidth
-                label="Введите инструкцию для ИИ"
-                placeholder="Например: Сделай вопрос более сложным, добавь больше контекста, улучши варианты ответов..."
+                label="ЖИ үшін нұсқаулықты енгізіңіз"
+                placeholder="Мысалы: Сұрақты күрделірек етіңіз, көбірек контекст қосыңыз, жауаптарды жақсартыңыз..."
                 value={aiPrompt}
                 onChange={(e) => onPromptChange(e.target.value)}
                 multiline
@@ -51,7 +51,7 @@ const AIEnhancement: React.FC<AIEnhancementProps> = ({
                 disabled={!aiPrompt.trim() || isProcessingAi}
                 sx={{ width: '100%' }}
             >
-                {isProcessingAi ? 'ИИ обрабатывает запрос...' : 'Применить ИИ'}
+                {isProcessingAi ? 'ЖИ сұранысты өңдеуде...' : 'ЖИ қолдану'}
             </Button>
         </Paper>
     );

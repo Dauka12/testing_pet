@@ -45,26 +45,26 @@ const AIComparisonView: React.FC<AIComparisonViewProps> = ({
                 }}>
                     <SmartToyIcon color="primary" sx={{ mr: 1 }} />
                     <Typography variant="subtitle1" fontWeight="medium">
-                        Результат улучшения с помощью ИИ
+                        ЖИ көмегімен жақсарту нәтижесі
                     </Typography>
                 </Box>
                 
                 <Typography variant="subtitle2" gutterBottom sx={{ mt: 2 }}>
-                    Вопрос:
+                    Сұрақ:
                 </Typography>
                 
                 <Grid container spacing={2} sx={{ mb: 3 }}>
                     <Grid item xs={12} md={6}>
-                        <Typography variant="caption" color="text.secondary">Было:</Typography>
+                        <Typography variant="caption" color="text.secondary">Болды:</Typography>
                         <Paper 
                             variant="outlined" 
                             sx={{ p: 2, bgcolor: '#f5f5f5', height: '100%', minHeight: 100 }}
                         >
-                            <Typography>{originalQuestion.questionRus}</Typography>
+                            <Typography>{originalQuestion.questionKaz}</Typography>
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <Typography variant="caption" color="text.secondary">Стало:</Typography>
+                        <Typography variant="caption" color="text.secondary">Болды:</Typography>
                         <Paper 
                             variant="outlined" 
                             sx={{ p: 2, bgcolor: 'rgba(76, 175, 80, 0.08)', height: '100%', minHeight: 100 }}
@@ -74,14 +74,14 @@ const AIComparisonView: React.FC<AIComparisonViewProps> = ({
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.2, duration: 0.5 }}
                             >
-                                <Typography>{enhancedQuestion.questionRus}</Typography>
+                                <Typography>{enhancedQuestion.questionKaz}</Typography>
                             </motion.div>
                         </Paper>
                     </Grid>
                 </Grid>
                 
                 <Typography variant="subtitle2" gutterBottom>
-                    Варианты ответов:
+                    Жауап нұсқалары:
                 </Typography>
                 
                 <Grid container spacing={2}>
@@ -100,7 +100,7 @@ const AIComparisonView: React.FC<AIComparisonViewProps> = ({
                                         size="small"
                                     />
                                     <ListItemText 
-                                        primary={option.nameRus}
+                                        primary={option.nameKaz}
                                     />
                                 </ListItem>
                             ))}
@@ -127,7 +127,7 @@ const AIComparisonView: React.FC<AIComparisonViewProps> = ({
                                             size="small"
                                         />
                                         <ListItemText 
-                                            primary={option.nameRus}
+                                            primary={option.nameKaz}
                                         />
                                     </ListItem>
                                 </motion.div>
@@ -143,7 +143,7 @@ const AIComparisonView: React.FC<AIComparisonViewProps> = ({
                         onClick={onCancel}
                         sx={{ mr: 2 }}
                     >
-                        Отменить изменения
+                        Өзгерістерден бас тарту
                     </Button>
                     
                     <Button 
@@ -151,7 +151,7 @@ const AIComparisonView: React.FC<AIComparisonViewProps> = ({
                         color="primary"
                         onClick={onAccept}
                     >
-                        Принять изменения ИИ
+                        ЖИ өзгерістерін қабылдау
                     </Button>
                 </Box>
             </Paper>

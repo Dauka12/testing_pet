@@ -6,6 +6,7 @@ export interface AuthUser {
     phone: string;
     university: string;
     email: string;
+    role: string | null;
 }
 
 export interface AuthState {
@@ -30,4 +31,5 @@ export interface LoginResponse {
     phone: string;
     university: string;
     email: string;
+    role: string | null;
 }

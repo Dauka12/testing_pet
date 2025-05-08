@@ -148,26 +148,14 @@ const ExamForm: React.FC = () => {
     return (
         <Paper elevation={3} sx={{ p: 3, borderRadius: 2 }}>
             <Typography variant="h5" component="h2" gutterBottom>
-                Создать экзамен
+                Емтихан құру
             </Typography>
 
             <Box component="form" onSubmit={handleSubmit} noValidate>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6}>
                         <TextField
-                            label="Название (Рус)"
-                            name="nameRus"
-                            value={formData.nameRus}
-                            onChange={handleChange}
-                            fullWidth
-                            required
-                            variant="outlined"
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} md={6}>
-                        <TextField
-                            label="Название (Каз)"
+                            label="Атауы (Қаз)"
                             name="nameKaz"
                             value={formData.nameKaz}
                             onChange={handleChange}
@@ -178,32 +166,26 @@ const ExamForm: React.FC = () => {
                     </Grid>
 
                     <Grid item xs={12} md={6}>
-                        <FormControl fullWidth>
-                            <InputLabel id="type-rus-label">Тип (Рус)</InputLabel>
-                            <Select
-                                labelId="type-rus-label"
-                                name="typeRus"
-                                value={formData.typeRus}
-                                onChange={handleTypeChange}
-                                label="Тип (Рус)"
-                                required
-                            >
-                                <MenuItem value="Тест">Тест</MenuItem>
-                                <MenuItem value="Экзамен">Экзамен</MenuItem>
-                                <MenuItem value="Промежуточный контроль">Промежуточный контроль</MenuItem>
-                            </Select>
-                        </FormControl>
+                        <TextField
+                            label="Атауы (Орыс)"
+                            name="nameRus"
+                            value={formData.nameRus}
+                            onChange={handleChange}
+                            fullWidth
+                            required
+                            variant="outlined"
+                        />
                     </Grid>
 
                     <Grid item xs={12} md={6}>
                         <FormControl fullWidth>
-                            <InputLabel id="type-kaz-label">Тип (Каз)</InputLabel>
+                            <InputLabel id="type-kaz-label">Түрі (Қаз)</InputLabel>
                             <Select
                                 labelId="type-kaz-label"
                                 name="typeKaz"
                                 value={formData.typeKaz}
                                 onChange={handleTypeChange}
-                                label="Тип (Каз)"
+                                label="Түрі (Қаз)"
                                 required
                             >
                                 <MenuItem value="Тест">Тест</MenuItem>
@@ -213,10 +195,28 @@ const ExamForm: React.FC = () => {
                         </FormControl>
                     </Grid>
 
+                    <Grid item xs={12} md={6}>
+                        <FormControl fullWidth>
+                            <InputLabel id="type-rus-label">Түрі (Орыс)</InputLabel>
+                            <Select
+                                labelId="type-rus-label"
+                                name="typeRus"
+                                value={formData.typeRus}
+                                onChange={handleTypeChange}
+                                label="Түрі (Орыс)"
+                                required
+                            >
+                                <MenuItem value="Тест">Тест</MenuItem>
+                                <MenuItem value="Экзамен">Экзамен</MenuItem>
+                                <MenuItem value="Промежуточный контроль">Промежуточный контроль</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+
                     <Grid item xs={12}>
                         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
                             <DateTimePicker
-                                label="Время начала"
+                                label="Басталу уақыты"
                                 value={new Date(formData.startTime || '')}
                                 onChange={handleDateChange}
                                 slotProps={{
@@ -232,7 +232,7 @@ const ExamForm: React.FC = () => {
 
                     <Grid item xs={12} md={12}>
                         <TextField
-                            label="Длительность (мин)"
+                            label="Ұзақтығы (мин)"
                             name="durationInMinutes"
                             value={formData.durationInMinutes}
                             onChange={(e) => setFormData(prev => ({ ...prev, durationInMinutes: parseInt(e.target.value) || 0 }))}
@@ -244,14 +244,14 @@ const ExamForm: React.FC = () => {
                         />
 
                         <FormControl fullWidth margin="normal" disabled={loading || loadingCategories}>
-                            <InputLabel id="categories-label">Категории</InputLabel>
+                            <InputLabel id="categories-label">Санаттар</InputLabel>
                             <Select
                                 labelId="categories-label"
                                 id="categories"
                                 multiple
                                 value={formData.categories}
                                 onChange={handleCategoriesChange}
-                                input={<OutlinedInput label="Категории" />}
+                                input={<OutlinedInput label="Санаттар" />}
                                 renderValue={(selected) => (
                                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                         {(selected as number[]).map((categoryId) => {
@@ -259,7 +259,7 @@ const ExamForm: React.FC = () => {
                                             return (
                                                 <Chip
                                                     key={categoryId}
-                                                    label={category ? category.nameRus : 'Загрузка...'}
+                                                    label={category ? (category.nameKaz || category.nameRus) : 'Жүктелуде...'}
                                                 />
                                             );
                                         })}
@@ -267,12 +267,12 @@ const ExamForm: React.FC = () => {
                                 )}
                             >
                                 {loadingCategories ? (
-                                    <MenuItem disabled>Загрузка категорий...</MenuItem>
+                                    <MenuItem disabled>Санаттар жүктелуде...</MenuItem>
                                 ) : (
                                     categories.map((category) => (
                                         <MenuItem key={category.id} value={category.id}>
                                             <Checkbox checked={formData.categories.indexOf(category.id) > -1} />
-                                            <ListItemText primary={category.nameRus} />
+                                            <ListItemText primary={category.nameKaz || category.nameRus} />
                                         </MenuItem>
                                     ))
                                 )}
@@ -295,7 +295,7 @@ const ExamForm: React.FC = () => {
                             fullWidth
                             disabled={loading}
                         >
-                            {loading ? 'Создание...' : 'Создать экзамен'}
+                            {loading ? 'Құрылуда...' : 'Емтихан құру'}
                         </Button>
                     </Grid>
                 </Grid>

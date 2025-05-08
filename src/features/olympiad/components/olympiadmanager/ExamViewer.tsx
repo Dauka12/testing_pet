@@ -147,10 +147,10 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main', mb: 0 }}>
-                            {exam.nameRus}
+                            {exam.nameKaz || exam.nameRus}
                         </Typography>
                         {onEdit && (
-                            <Tooltip title="Редактировать название">
+                            <Tooltip title="Атауын өңдеу">
                                 <IconButton
                                     color="primary"
                                     onClick={onEdit}
@@ -164,7 +164,7 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                     </Box>
                     
                     {/* Show the main edit button only if onEdit function is provided */}
-                    <Tooltip title="Редактировать экзамен">
+                    <Tooltip title="Емтиханды өңдеу">
                         <IconButton
                             color="primary"
                             onClick={onEdit}
@@ -182,35 +182,35 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                     </Tooltip>
                 </Box>
                 <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-                    {exam.nameKaz}
+                    {exam.nameRus}
                 </Typography>
 
                 <Grid container spacing={3} sx={{ mt: 2 }}>
                     <Grid item xs={12} md={4}>
                         <Typography variant="subtitle2" color="text.secondary">
-                            Тип экзамена:
+                            Емтихан түрі:
                         </Typography>
                         <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
-                            {exam.typeRus} / {exam.typeKaz}
+                            {exam.typeKaz} / {exam.typeRus}
                         </Typography>
                     </Grid>
 
                     <Grid item xs={12} md={4}>
                         <Typography variant="subtitle2" color="text.secondary">
-                            Время начала:
+                            Басталу уақыты:
                         </Typography>
                         <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
                             {exam.startTime ? (
                                 format(new Date(exam.startTime), 'dd MMM yyyy, HH:mm', { locale: ru })
                             ) : (
-                                'Не указано'
+                                'Көрсетілмеген'
                             )}
                         </Typography>
                     </Grid>
 
                     <Grid item xs={12} md={4}>
                         <Typography variant="subtitle2" color="text.secondary">
-                            Длительность:
+                            Ұзақтығы:
                         </Typography>
                         <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
                             {exam.durationInMinutes} мин
@@ -221,7 +221,7 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
 
             <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
                 <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
-                    Вопросы ({exam.questions?.length || 0})
+                    Сұрақтар ({exam.questions?.length || 0})
                 </Typography>
                 <Divider sx={{ mb: 3 }} />
 
@@ -232,15 +232,15 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                     <Box display="flex" alignItems="center" width="100%">
                                         <Typography sx={{ fontWeight: 'medium' }}>
-                                            Вопрос {index + 1}
+                                            Сұрақ {index + 1}
                                         </Typography>
                                         <Chip
-                                            label={`${question.options.length} вариантов ответа`}
+                                            label={`${question.options.length} жауап нұсқалары`}
                                             size="small"
                                             sx={{ ml: 2, bgcolor: 'rgba(25, 118, 210, 0.08)' }}
                                         />
                                         <Box sx={{ ml: 'auto' }}>
-                                            <Tooltip title="Улучшить с помощью AI">
+                                            <Tooltip title="ЖИ көмегімен жетілдіру">
                                                 <IconButton 
                                                     color="primary"
                                                     onClick={(e) => {
@@ -253,7 +253,7 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                                                 </IconButton>
                                             </Tooltip>
                                             {onEditQuestion && (
-                                                <Tooltip title="Редактировать вопрос">
+                                                <Tooltip title="Сұрақты өңдеу">
                                                     <IconButton 
                                                         color="secondary"
                                                         onClick={(e) => {
@@ -272,25 +272,25 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                                     <Grid container spacing={3}>
                                         <Grid item xs={12} md={6}>
                                             <Typography variant="subtitle2" color="text.secondary">
-                                                Вопрос (Рус):
-                                            </Typography>
-                                            <Typography variant="body1" paragraph>
-                                                {question.questionRus}
-                                            </Typography>
-                                        </Grid>
-
-                                        <Grid item xs={12} md={6}>
-                                            <Typography variant="subtitle2" color="text.secondary">
-                                                Вопрос (Каз):
+                                                Сұрақ (Қаз):
                                             </Typography>
                                             <Typography variant="body1" paragraph>
                                                 {question.questionKaz}
                                             </Typography>
                                         </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle2" color="text.secondary">
+                                                Сұрақ (Орыс):
+                                            </Typography>
+                                            <Typography variant="body1" paragraph>
+                                                {question.questionRus}
+                                            </Typography>
+                                        </Grid>
                                     </Grid>
 
                                     <Typography variant="subtitle2" sx={{ mt: 2, mb: 1, fontWeight: 'bold' }}>
-                                        Варианты ответов:
+                                        Жауап нұсқалары:
                                     </Typography>
 
                                     <TableContainer component={Paper} variant="outlined" sx={{ mb: 2 }}>
@@ -298,9 +298,9 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                                             <TableHead>
                                                 <TableRow sx={{ bgcolor: 'background.default' }}>
                                                     <TableCell width="5%">#</TableCell>
-                                                    <TableCell width="45%">Текст (Рус)</TableCell>
-                                                    <TableCell width="45%">Текст (Каз)</TableCell>
-                                                    <TableCell width="5%">Верный</TableCell>
+                                                    <TableCell width="45%">Мәтін (Қаз)</TableCell>
+                                                    <TableCell width="45%">Мәтін (Орыс)</TableCell>
+                                                    <TableCell width="5%">Дұрыс</TableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
@@ -310,8 +310,8 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                                                             'rgba(76, 175, 80, 0.08)' : 'inherit'
                                                     }}>
                                                         <TableCell>{optIndex + 1}</TableCell>
-                                                        <TableCell>{option.nameRus}</TableCell>
                                                         <TableCell>{option.nameKaz}</TableCell>
+                                                        <TableCell>{option.nameRus}</TableCell>
                                                         <TableCell align="center">
                                                             {option.id === question.correctOptionId && '✓'}
                                                         </TableCell>
@@ -327,7 +327,7 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                 ) : (
                     <Box sx={{ textAlign: 'center', py: 4 }}>
                         <Typography variant="body1" color="text.secondary">
-                            Для этого экзамена еще не созданы вопросы.
+                            Бұл емтиханға әлі сұрақтар құрылмаған.
                         </Typography>
                     </Box>
                 )}
@@ -355,7 +355,7 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                 }}>
                     <SmartToyIcon /> 
                     <Typography variant="h6" component="span">
-                        Улучшить вопрос с помощью искусственного интеллекта
+                        Жасанды интеллект көмегімен сұрақты жетілдіру
                     </Typography>
                 </DialogTitle>
                 
@@ -371,16 +371,16 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                             >
                                 <Box sx={{ mb: 3 }}>
                                     <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-                                        Текущий вопрос:
+                                        Қазіргі сұрақ:
                                     </Typography>
                                     <Paper variant="outlined" sx={{ p: 2, bgcolor: 'background.default', mb: 2 }}>
                                         <Typography>
-                                            {selectedQuestion?.questionRus}
+                                            {selectedQuestion?.questionKaz || selectedQuestion?.questionRus}
                                         </Typography>
                                     </Paper>
                                     
                                     <Typography gutterBottom sx={{ mt: 3, fontWeight: 'medium' }}>
-                                        Введите инструкцию для AI, как улучшить вопрос:
+                                        ЖИ-ге сұрақты қалай жетілдіру керектігі туралы нұсқаулық енгізіңіз:
                                     </Typography>
                                     <TextField
                                         fullWidth
@@ -388,13 +388,13 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                                         rows={4}
                                         value={aiPrompt}
                                         onChange={(e) => setAiPrompt(e.target.value)}
-                                        placeholder="Например: Сделай вопрос более сложным, добавь больше контекста, улучши варианты ответов..."
+                                        placeholder="Мысалы: Сұрақты күрделірек етіңіз, көбірек контекст қосыңыз, жауап нұсқаларын жақсартыңыз..."
                                         disabled={isProcessing}
                                         variant="outlined"
                                         sx={{ mt: 1 }}
                                     />
                                     <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                                        AI поможет изменить формулировку или улучшить вопрос согласно вашим инструкциям.
+                                        ЖИ сіздің нұсқауларыңызға сәйкес тұжырымдамаларды өзгертуге немесе сұрақты жақсартуға көмектеседі.
                                     </Typography>
                                 </Box>
                             </motion.div>
@@ -517,11 +517,11 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                                     </Box>
 
                                     <Typography variant="h6" color="primary.main" fontWeight="medium" gutterBottom>
-                                        Искусственный интеллект работает над вашим запросом
+                                        Жасанды интеллект сіздің сұранысыңызбен жұмыс жасауда
                                     </Typography>
                                     
                                     <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '80%', mx: 'auto' }}>
-                                        AI анализирует ваш вопрос и создает улучшенную версию на основе вашей инструкции...
+                                        ЖИ сіздің сұрағыңызды талдап, нұсқауыңыз негізінде жетілдірілген нұсқасын жасауда...
                                     </Typography>
                                     
                                     {/* Animated text that shows what's happening */}
@@ -531,13 +531,15 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                                             transition={{ repeat: Infinity, duration: 3, times: [0, 0.1, 1] }}
                                         >
                                             <Typography variant="caption" color="primary.dark">
-                                                {[
-                                                    "Анализ текущего вопроса",
-                                                    "Применение контекстных улучшений",
-                                                    "Создание оптимальных вариантов ответов",
-                                                    "Проверка корректности данных",
-                                                    "Финальная оптимизация формулировок"
-                                                ][Math.floor((Date.now() / 3000) % 5)]}
+                                                {
+                                                   [
+                                                    "Қазіргі сұрақты талдау",
+                                                    "Контекстік жақсартуларды қолдану",
+                                                    "Оңтайлы жауап нұсқаларын құру",
+                                                    "Деректердің дұрыстығын тексеру",
+                                                    "Тұжырымдамаларды соңғы оңтайландыру"
+                                                   ]
+                                                [Math.floor((Date.now() / 3000) % 5)]}
                                             </Typography>
                                         </motion.div>
                                     </Box>
@@ -592,15 +594,15 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                                     }}>
                                         <SmartToyIcon color="primary" sx={{ mr: 1 }} />
                                         <Typography variant="subtitle1" fontWeight="medium">
-                                            Результат работы ИИ
+                                            ЖИ жұмысының нәтижесі
                                         </Typography>
                                         <Chip 
-                                            label="AI улучшенный" 
+                                            label="ЖИ жақсартылған" 
                                             size="small" 
                                             color="primary" 
                                             sx={{ ml: 'auto', mr: 1 }}
                                         />
-                                        <Tooltip title={showOptions ? "Скрыть варианты ответов" : "Показать варианты ответов"}>
+                                        <Tooltip title={showOptions ? "Жауап нұсқаларды жасыру" : "Жауап нұсқаларды көрсету"}>
                                             <IconButton 
                                                 size="small" 
                                                 onClick={() => setShowOptions(prev => !prev)}
@@ -614,18 +616,18 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                                     <Grid container spacing={3}>
                                         <Grid item xs={12} md={6}>
                                             <Typography variant="subtitle2" gutterBottom color="text.secondary">
-                                                Было:
+                                                Болды:
                                             </Typography>
                                             <Paper 
                                                 variant="outlined" 
                                                 sx={{ p: 2, bgcolor: '#f5f5f5', height: '100%', minHeight: 100 }}
                                             >
-                                                <Typography>{originalQuestion?.questionRus}</Typography>
+                                                <Typography>{originalQuestion?.questionKaz || originalQuestion?.questionRus}</Typography>
                                             </Paper>
                                         </Grid>
                                         <Grid item xs={12} md={6}>
                                             <Typography variant="subtitle2" gutterBottom color="text.secondary">
-                                                Стало:
+                                                Болды:
                                             </Typography>
                                             <Paper 
                                                 variant="outlined" 
@@ -655,7 +657,7 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                                                         }}
                                                     >
                                                         <Typography variant="caption" color="primary.dark" sx={{ fontStyle: 'italic' }}>
-                                                            AI генерирует
+                                                            ЖИ жасауда
                                                         </Typography>
                                                         <Box sx={{ display: 'inline-flex', ml: 1, position: 'relative', height: 20, alignItems: 'center' }}>
                                                             {/* Gemini-style colored dots */}
@@ -711,7 +713,7 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                                                             </Box>
                                                         </>
                                                     ) : (
-                                                        updatedQuestion?.questionRus
+                                                        updatedQuestion?.questionKaz || updatedQuestion?.questionRus
                                                     )}
                                                 </Typography>
                                             </Paper>
@@ -835,7 +837,7 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                     {!showComparisonView && !showProcessingAnimation ? (
                         <>
                             <Button onClick={closeAiPromptDialog} disabled={isProcessing}>
-                                Отмена
+                                Бас тарту
                             </Button>
                             <motion.div
                                 whileHover={{ scale: 1.03 }}
@@ -848,18 +850,18 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                                     disabled={!aiPrompt.trim() || isProcessing}
                                     startIcon={<SmartToyIcon />}
                                 >
-                                    {isProcessing ? 'AI обрабатывает...' : 'Применить AI'}
+                                    {isProcessing ? 'ЖИ өңдеуде...' : 'ЖИ қолдану'}
                                 </Button>
                             </motion.div>
                         </>
                     ) : showProcessingAnimation ? (
                         <Typography variant="caption" color="text.secondary" sx={{ mx: 'auto' }}>
-                            Пожалуйста, подождите, пока ИИ работает над вашим запросом...
+                            ЖИ сіздің сұранысыңызбен жұмыс жасап жатқанда күте тұрыңыз...
                         </Typography>
                     ) : (
                         <>
                             <Button onClick={closeAiPromptDialog}>
-                                Закрыть
+                                Жабу
                             </Button>
                             <Button 
                                 variant="outlined" 
@@ -869,7 +871,7 @@ const ExamViewer: React.FC<ExamViewerProps> = ({ exam, onEdit, onEditQuestion })
                                     setAiPrompt('');
                                 }}
                             >
-                                Сделать еще одно улучшение
+                                Тағы бір жақсартуды жасау
                             </Button>
                         </>
                     )}

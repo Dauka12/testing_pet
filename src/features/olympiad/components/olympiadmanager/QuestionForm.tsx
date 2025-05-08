@@ -90,19 +90,19 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
 
     const validateForm = (): boolean => {
         if (!formData.questionRus.trim()) {
-            setError('Введите текст вопроса (Рус)');
+            setError('Сұрақ мәтінін енгізіңіз (Орыс)');
             return false;
         }
         if (!formData.questionKaz.trim()) {
-            setError('Введите текст вопроса (Каз)');
+            setError('Сұрақ мәтінін енгізіңіз (Қаз)');
             return false;
         }
         if (formData.options.some(opt => !opt.nameRus.trim() || !opt.nameKaz.trim())) {
-            setError('Все варианты ответов должны быть заполнены');
+            setError('Барлық жауап нұсқалары толтырылуы керек');
             return false;
         }
         if (formData.correctOptionId === undefined || formData.correctOptionId === null) {
-            setError('Выберите правильный вариант ответа');
+            setError('Дұрыс жауап нұсқасын таңдаңыз');
             return false;
         }
         return true;
@@ -178,12 +178,12 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
             onSuccess();
         } catch (error) {
             console.error('Error submitting question:', error);
-            setError('Произошла ошибка при сохранении вопроса');
+            setError('Сұрақты сақтау кезінде қате орын алды');
         }
     };
 
     const handleDeleteQuestion = async (questionId: number) => {
-        if (window.confirm('Вы уверены, что хотите удалить этот вопрос?')) {
+        if (window.confirm('Бұл сұрақты жойғыңыз келетініне сенімдісіз бе?')) {
             await dispatch(deleteQuestionThunk(questionId));
             if (editingQuestion?.id === questionId) {
                 setEditingQuestion(null);
@@ -258,7 +258,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
             {/* Question Form */}
             <Paper elevation={3} sx={{ p: 3, borderRadius: 2, mb: 4 }}>
                 <Typography variant="h6" gutterBottom>
-                    {editingQuestion ? 'Редактировать вопрос' : 'Добавить новый вопрос'}
+                    {editingQuestion ? 'Сұрақты өңдеу' : 'Жаңа сұрақ қосу'}
                 </Typography>
 
                 {error && (
@@ -266,40 +266,6 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
                         {error}
                     </Alert>
                 )}
-
-                {/* AI Enhancement Section */}
-                {/* {editingQuestion && !showComparisonView && (
-                    <AIEnhancement
-                        aiPrompt={aiPrompt}
-                        isProcessingAi={isProcessingAi}
-                        onPromptChange={(value) => setAiPrompt(value)}
-                        onEnhance={async () => {
-                            if (!editingQuestion?.id || !aiPrompt.trim()) {
-                                setError('Необходим текст промпта для улучшения вопроса с помощью ИИ');
-                                return;
-                            }
-
-                            setIsProcessingAi(true);
-                            setError('');
-                            setOriginalQuestion({ ...editingQuestion });
-
-                            try {
-                                const result = await dispatch(updateQuestionWithAiThunk({
-                                    questionId: editingQuestion.id,
-                                    prompt: aiPrompt
-                                })).unwrap();
-                                
-                                setEnhancedQuestion(result);
-                                setShowComparisonView(true);
-                            } catch (error) {
-                                console.error('Error enhancing question with AI:', error);
-                                setError('Произошла ошибка при обработке запроса ИИ');
-                            } finally {
-                                setIsProcessingAi(false);
-                            }
-                        }}
-                    />
-                )} */}
 
                 {/* AI Comparison View */}
                 {showComparisonView && originalQuestion && enhancedQuestion && (
@@ -344,20 +310,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
                         <Grid item xs={12}>
                             <TextField
                                 fullWidth
-                                label="Вопрос (Рус)"
-                                name="questionRus"
-                                value={formData.questionRus}
-                                onChange={handleQuestionChange}
-                                multiline
-                                rows={3}
-                                required
-                            />
-                        </Grid>
-
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="Вопрос (Каз)"
+                                label="Сұрақ (Қаз)"
                                 name="questionKaz"
                                 value={formData.questionKaz}
                                 onChange={handleQuestionChange}
@@ -368,9 +321,22 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
                         </Grid>
 
                         <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                label="Сұрақ (Орыс)"
+                                name="questionRus"
+                                value={formData.questionRus}
+                                onChange={handleQuestionChange}
+                                multiline
+                                rows={3}
+                                required
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}>
                             <Divider sx={{ my: 2 }} />
                             <Typography variant="subtitle1" gutterBottom>
-                                Варианты ответов
+                                Жауап нұсқалары
                             </Typography>
 
                             <OptionsForm
@@ -397,7 +363,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
                                 }}
                                 onRemoveOption={(index) => {
                                     if (formData.options.length <= 2) {
-                                        setError('Должно быть минимум 2 варианта ответа');
+                                        setError('Кемінде 2 жауап нұсқасы болуы керек');
                                         return;
                                     }
 
@@ -421,7 +387,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
                                         onClick={handleCancelEdit}
                                         sx={{ mr: 2 }}
                                     >
-                                        Отмена
+                                        Бас тарту
                                     </Button>
                                 )}
                                 <Button
@@ -429,7 +395,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ testId, question, onSuccess
                                     variant="contained"
                                     color="primary"
                                 >
-                                    {editingQuestion ? 'Сохранить изменения' : 'Добавить вопрос'}
+                                    {editingQuestion ? 'Өзгерістерді сақтау' : 'Сұрақ қосу'}
                                 </Button>
                             </Box>
                         </Grid>

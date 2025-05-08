@@ -43,9 +43,9 @@ const OptionsForm: React.FC<OptionsFormProps> = ({
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
-                                label={`Вариант ${index + 1} (Рус)`}
-                                value={option.nameRus}
-                                onChange={(e) => onOptionChange(index, 'nameRus', e.target.value)}
+                                label={`Нұсқа ${index + 1} (Қаз)`}
+                                value={option.nameKaz}
+                                onChange={(e) => onOptionChange(index, 'nameKaz', e.target.value)}
                                 size="small"
                                 required
                             />
@@ -53,9 +53,9 @@ const OptionsForm: React.FC<OptionsFormProps> = ({
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
-                                label={`Вариант ${index + 1} (Каз)`}
-                                value={option.nameKaz}
-                                onChange={(e) => onOptionChange(index, 'nameKaz', e.target.value)}
+                                label={`Нұсқа ${index + 1} (Орыс)`}
+                                value={option.nameRus}
+                                onChange={(e) => onOptionChange(index, 'nameRus', e.target.value)}
                                 size="small"
                                 required
                             />
@@ -78,7 +78,7 @@ const OptionsForm: React.FC<OptionsFormProps> = ({
                 size="small"
                 sx={{ mt: 1 }}
             >
-                Добавить вариант
+                Нұсқа қосу
             </Button>
         </Box>
     );
